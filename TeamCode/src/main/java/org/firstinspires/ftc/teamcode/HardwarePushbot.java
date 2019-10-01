@@ -53,15 +53,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwarePushbot
 {
     /* Public OpMode members. */
-    public DcMotor  leftDrive = null;
-    public DcMotor  rightDrive  = null;
-    //public DcMotor  leftArm     = null;
-    //public Servo    leftClaw    = null;
-    public Servo    hookServo   = null;
+    public DcMotor  leftFront = null;
+    public DcMotor  rightFront  = null;
+    public DcMotor  leftRear = null;
+    public DcMotor  rightRear  = null;
+    public DcMotor  Arm     = null;
+    public Servo    gripper    = null;
+    public Servo    wrist   = null;
+    public Servo    hook   = null;
 
-    //public static final double MID_SERVO       =  0.5 ;
-    //public static final double ARM_UP_POWER    =  0.45 ;
-    //public static final double ARM_DOWN_POWER  = -0.45 ;
+    public static final double GRIP_OPEN       =  0.5 ;// Starting Position: Gripper Open//
+    public static final double GRIP_CLOSED    =  0.45 ;// Driver Activate//
+    public static final double HOOK_UP  = -0.45 ; // Release the foundation//
+    public static final double HOOK_DOWN  = -0.45 ; //
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
