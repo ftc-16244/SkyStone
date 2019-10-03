@@ -77,7 +77,8 @@ public class HardwarePushbot
         // Save reference to Hardware map
         hwMap = ahwMap;
 
-        // Define and Initialize Motors
+        // Define and Initializ
+        // e Motors
         leftDrive  = hwMap.get(DcMotor.class, "motorLeft");
         rightDrive = hwMap.get(DcMotor.class, "motorRight");
         //leftArm    = hwMap.get(DcMotor.class, "left_arm");
@@ -102,4 +103,3 @@ public class HardwarePushbot
         //rightClaw.setPosition(MID_SERVO);
     }
  }
-
