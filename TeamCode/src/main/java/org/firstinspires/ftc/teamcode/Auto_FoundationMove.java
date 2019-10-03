@@ -89,8 +89,8 @@ public class Auto_FoundationMove extends LinearOpMode {
 
         //double GRIP_OPEN            =  0.1 ;// Starting Position: Gripper Open//
         //double GRIP_CLOSED          =  0.8 ;// Driver Activate//
-        double HOOK_UP_POSN         = -0.2 ; // Start Position adn release foundation
-        double HOOK_DOWN_POSN       = -0.6 ; // Grab foundation
+        double HOOK_UP_POSN         = 0.2 ; // Start Position adn release foundation
+        double HOOK_DOWN_POSN       = 0.6 ; // Grab foundation
         /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
