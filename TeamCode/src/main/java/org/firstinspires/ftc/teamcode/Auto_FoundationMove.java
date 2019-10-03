@@ -72,17 +72,25 @@ public class Auto_FoundationMove extends LinearOpMode {
     HardwarePushbot         robot   = new HardwarePushbot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 288 ;    // REV Core HEX motor
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 90.0/25.4 ; // 90mm wheels. For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    private static final double     COUNTS_PER_MOTOR_REV    = 288 ;         // REV Core HEX motor
+    private static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;         // This is < 1.0 if geared UP
+    private static final double     WHEEL_DIAMETER_INCHES   = 90.0/25.4 ;   // 90mm wheels. For figuring circumference
+    private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.6;
-    static final double     TURN_SPEED              = 0.5;
+    private static final double     DRIVE_SPEED             = 0.6;
+    private static final double     TURN_SPEED              = 0.5;
+
+
 
     @Override
     public void runOpMode() {
 
+        //Local variables//
+
+        //double GRIP_OPEN            =  0.1 ;// Starting Position: Gripper Open//
+        //double GRIP_CLOSED          =  0.8 ;// Driver Activate//
+        double HOOK_UP_POSN         = -0.2 ; // Start Position adn release foundation
+        double HOOK_DOWN_POSN       = -0.6 ; // Grab foundation
         /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
@@ -105,7 +113,8 @@ public class Auto_FoundationMove extends LinearOpMode {
                           robot.rightFront.getCurrentPosition());
         telemetry.update();
 
-        robot.hook.setPosition(0.0); //set foundation hook to initial position during init
+        //robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
+        robot.hook.setPosition(HOOK_UP_POSN); //set foundation hook to initial position during init
         sleep(1000);     // pause for servos to move
 
         // Wait for the game to start (driver presses PLAY)
@@ -115,10 +124,11 @@ public class Auto_FoundationMove extends LinearOpMode {
 
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         encoderDrive(DRIVE_SPEED,  24,  24, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+
         //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
 
         //robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
-        robot.hook.setPosition(0.3);
+        robot.hook.setPosition(HOOK_DOWN_POSN);
         sleep(1000);     // pause for servos to grab foundation
 
         encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
