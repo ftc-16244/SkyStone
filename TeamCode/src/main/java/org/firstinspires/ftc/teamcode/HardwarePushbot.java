@@ -67,7 +67,6 @@ public class HardwarePushbot
     public Servo        hook            = null;
 
 
-
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
@@ -113,10 +112,10 @@ public class HardwarePushbot
         rightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-
         // Define and initialize ALL installed servos.
-        //leftClaw  = hwMap.get(Servo.class, "left_hand");
-        hook = hwMap.get(Servo.class, "Hook");
 
+        hook    = hwMap.get(Servo.class, "Hook");
+        gripper = hwMap.get(Servo.class, "Gripper");
+        wrist   = hwMap.get(Servo.class, "Wrist");
     }
  }
