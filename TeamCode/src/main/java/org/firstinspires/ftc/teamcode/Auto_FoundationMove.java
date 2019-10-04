@@ -117,6 +117,7 @@ public class Auto_FoundationMove extends LinearOpMode {
         //robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
         robot.hook.setPosition(HOOK_UP_POSN); //set foundation hook to initial position during init
 
+
         sleep(1000);     // pause for servos to move
 
         // Wait for the game to start (driver presses PLAY)
