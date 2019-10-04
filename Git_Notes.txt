@@ -1,0 +1,31 @@
+Git Notes
+
+To create a branch:
+Can do from remote via Github web page or
+git branch nameof branch
+
+Switch to that branch
+git checkout nameofbranch
+
+do git add, commits and pushes like normal
+
+when ready to move new code up to master you need to merge.
+
+To merge a branch
+
+go to the branch (in this case it is called "development"
+
+git fetch origin master // this pulls the master into the branch so conflicts can be fixed without messing up master
+
+regular commits seem to get hug up so do git commit -i -m "message" the i adds other files
+
+git merge master // merges the master it to the branch
+
+git push origin development:master //
+
+The first line makes sure he has any upstream commits that have been made to master since the last time updated his local repository.
+
+The second pulls those changes (if any) from master into development
+
+The third pushes the development branch (now fully merged with master) up to origin/master.
+
