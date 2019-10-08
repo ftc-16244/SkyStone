@@ -72,12 +72,12 @@ public class Auto_FoundationMove extends LinearOpMode {
     HardwarePushbot         robot   = new HardwarePushbot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
 
-    private static final double     COUNTS_PER_MOTOR_REV    = 288 ;         // REV Core HEX motor
+    private static final double     COUNTS_PER_MOTOR_REV    = 280 ;         // REV Core HEX motor
     private static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;         // This is < 1.0 if geared UP
-    private static final double     WHEEL_DIAMETER_INCHES   = 90.0/25.4 ;   // 90mm wheels. For figuring circumference
+    private static final double     WHEEL_DIAMETER_INCHES   = 3.54 ;   // 90mm wheels. For figuring circumference its a 90 millimeter wheel
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
-    private static final double     DRIVE_SPEED             = 0.6;
+    private static final double     DRIVE_SPEED             = 0.4;
     private static final double     TURN_SPEED              = 0.5;
 
 
@@ -89,8 +89,8 @@ public class Auto_FoundationMove extends LinearOpMode {
 
         //double GRIP_OPEN            =  0.1 ;// Starting Position: Gripper Open//
         //double GRIP_CLOSED          =  0.8 ;// Driver Activate//
-        double HOOK_UP_POSN         = 0.2 ; // Start Position adn release foundation
-        double HOOK_DOWN_POSN       = 0.6 ; // Grab foundation
+        double HOOK_UP_POSN         = 0; // Start Position adn release foundation
+        double HOOK_DOWN_POSN       = 1; // Grab foundation
         /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
@@ -126,7 +126,7 @@ public class Auto_FoundationMove extends LinearOpMode {
         // Step through each leg of the path. Drive forward, deploy hook, then backup.
 
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  24,  24, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  -24,  -24, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
 
         //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
 
@@ -134,7 +134,7 @@ public class Auto_FoundationMove extends LinearOpMode {
         robot.hook.setPosition(HOOK_DOWN_POSN);
         sleep(1000);     // pause for servos to grab foundation
 
-        encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+        encoderDrive(DRIVE_SPEED, 24, 24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
 
 
 
@@ -155,6 +155,11 @@ public class Auto_FoundationMove extends LinearOpMode {
                              double timeoutS) {
         int newLeftTarget;
         int newRightTarget;
+
+
+
+
+
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
