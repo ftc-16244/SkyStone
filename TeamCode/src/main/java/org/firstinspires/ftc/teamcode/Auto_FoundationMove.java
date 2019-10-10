@@ -104,8 +104,8 @@ public class Auto_FoundationMove extends LinearOpMode {
         robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0",  "Starting at %7d :%7d",
@@ -202,8 +202,8 @@ public class Auto_FoundationMove extends LinearOpMode {
             robot.rightFront.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //robot.leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            //robot.rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
             //  sleep(250);   // optional pause after each move
         }
