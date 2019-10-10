@@ -69,11 +69,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Auto_FoundationMove extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwarePushbot        robot   = new HardwarePushbot();   // Use a Pushbot's hardware
+    HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
 
-    private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;         // REV Core HEX motor
-    private static final double     DRIVE_GEAR_REDUCTION    = .5 ;         // This is < 1.0 if geared UP
+    private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;         // REV HD HEX 40:1 motors
+    private static final double     DRIVE_GEAR_REDUCTION    = 0.5 ;         // This is < 1.0 if geared UP 20 teeth drive 10 teeth driven
     private static final double     WHEEL_DIAMETER_INCHES   = 3.54 ;   // 90mm wheels. For figuring circumference its a 90 millimeter wheel
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
@@ -191,15 +191,19 @@ public class Auto_FoundationMove extends LinearOpMode {
 
                 // Display it for the driver.
                 telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",
-                                            robot.leftFront.getCurrentPosition(),
-                                            robot.rightFront.getCurrentPosition());
+                telemetry.addData("Path2",  "Running at %7d :%7d",robot.leftFront.getCurrentPosition(),robot.rightFront.getCurrentPosition());
                 telemetry.update();
             }
 
             // Stop all motion;
+
             robot.leftFront.setPower(0);
             robot.rightFront.setPower(0);
+
+            robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
 
             // Turn off RUN_TO_POSITION
             //robot.leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

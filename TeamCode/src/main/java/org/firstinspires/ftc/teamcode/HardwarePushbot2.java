@@ -132,10 +132,10 @@ public class HardwarePushbot2
        // rightRear.setPower(0);
        // arm.setPower(0);
 
-        // Set all motors to run with encoders.
+        // Set all motors to run with without encoders.
 
-        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //leftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //rightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
        // arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
