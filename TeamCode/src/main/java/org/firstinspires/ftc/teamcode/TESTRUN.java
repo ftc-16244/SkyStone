@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
+
 
 /**
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
@@ -54,7 +54,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 public class TESTRUN extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwarePushbot robot           = new HardwarePushbot();   // Use a Pushbot's hardware
+    HardwarePushbot2 robot           = new HardwarePushbot2();   // Use a Pushbot's hardware
 
     @Override
     public void runOpMode() {
@@ -98,8 +98,8 @@ public class TESTRUN extends LinearOpMode {
             }
 
             // Output the safe vales to the motor drives.
-            robot.leftDrive.setPower(left);
-            robot.rightDrive.setPower(right);
+            robot.leftFront.setPower(left);
+            robot.rightFront.setPower(right);
 
             // Send telemetry message to signify robot running;
             telemetry.addData("left",  "%.2f", left);
