@@ -64,12 +64,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
-@Autonomous(name="Foundation Move", group="Pushbot")
+@Autonomous(name="AutoFoundation Move", group="Pushbot")
 //@Disabled
 public class Auto_FoundationMove extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwarePushbot         robot   = new HardwarePushbot();   // Use a Pushbot's hardware
+    HardwarePushbot        robot   = new HardwarePushbot();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
 
     private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;         // REV Core HEX motor
@@ -126,7 +126,7 @@ public class Auto_FoundationMove extends LinearOpMode {
         // Step through each leg of the path. Drive forward, deploy hook, then backup.
 
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  22,  24, 10.0);  // S1: Forward 24 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  24,  24, 10.0);  // S1: Forward 24 Inches with 5 Sec timeout
 
         //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
 
@@ -134,10 +134,7 @@ public class Auto_FoundationMove extends LinearOpMode {
         robot.hook.setPosition(HOOK_DOWN_POSN);
         sleep(1000);     // pause for servos to grab foundation
 
-        encoderDrive(DRIVE_SPEED, -46
-
-
-                , -48, 10.0);  // S3: Reverse 48 Inches with 4 Sec timeout
+        encoderDrive(DRIVE_SPEED, -48, -48, 10.0);  // S3: Reverse 48 Inches with 4 Sec timeout
 
 
 
