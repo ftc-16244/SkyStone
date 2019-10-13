@@ -75,7 +75,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 @Autonomous(name="Pushbot: Auto Drive By Gyro", group="Pushbot")
 @Disabled
 
-//Note REV HUB has a built in IMU from Bosch this is an old op mode example fro Modern Robotics
+//Note: the REVHub has a built in IMU from Bosch this code assumes a gyro from Modern Robotics. Use Bosch code instead.
 
 public class My_GyroExample extends LinearOpMode {
 
