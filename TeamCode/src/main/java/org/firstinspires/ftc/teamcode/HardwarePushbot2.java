@@ -89,7 +89,7 @@ public class HardwarePushbot2
     public DcMotor      rightFront      = null;
    // public DcMotor      leftRear        = null;
    // public DcMotor      rightRear       = null;
-    //public DcMotor      arm             = null;
+    public DcMotor      arm             = null;
     //public Servo        gripper         = null;
     //public Servo        wrist           = null;
     public Servo        hook            = null;
@@ -109,41 +109,40 @@ public class HardwarePushbot2
         // Save reference to Hardware map
         hwMap = ahwMap;
 
-        // Define and Initialize Motors
-
-        // Define and Initialize Motors
+        //================ MOTOR SECTION===============================
+        // Define and Initialize Motors.
+        // IMPORTANT...."deviceNames" in green have to be typed exactly in the robot config
         leftFront   = hwMap.get(DcMotor.class, "Left_front");
         rightFront  = hwMap.get(DcMotor.class, "Right_front");
         //leftRear    = hwMap.get(DcMotor.class, "Left_rear");
         //rightRear   = hwMap.get(DcMotor.class, "Right_rear");
-        //arm         = hwMap.get(DcMotor.class, "Arm");
+        arm         = hwMap.get(DcMotor.class, "Arm");
 
 
+        // Set motor directions.
         leftFront.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         rightFront.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
         //leftRear.setDirection(DcMotor.Direction.FORWARD);
         //rightRear.setDirection(DcMotor.Direction.REVERSE);
-        //arm.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        arm.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if needed
 
         // Set all motors to zero power
         leftFront.setPower(0);
         rightFront.setPower(0);
         //leftRear.setPower(0);
        // rightRear.setPower(0);
-       // arm.setPower(0);
+        arm.setPower(0);
 
         // Set all motors to run with without encoders.
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //leftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //rightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-       // arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        // ================ SERVO SECTION===============================
 
-        // Define and initialize ALL installed servos.
-
+        // Define and Initialize servos
         hook    = hwMap.get(Servo.class, "Hook");
-       // gripper = hwMap.get(Servo.class, "Gripper");
-       // wrist   = hwMap.get(Servo.class, "Wrist");
+        // gripper = hwMap.get(Servo.class, "Gripper");
+        // wrist   = hwMap.get(Servo.class, "Wrist");
     }
  }

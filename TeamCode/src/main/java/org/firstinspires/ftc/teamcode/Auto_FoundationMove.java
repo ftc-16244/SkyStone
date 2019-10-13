@@ -77,7 +77,7 @@ public class Auto_FoundationMove extends LinearOpMode {
     private static final double     WHEEL_DIAMETER_INCHES   = 3.54 ;   // 90mm wheels. For figuring circumference its a 90 millimeter wheel
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
-    private static final double     DRIVE_SPEED             = 0.4;
+    private static final double     DRIVE_SPEED             = 0.8;
     private static final double     TURN_SPEED              = 0.5;
 
 
@@ -91,6 +91,7 @@ public class Auto_FoundationMove extends LinearOpMode {
         //double GRIP_CLOSED          =  0.8 ;// Driver Activate//
         double HOOK_UP_POSN         = 0; // Start Position adn release foundation
         double HOOK_DOWN_POSN       = 1; // Grab foundation
+
         /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
@@ -103,6 +104,7 @@ public class Auto_FoundationMove extends LinearOpMode {
 
         robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION.STOP_AND_RESET_ENCODER);
 
         //robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -122,19 +124,15 @@ public class Auto_FoundationMove extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
         // Step through each leg of the path. Drive forward, deploy hook, then backup.
-
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  24,  24, 10.0);  // S1: Forward 24 Inches with 5 Sec timeout
-
+        encoderDrive(DRIVE_SPEED,  48,  48, 10.);  // S1: Forward 24 Inches with 5 Sec timeout
         //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-
         //robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
         robot.hook.setPosition(HOOK_DOWN_POSN);
         sleep(1000);     // pause for servos to grab foundation
 
-        encoderDrive(DRIVE_SPEED, -48, -48, 10.0);  // S3: Reverse 48 Inches with 4 Sec timeout
+        encoderDrive(DRIVE_SPEED, -48, -48, 10.);  // S3: Reverse 48 Inches with 4 Sec timeout
 
 
 
@@ -155,10 +153,6 @@ public class Auto_FoundationMove extends LinearOpMode {
                              double timeoutS) {
         int newLeftTarget;
         int newRightTarget;
-
-
-
-
 
 
         // Ensure that the opmode is still active
@@ -200,16 +194,12 @@ public class Auto_FoundationMove extends LinearOpMode {
             robot.leftFront.setPower(0);
             robot.rightFront.setPower(0);
 
-            robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
 
             // Turn off RUN_TO_POSITION
-            //robot.leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            //robot.rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-            //  sleep(250);   // optional pause after each move
+            sleep(250);   // optional pause after each move
         }
     }
 }

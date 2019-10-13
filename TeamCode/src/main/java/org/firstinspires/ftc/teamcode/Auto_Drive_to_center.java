@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -64,7 +65,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 // Code to move the foundation into the building zone during Autonomous Mode
 
 @Autonomous(name="Foundation Move", group="Pushbot")
-//@Disabled
+@Disabled
 public class Auto_Drive_to_center extends LinearOpMode {
 
     /* Declare OpMode members. */
