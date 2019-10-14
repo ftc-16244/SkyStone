@@ -79,7 +79,8 @@ public class Auto_FoundationMove extends LinearOpMode {
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
     private static final double     DRIVE_SPEED             = 0.8;
     private static final double     TURN_SPEED              = 0.5;
-
+    private static final double     ARM_SPEED             = 0.8;
+    private static final double     Ticks_Per_Degree        = COUNTS_PER_MOTOR_REV/360;
 
 
     @Override
@@ -87,8 +88,7 @@ public class Auto_FoundationMove extends LinearOpMode {
 
         //Local variables//
 
-        //double GRIP_OPEN            =  0.1 ;// Starting Position: Gripper Open//
-        //double GRIP_CLOSED          =  0.8 ;// Driver Activate//
+
         double HOOK_UP_POSN         = 0; // Start Position adn release foundation
         double HOOK_DOWN_POSN       = 1; // Grab foundation
 
@@ -104,7 +104,7 @@ public class Auto_FoundationMove extends LinearOpMode {
 
         robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION.STOP_AND_RESET_ENCODER);
+        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -116,10 +116,6 @@ public class Auto_FoundationMove extends LinearOpMode {
         telemetry.update();
 
 
-        //robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
-        robot.hook.setPosition(HOOK_UP_POSN); //set foundation hook to initial position during init
-
-
         sleep(1000);     // pause for servos to move
 
         // Wait for the game to start (driver presses PLAY)
@@ -128,12 +124,12 @@ public class Auto_FoundationMove extends LinearOpMode {
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         encoderDrive(DRIVE_SPEED,  48,  48, 10.);  // S1: Forward 24 Inches with 5 Sec timeout
         //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-        //robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
-        robot.hook.setPosition(HOOK_DOWN_POSN);
+
+
         sleep(1000);     // pause for servos to grab foundation
-
+        armDrive(ARM_SPEED,  -45, 5.);  // S1: 180 degrees counterclockwise
         encoderDrive(DRIVE_SPEED, -48, -48, 10.);  // S3: Reverse 48 Inches with 4 Sec timeout
-
+        armDrive(ARM_SPEED,  45, 5.);  // S1: 180 degrees counterclockwise
 
 
         telemetry.addData("Path", "Complete");
@@ -201,5 +197,46 @@ public class Auto_FoundationMove extends LinearOpMode {
 
             sleep(250);   // optional pause after each move
         }
+
+
+
     }
+
+    public void armDrive(double speed,
+                         double armDegrees, double timeoutS) {
+
+        int newArmTarget;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newArmTarget = robot.arm.getCurrentPosition() + (int) (armDegrees * Ticks_Per_Degree);
+            // set target position before "run to position"
+            robot.arm.setTargetPosition(newArmTarget);
+            // Turn On RUN_TO_POSITION
+            robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            // reset the timeout time and start motion.
+            runtime.reset();
+            robot.arm.setPower(Math.abs(speed));
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (robot.arm.isBusy() )) {
+
+                // Display it for the driver.
+                telemetry.addData("Arm Target",  "Running to %7d", newArmTarget);
+                telemetry.addData("Arm Position",  "Running at %7d",robot.arm.getCurrentPosition());
+                telemetry.update();
+            }
+            // Stop all motion;
+            robot.arm.setPower(0);
+            // Turn off RUN_TO_POSITION
+            robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+            sleep(250);   // optional pause after each move
+
+        }
+
+    }
+
 }
