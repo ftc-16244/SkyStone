@@ -89,8 +89,6 @@ public class Auto_FoundationMove extends LinearOpMode {
         //Local variables//
 
 
-        double HOOK_UP_POSN         = 0; // Start Position adn release foundation
-        double HOOK_DOWN_POSN       = 1; // Grab foundation
 
         /*
          * Initialize the drive system variables.
@@ -122,13 +120,13 @@ public class Auto_FoundationMove extends LinearOpMode {
         waitForStart();
         // Step through each leg of the path. Drive forward, deploy hook, then backup.
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  48,  48, 10.);  // S1: Forward 24 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  30,  30, 10.);  // S1: Forward 24 Inches with 5 Sec timeout have to confirm
         //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
 
 
         sleep(1000);     // pause for servos to grab foundation
         armDrive(ARM_SPEED,  -45, 5.);  // S1: 180 degrees counterclockwise
-        encoderDrive(DRIVE_SPEED, -48, -48, 10.);  // S3: Reverse 48 Inches with 4 Sec timeout
+        encoderDrive(DRIVE_SPEED, -30, -30, 10.);  // S3: Reverse 48 Inches with 4 Sec timeout have to confirm
         armDrive(ARM_SPEED,  45, 5.);  // S1: 180 degrees counterclockwise
 
 
@@ -180,8 +178,8 @@ public class Auto_FoundationMove extends LinearOpMode {
                    (robot.leftFront.isBusy() && robot.rightFront.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",robot.leftFront.getCurrentPosition(),robot.rightFront.getCurrentPosition());
+                telemetry.addData("Target",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
+                telemetry.addData("Actual_Position",  "Running at %7d :%7d",robot.leftFront.getCurrentPosition(),robot.rightFront.getCurrentPosition());
                 telemetry.update();
             }
 

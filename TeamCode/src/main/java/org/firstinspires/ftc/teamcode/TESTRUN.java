@@ -63,7 +63,7 @@ public class TESTRUN extends LinearOpMode {
         double drive;
         double turn;
         double max;
-
+        double ARM_SPEED
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
@@ -84,7 +84,6 @@ public class TESTRUN extends LinearOpMode {
             // This way it's also easy to just drive straight, or just turn.
             drive = -gamepad1.left_stick_y;
             turn  =  gamepad1.right_stick_x;
-
             // Combine drive and turn for blended motion.
             left  = drive + turn;
             right = drive - turn;
