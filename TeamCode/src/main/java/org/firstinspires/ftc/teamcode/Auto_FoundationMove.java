@@ -79,8 +79,10 @@ public class Auto_FoundationMove extends LinearOpMode {
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
     private static final double     DRIVE_SPEED             = 0.8;
     private static final double     TURN_SPEED              = 0.5;
+
     private static final double     ARM_SPEED             = 0.8;
-    private static final double     Ticks_Per_Degree        = COUNTS_PER_MOTOR_REV/360;
+    private static final double     ARM_GEAR_REDUCTION    = 1.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
+    private static final double     Ticks_Per_Degree        = COUNTS_PER_MOTOR_REV * ARM_GEAR_REDUCTION/360;
 
 
     @Override
