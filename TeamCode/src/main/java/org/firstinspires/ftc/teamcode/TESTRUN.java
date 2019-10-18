@@ -54,8 +54,8 @@ import com.qualcomm.robotcore.util.Range;
 public class TESTRUN extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwarePushbot2 robot           = new HardwarePushbot2();   // Use a Pushbot's hardware
-
+    HardwarePushbot2 robot      = new HardwarePushbot2();   // Use a Pushbot's hardware
+    Auto_FoundationMove armrotator = new Auto_FoundationMove(); // create an instance of Auto_FoundationMove to get access to armDrive
     @Override
     public void runOpMode() {
         double left;
@@ -63,7 +63,7 @@ public class TESTRUN extends LinearOpMode {
         double drive;
         double turn;
         double max;
-        double ARM_SPEED
+        double ARM_SPEED = .8;
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
@@ -74,6 +74,10 @@ public class TESTRUN extends LinearOpMode {
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
+        // using ghe armrotator method from our instance of Auto_FoundationMove created above.
+        //You have to create a separate instance in this case to get access to "armDrive"
+        armrotator.armDrive(ARM_SPEED, 0, 2);
+
         waitForStart();
 
         // run until the end of the match (driver presses STOP)
