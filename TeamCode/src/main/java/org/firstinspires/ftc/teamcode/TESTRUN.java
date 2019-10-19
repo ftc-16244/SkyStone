@@ -32,6 +32,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 
@@ -55,7 +57,9 @@ public class TESTRUN extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwarePushbot2 robot      = new HardwarePushbot2();   // Use a Pushbot's hardware
-    Auto_FoundationMove armrotator = new Auto_FoundationMove(); // create an instance of Auto_FoundationMove to get access to armDrive
+    //Auto_FoundationMove armrotator = new Auto_FoundationMove(); // create an instance of Auto_FoundationMove to get access to armDrive
+    private ElapsedTime runtime = new ElapsedTime();
+
     @Override
     public void runOpMode() {
         double left;
@@ -64,6 +68,8 @@ public class TESTRUN extends LinearOpMode {
         double turn;
         double max;
         double ARM_SPEED = .8;
+        double lift;
+
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
@@ -76,12 +82,13 @@ public class TESTRUN extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         // using ghe armrotator method from our instance of Auto_FoundationMove created above.
         //You have to create a separate instance in this case to get access to "armDrive"
-        armrotator.armDrive(ARM_SPEED, 0, 2);
-
-        waitForStart();
+        //robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       waitForStart();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
+
 
             // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
@@ -109,8 +116,31 @@ public class TESTRUN extends LinearOpMode {
             telemetry.addData("right", "%.2f", right);
             telemetry.update();
 
+            lift = -gamepad2.left_stick_y;
+            robot.arm.setPower(lift);
+
+            /*
+            if (gamepad2.a) {
+
+
+                robot.arm.setTargetPosition(300);
+                robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.arm.setPower(ARM_SPEED);
+            }
+            if (gamepad2.b) {
+
+                lift = -gamepad2.left_stick_y;
+                robot.arm.setTargetPosition(0);
+                robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.arm.setPower(ARM_SPEED);
+            }
+            */
             // Pace this loop so jaw action is reasonable speed.
             sleep(50);
+
+
         }
     }
+
+
 }
