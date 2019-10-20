@@ -80,9 +80,10 @@ public class Auto_FoundationMove extends LinearOpMode {
     private static final double     DRIVE_SPEED             = 0.8;
     private static final double     TURN_SPEED              = 0.5;
 
+    private static final double     COUNTS_PER_ARM_MOTOR_REV    = 280 ;         // REV HD HEX 40:1 motors
     private static final double     ARM_SPEED             = 0.8;
-    private static final double     ARM_GEAR_REDUCTION    = 1.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
-    private static final double     Ticks_Per_Degree        = COUNTS_PER_MOTOR_REV * ARM_GEAR_REDUCTION/360;
+    private static final double     ARM_GEAR_REDUCTION    = 4.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
+    private static final double     Ticks_Per_Degree        = COUNTS_PER_ARM_MOTOR_REV * ARM_GEAR_REDUCTION/360;
 
 
     @Override
@@ -120,16 +121,17 @@ public class Auto_FoundationMove extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+        armDrive(ARM_SPEED,  15, 5.);  // S1: 180 degrees counterclockwise
         // Step through each leg of the path. Drive forward, deploy hook, then backup.
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  30,  30, 10.);  // S1: Forward 24 Inches with 5 Sec timeout have to confirm
+        encoderDrive(DRIVE_SPEED,  30,  30, 5.);  // S1: Forward 24 Inches with 5 Sec timeout have to confirm
         //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
 
 
         sleep(1000);     // pause for servos to grab foundation
-        armDrive(ARM_SPEED,  -45, 5.);  // S1: 180 degrees counterclockwise
+        armDrive(ARM_SPEED,  -15, 5.);  // S1: 180 degrees counterclockwise
         encoderDrive(DRIVE_SPEED, -30, -30, 10.);  // S3: Reverse 48 Inches with 4 Sec timeout have to confirm
-        armDrive(ARM_SPEED,  45, 5.);  // S1: 180 degrees counterclockwise
+        armDrive(ARM_SPEED,  30, 5.);  // S1: 180 degrees counterclockwise
 
 
         telemetry.addData("Path", "Complete");
