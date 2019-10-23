@@ -160,16 +160,19 @@ public class Teleop_Test extends OpMode{
         // state change based on gampad bumpers
         if (gamepad2.left_bumper)
         {
-            newState(State.STATE_DISCRETE);
+            newState(State.STATE_INFINITE);
         }
         if (gamepad2.right_bumper)
         {
-            newState(State.STATE_INFINITE);
+            newState(State.STATE_DISCRETE);
         }
         switch (currentState)
         {
             case STATE_DISCRETE: // push button
+                if (gamepad2.a)
                 robot.arm.setTargetPosition(400);
+                if (gamepad2.b)
+                    robot.arm.setTargetPosition(-400);
                 robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.arm.setPower(Math.abs(ARM_SPEED));
                 while (robot.arm.isBusy())
@@ -182,6 +185,8 @@ public class Teleop_Test extends OpMode{
                 robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 lift = -gamepad2.left_stick_y;
                 robot.arm.setPower(lift);
+                telemetry.addData("Infinite","Mode");
+                telemetry.update();
         }
 
     }
