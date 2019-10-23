@@ -82,7 +82,9 @@ public class TESTRUN extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         // using ghe armrotator method from our instance of Auto_FoundationMove created above.
         //You have to create a separate instance in this case to get access to "armDrive"
-        //robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
        waitForStart();
 
         // run until the end of the match (driver presses STOP)
@@ -96,8 +98,12 @@ public class TESTRUN extends LinearOpMode {
             drive = -gamepad1.left_stick_y;
             turn  =  gamepad1.right_stick_x;
             // Combine drive and turn for blended motion.
+            drive= Math.pow(drive, 3);// cube drive output to reduce sensitivity near zero.
+            turn= Math.pow(turn, 3);
+
             left  = drive + turn;
             right = drive - turn;
+
 
             // Normalize the values so neither exceed +/- 1.0
             max = Math.max(Math.abs(left), Math.abs(right));
@@ -116,25 +122,39 @@ public class TESTRUN extends LinearOpMode {
             telemetry.addData("right", "%.2f", right);
             telemetry.update();
 
-            lift = -gamepad2.left_stick_y;
-            robot.arm.setPower(lift);
+            // gamepad 2 control of arm using Y joysticsk
+            //lift = -gamepad2.left_stick_y;
+            //robot.arm.setPower(lift);
 
-            /*
+            ///*
             if (gamepad2.a) {
 
 
                 robot.arm.setTargetPosition(300);
                 robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.arm.setPower(ARM_SPEED);
+                while (opModeIsActive() && (robot.arm.isBusy())) {
+
+                    // Display it for the driver.
+                    telemetry.addData("Arm Target", "Running to %7d", 300);
+                    telemetry.addData("Arm Position", "Running at %7d", robot.arm.getCurrentPosition());
+                    telemetry.update();
+                }
             }
             if (gamepad2.b) {
 
-                lift = -gamepad2.left_stick_y;
                 robot.arm.setTargetPosition(0);
                 robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.arm.setPower(ARM_SPEED);
+                while (opModeIsActive() && (robot.arm.isBusy())) {
+
+                    // Display it for the driver.
+                    telemetry.addData("Arm Target", "Running to %7d", 0);
+                    telemetry.addData("Arm Position", "Running at %7d", robot.arm.getCurrentPosition());
+                    telemetry.update();
+                }
             }
-            */
+            //*/
             // Pace this loop so jaw action is reasonable speed.
             sleep(50);
 
