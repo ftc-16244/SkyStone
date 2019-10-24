@@ -123,40 +123,15 @@ public class TESTRUN extends LinearOpMode {
             telemetry.update();
 
             // gamepad 2 control of arm using Y joysticsk
-            //lift = -gamepad2.left_stick_y;
-            //robot.arm.setPower(lift);
-
-            ///*
-            if (gamepad2.a) {
+            lift = -gamepad2.left_stick_y;
+            robot.arm.setPower(lift);
 
 
-                robot.arm.setTargetPosition(300);
-                robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.arm.setPower(ARM_SPEED);
-                while (opModeIsActive() && (robot.arm.isBusy())) {
 
-                    // Display it for the driver.
-                    telemetry.addData("Arm Target", "Running to %7d", 300);
-                    telemetry.addData("Arm Position", "Running at %7d", robot.arm.getCurrentPosition());
-                    telemetry.update();
-                }
-            }
-            if (gamepad2.b) {
-
-                robot.arm.setTargetPosition(0);
-                robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.arm.setPower(ARM_SPEED);
-                while (opModeIsActive() && (robot.arm.isBusy())) {
-
-                    // Display it for the driver.
-                    telemetry.addData("Arm Target", "Running to %7d", 0);
-                    telemetry.addData("Arm Position", "Running at %7d", robot.arm.getCurrentPosition());
-                    telemetry.update();
-                }
-            }
-            //*/
             // Pace this loop so jaw action is reasonable speed.
             sleep(50);
+
+
 
 
         }
