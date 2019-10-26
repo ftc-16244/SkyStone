@@ -83,7 +83,7 @@ public class TESTRUN extends LinearOpMode {
         // using ghe armrotator method from our instance of Auto_FoundationMove created above.
         //You have to create a separate instance in this case to get access to "armDrive"
 
-        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
        waitForStart();
 
@@ -101,8 +101,8 @@ public class TESTRUN extends LinearOpMode {
             drive= Math.pow(drive, 3);// cube drive output to reduce sensitivity near zero.
             turn= Math.pow(turn, 3);
 
-            left  = drive + turn;
-            right = drive - turn;
+            left  = (drive + turn)*.75;
+            right = (drive - turn)*.75;
 
 
             // Normalize the values so neither exceed +/- 1.0
@@ -123,7 +123,7 @@ public class TESTRUN extends LinearOpMode {
             telemetry.update();
 
             // gamepad 2 control of arm using Y joysticsk
-            lift = -gamepad2.left_stick_y;
+            lift = (-gamepad2.left_stick_y)*.5;
             robot.arm.setPower(lift);
 
 
