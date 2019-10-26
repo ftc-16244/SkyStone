@@ -112,6 +112,8 @@ public class Teleop_Test extends OpMode{
     @Override
     public void start() {
         newState(State.STATE_DISCRETE);
+        robot.arm.setTargetPosition(0);
+        // code gets stuck in a loop sort out later
     }
 
     /*
