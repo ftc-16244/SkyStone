@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
@@ -52,7 +53,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Teleop Iterative Test", group="Teleop")
+@TeleOp(name="Teleop Test", group="Teleop")
 //@Disabled
 public class Teleop_Test extends OpMode{
 
@@ -64,38 +65,33 @@ public class Teleop_Test extends OpMode{
 
     /* Declare OpMode members. */
     HardwarePushbot2 robot       = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
-
+    private ElapsedTime runtime = new ElapsedTime();
     private State    currentState;
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
-        double left;
-        double right;
-        double drive;
-        double turn;
-        double max;
-        double ARM_SPEED = .8;
-        double lift;
-
-
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+        //newState(State.STATE_INFINITE);
+        newState(State.STATE_DISCRETE);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "Hello Driver");    //
-        telemetry.update();
+        telemetry.addData("Say", "Hello Driver");
+        telemetry.addData("Infinite","Mode");//
+        //telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
         // using ghe armrotator method from our instance of Auto_FoundationMove created above.
         //You have to create a separate instance in this case to get access to "armDrive"
 
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 
     /*
@@ -104,6 +100,7 @@ public class Teleop_Test extends OpMode{
     @Override
     public void init_loop() {
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);// in case robot gets bumped
+
     }
 
     /*
@@ -111,9 +108,8 @@ public class Teleop_Test extends OpMode{
      */
     @Override
     public void start() {
-        newState(State.STATE_DISCRETE);
-        robot.arm.setTargetPosition(0);
-        // code gets stuck in a loop sort out later
+
+     // empty for now
     }
 
     /*
@@ -128,6 +124,8 @@ public class Teleop_Test extends OpMode{
         double max;
         double ARM_SPEED = .8;
         double lift;
+
+
 
         // note isBusy() applies to the Run_USING ENCODER mods
         // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
@@ -154,12 +152,8 @@ public class Teleop_Test extends OpMode{
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", left);
         telemetry.addData("right", "%.2f", right);
-        telemetry.update();
 
-        // gamepad 2 control of arm using Y joysticsk
-        //lift = -gamepad2.left_stick_y;
-        //robot.arm.setPower(lift);
-        // state change based on gampad bumpers
+       
         if (gamepad2.left_bumper)
         {
             newState(State.STATE_INFINITE);
@@ -171,25 +165,30 @@ public class Teleop_Test extends OpMode{
         switch (currentState)
         {
             case STATE_DISCRETE: // push button
-                if (gamepad2.a)
-                robot.arm.setTargetPosition(400);
-                if (gamepad2.b)
-                    robot.arm.setTargetPosition(-400);
-                robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.arm.setPower(Math.abs(ARM_SPEED));
-                while (robot.arm.isBusy())
-                {
-                telemetry.addData("Discrete","Mode");
-                telemetry.update();
+                telemetry.addData("Arm Mode",currentState);
+                if (gamepad2.a) {
+                    robot.arm.setTargetPosition(400);
+                    telemetry.addData("Arm Target", robot.arm.getTargetPosition());
+
+                }
+                if (gamepad2.b) {
+                    robot.arm.setTargetPosition(0);
+                    robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.arm.setPower(Math.abs(ARM_SPEED));
+                    telemetry.addData("Arm Target", robot.arm.getTargetPosition());
+
                 }
 
+                break;
             case STATE_INFINITE:
                 robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 lift = -gamepad2.left_stick_y;
                 robot.arm.setPower(lift);
-                telemetry.addData("Infinite","Mode");
-                telemetry.update();
+                telemetry.addData("Arm Mode",currentState);
+                telemetry.addData("Arm Power", "%.2f", lift);
+                break;
         }
+
 
     }
     /*
