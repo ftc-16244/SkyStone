@@ -91,9 +91,9 @@ public class HardwarePushbot2
    // public DcMotor      leftRear        = null;
    // public DcMotor      rightRear       = null;
     public DcMotor      arm             = null;
-    //public Servo        gripper         = null;
-    //public Servo        wrist           = null;
-    public Servo        hook            = null;
+    public Servo        closey         = null;
+    public Servo        spinny           = null;
+    //public Servo        hook            = null;
 
 
     /* local OpMode members. */
@@ -120,6 +120,7 @@ public class HardwarePushbot2
         arm         = hwMap.get(DcMotor.class, "Arm");
 
 
+
         // Set motor directions.
         leftFront.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         rightFront.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
@@ -142,8 +143,8 @@ public class HardwarePushbot2
         // ================ SERVO SECTION===============================
 
         // Define and Initialize servos
-        hook    = hwMap.get(Servo.class, "Hook");
-        // gripper = hwMap.get(Servo.class, "Gripper");
-        // wrist   = hwMap.get(Servo.class, "Wrist");
+        //hook    = hwMap.get(Servo.class, "Hook");
+        closey = hwMap.get(Servo.class, "Closey");
+        spinny   = hwMap.get(Servo.class, "Spinny");
     }
  }
