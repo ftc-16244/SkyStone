@@ -63,9 +63,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
-@Autonomous(name="center_red", group="Pushbot")
+@Autonomous(name="Foundation_Park_Blue", group="Pushbot")
 //@Disabled
-public class Drive_to_Center_Red extends LinearOpMode {
+public class Foundation_Park_Blue extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
@@ -123,15 +123,21 @@ public class Drive_to_Center_Red extends LinearOpMode {
         armDrive(ARM_SPEED,  15, 5.);  // S1: 180 degrees counterclockwise
         // Step through each leg of the path. Drive forward, deploy hook, then backup.
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  30,  30, 5.);  // S1: Forward 30 Inches with 5 Sec timeout have to confirm
+        encoderDrive(DRIVE_SPEED,  30,  30, 5.);  // S1: Forward 24 Inches with 5 Sec timeout have to confirm
         //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
 
 
         sleep(1000);     // pause for servos to grab foundation
-       // armDrive(ARM_SPEED,  -15, 5.);  // S1: 180 degrees counterclockwise
-        encoderDrive(DRIVE_SPEED, 11, -11, 10.);  // S3: turn right with 10 Sec timeout have to confirm
-        encoderDrive(DRIVE_SPEED, 30, 30, 10.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
+        armDrive(ARM_SPEED,  -15, 5.);  // S1: 180 degrees counterclockwise
+        encoderDrive(DRIVE_SPEED, -30, -30, 10.);  // S3: Reverse 48 Inches with 4 Sec timeout have to confirm
         armDrive(ARM_SPEED,  30, 5.);  // S1: 180 degrees counterclockwise
+        encoderDrive(DRIVE_SPEED, 11, -11, 10.); // Left turn about 90 degrees
+        encoderDrive(DRIVE_SPEED, 15, 15, 10.);
+        armDrive(ARM_SPEED,  15, 5.);  // S1: 180 degrees counterclockwise
+        // Step through each leg of the path. Drive forward, deploy hook, then backup.
+        // Note: Reverse movement is obtained by setting a negative distance (not speed)
+        encoderDrive(DRIVE_SPEED,  30,  30, 5.);  // S1: Forward 30 Inches with 5 Sec timeout have to confirm
+        //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
 
 
         telemetry.addData("Path", "Complete");
