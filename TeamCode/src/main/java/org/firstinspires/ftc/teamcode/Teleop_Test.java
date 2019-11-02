@@ -57,6 +57,8 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 //@Disabled
 public class Teleop_Test extends OpMode{
 
+
+
     private enum State {
         STATE_DISCRETE,
         STATE_INFINITE,
@@ -68,6 +70,11 @@ public class Teleop_Test extends OpMode{
     HardwarePushbot2 robot       = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
     private ElapsedTime runtime = new ElapsedTime();
     private State    currentState;
+    private static final double     GRIPPER_START    = 0.5 ; //optional to make sure it starts inside 18 inches
+    private static final double     GRIPPER_READY    = 0.7;
+    private static final double     GRIPPER_CLOSE    = 0.55;   // This is the stone holding position
+    private static final int     ARM_STONE_READY  = 65; // encoder counts where arm is ready to grab stone
+    private static final int     ARM_STONE_CARRY  = 150; // encoder counts where arm is ready to grab stone
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -91,7 +98,7 @@ public class Teleop_Test extends OpMode{
         //You have to create a separate instance in this case to get access to "armDrive"
 
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.closey.setPosition(GRIPPER_START); // gripper is tucked in to stay at 18 inches.
 
     }
 
@@ -109,7 +116,10 @@ public class Teleop_Test extends OpMode{
      */
     @Override
     public void start() {
-
+    robot.arm.setTargetPosition(ARM_STONE_READY);// lift up arm to allow gripper to open
+    robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    robot.arm.setPower(1);
+    robot.closey.setPosition(GRIPPER_READY);// open ready to grab a stone.
      // empty for now
     }
 
@@ -153,7 +163,14 @@ public class Teleop_Test extends OpMode{
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", left);
         telemetry.addData("right", "%.2f", right);
+        if (gamepad2.x) {
+            robot.closey.setPosition(GRIPPER_CLOSE);
 
+        }
+
+        if (gamepad2.y) {
+            robot.closey.setPosition(GRIPPER_READY);
+        }
 
         if (gamepad2.left_bumper)
         {
