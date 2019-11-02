@@ -70,11 +70,11 @@ public class Teleop_Test extends OpMode{
     HardwarePushbot2 robot       = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
     private ElapsedTime runtime = new ElapsedTime();
     private State    currentState;
-    private static final double     GRIPPER_START    = 0.5 ; //optional to make sure it starts inside 18 inches
+    private static final double     GRIPPER_START    = 0.55 ; //optional to make sure it starts inside 18 inches
     private static final double     GRIPPER_READY    = 0.7;
     private static final double     GRIPPER_CLOSE    = 0.55;   // This is the stone holding position
-    private static final int     ARM_STONE_READY  = 65; // encoder counts where arm is ready to grab stone
-    private static final int     ARM_STONE_CARRY  = 150; // encoder counts where arm is ready to grab stone
+    private static final int     ARM_STONE_READY  = 20; // encoder counts where arm is ready to grab stone
+    private static final int     ARM_STONE_CARRY  = 125; // encoder counts where arm is ready to grab stone
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -163,6 +163,8 @@ public class Teleop_Test extends OpMode{
         // Send telemetry message to signify robot running;
         telemetry.addData("left",  "%.2f", left);
         telemetry.addData("right", "%.2f", right);
+
+        // gripper assignment to X and Y buttons.
         if (gamepad2.x) {
             robot.closey.setPosition(GRIPPER_CLOSE);
 
@@ -185,15 +187,15 @@ public class Teleop_Test extends OpMode{
             case STATE_DISCRETE: // push button
                 telemetry.addData("Arm Mode",currentState);
                 if (gamepad2.a) {
-                    robot.arm.setTargetPosition(400);
-                    telemetry.addData("Arm Target", "400");
+                    robot.arm.setTargetPosition(ARM_STONE_READY);
+                    telemetry.addData("Arm Target", "Ready to get stone");
 
                 }
                 if (gamepad2.b) {
-                    robot.arm.setTargetPosition(0);
+                    robot.arm.setTargetPosition(ARM_STONE_CARRY);
                     robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.arm.setPower(Math.abs(ARM_SPEED));
-                    telemetry.addData("Arm Target", robot.arm.getTargetPosition());
+                    telemetry.addData("Carry Position", robot.arm.getTargetPosition());
 
                 }
 
