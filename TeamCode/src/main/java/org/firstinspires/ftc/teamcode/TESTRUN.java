@@ -60,6 +60,7 @@ public class TESTRUN extends LinearOpMode {
     //Auto_FoundationMove armrotator = new Auto_FoundationMove(); // create an instance of Auto_FoundationMove to get access to armDrive
     private ElapsedTime runtime = new ElapsedTime();
 
+
     @Override
     public void runOpMode() {
         double left;
@@ -69,6 +70,7 @@ public class TESTRUN extends LinearOpMode {
         double max;
         double ARM_SPEED = .8;
         double lift;
+
 
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
@@ -84,8 +86,11 @@ public class TESTRUN extends LinearOpMode {
         //You have to create a separate instance in this case to get access to "armDrive"
 
         robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        robot.closey.setPosition(0);
        waitForStart();
+
+
+       robot.closey.setPosition(0.5);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -126,6 +131,7 @@ public class TESTRUN extends LinearOpMode {
             lift = (-gamepad2.left_stick_y)*.5;
             robot.arm.setPower(lift);
 
+            //gripper servo section
 
 
             // Pace this loop so jaw action is reasonable speed.
