@@ -1,4 +1,5 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
+
+        /* Copyright (c) 2017 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted (subject to the limitations in the disclaimer below) provided that
@@ -33,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -64,7 +65,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 // Code to move the foundation into the building zone during Autonomous Mode
 
 @Autonomous(name="Foundation_Park_Blue", group="Pushbot")
-//@Disabled
+@Disabled
 public class Foundation_Park_Blue extends LinearOpMode {
 
     /* Declare OpMode members. */

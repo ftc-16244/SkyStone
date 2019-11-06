@@ -27,14 +27,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
 /**
@@ -65,9 +63,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
-@Autonomous(name="Foundation_Park_Red", group="Pushbot")
-@Disabled
-public class Foundation_Park_Red extends LinearOpMode {
+@Autonomous(name="Blue_Block_arm2", group="Pushbot")
+//@Disabled
+public class GoofyBlue_Block_arm2 extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
@@ -85,6 +83,11 @@ public class Foundation_Park_Red extends LinearOpMode {
     private static final double     ARM_SPEED             = 0.8;
     private static final double     ARM_GEAR_REDUCTION    = 4.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
     private static final double     Ticks_Per_Degree        = COUNTS_PER_ARM_MOTOR_REV * ARM_GEAR_REDUCTION/360;
+    private static final double     GRIPPER_START    = 0.55 ; //optional to make sure it starts inside 18 inches
+    private static final double     GRIPPER_READY    = 0.7;
+    private static final double     GRIPPER_CLOSE    = 0.55;   // This is the stone holding position
+    private static final int     ARM_STONE_READY  = 20; // encoder counts where arm is ready to grab stone
+    private static final int     ARM_STONE_CARRY  = 125; // encoder counts where arm is ready to grab stone
 
 
     @Override
@@ -107,6 +110,7 @@ public class Foundation_Park_Red extends LinearOpMode {
         robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -122,27 +126,34 @@ public class Foundation_Park_Red extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        armDrive(ARM_SPEED,  15, 5.);  // S1: 180 degrees counterclockwise
-        // Step through each leg of the path. Drive forward, deploy hook, then backup.
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  30,  30, 5.);  // S1: Forward 24 Inches with 5 Sec timeout have to confirm
-        //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
+        robot.arm.setTargetPosition(ARM_STONE_READY);// lift up arm to allow gripper to open
+        robot.arm2.setTargetPosition(ARM_STONE_READY);// lift up arm to allow gripper to open
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(1);
+        robot.arm2.setPower(1);
+        robot.closey.setPosition(GRIPPER_READY);// open ready to grab a stone.
+        encoderDrive(DRIVE_SPEED, 47, 47, 10.);  // forward
+        robot.arm.setTargetPosition(ARM_STONE_CARRY); //closing gripper
+        robot.arm2.setTargetPosition(ARM_STONE_CARRY);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(Math.abs(ARM_SPEED));
+        robot.arm2.setPower(Math.abs(ARM_SPEED));
+        encoderDrive(DRIVE_SPEED,  -23.5,  -23.5, 5.);  // S1: going back half the original distance
+        encoderDrive(DRIVE_SPEED,  -11,  11, 5.);  // S1: going back half the original distance
+        encoderDrive(DRIVE_SPEED,  30,  30, 5.);  // S1: going underneath the bridge
+        robot.arm.setTargetPosition(ARM_STONE_READY);// lift up arm to allow gripper to open
+        robot.arm2.setTargetPosition(ARM_STONE_READY);// lift up arm to allow gripper to open
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(1);
+        robot.arm2.setPower(1);
 
 
         sleep(1000);     // pause for servos to grab foundation
-        armDrive(ARM_SPEED,  -15, 5.);  // S1: 180 degrees counterclockwise
-        encoderDrive(DRIVE_SPEED, -30, -30, 10.);  // S3: Reverse 48 Inches with 4 Sec timeout have to confirm
-        armDrive(ARM_SPEED,  30, 5.);  // S1: 180 degrees counterclockwise
-        encoderDrive(DRIVE_SPEED, -11, 11, 10.);
-        encoderDrive(DRIVE_SPEED, 15, 15, 10.);
-        armDrive(ARM_SPEED,  15, 5.);  // S1: 180 degrees counterclockwise
-        // Step through each leg of the path. Drive forward, deploy hook, then backup.
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  30,  30, 5.);  // S1: Forward 30 Inches with 5 Sec timeout have to confirm
-        //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
 
 
-         
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
