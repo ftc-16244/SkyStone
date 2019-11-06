@@ -66,9 +66,9 @@ public class Meet_1_Teleop extends OpMode{
     HardwarePushbot2 robot       = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
     private ElapsedTime runtime = new ElapsedTime();
     private State    currentState;
-    private static final double     GRIPPER_START    = 0.55 ; //optional to make sure it starts inside 18 inches
-    private static final double     GRIPPER_READY    = 0.7;
-    private static final double     GRIPPER_CLOSE    = 0.55;   // This is the stone holding position
+    private static final double     GRIPPER_START    = 1 ; //optional to make sure it starts inside 18 inches
+    private static final double     GRIPPER_READY    = 0.5; //open gripper such that spatual touched inside frame when arm is on top of inside rail
+    private static final double     GRIPPER_CLOSE    = 0.75;   // larger number grips tighter. 0.7 for sprocket is a good start
     private static final int     ARM_STONE_READY  = 20; // encoder counts where arm is ready to grab stone
     private static final int     ARM_STONE_CARRY  = 125; // encoder counts where arm is ready to grab stone
     /*
@@ -95,7 +95,7 @@ public class Meet_1_Teleop extends OpMode{
 
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.closey.setPosition(GRIPPER_START); // gripper is tucked in to stay at 18 inches.
+        //robot.closey.setPosition(GRIPPER_START); // gripper is tucked in to stay at 18 inches.
 
     }
 
@@ -118,9 +118,9 @@ public class Meet_1_Teleop extends OpMode{
     robot.arm2.setTargetPosition(ARM_STONE_READY);// lift up arm to allow gripper to open
     robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     robot.arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    robot.arm.setPower(1);
-    robot.arm2.setPower(1);
-    robot.closey.setPosition(GRIPPER_READY);// open ready to grab a stone.
+    robot.arm.setPower(.75);
+    robot.arm2.setPower(.75);
+    //robot.closey.setPosition(GRIPPER_READY);// open ready to grab a stone.
      // empty for now
     }
 
@@ -134,7 +134,7 @@ public class Meet_1_Teleop extends OpMode{
         double drive;
         double turn;
         double max;
-        double ARM_SPEED = .8;
+        double ARM_SPEED = .5;
         double lift;
 
 
