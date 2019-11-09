@@ -36,30 +36,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 /**
- * This file illustrates the concept of driving a path based on encoder counts.
- * It uses the common Pushbot hardware class to define the drive on the robot.
- * The code is structured as a LinearOpMode
- *
- * The code REQUIRES that you DO have encoders on the wheels,
- *   otherwise you would use: PushbotAutoDriveByTime;
- *
- *  This code ALSO requires that the drive Motors have been configured such that a positive
- *  power command moves them forwards, and causes the encoders to count UP.
- *
- *   The desired path in this example is:
- *   - Drive forward for 48 inches
- *   - Spin right for 12 Inches
- *   - Drive Backwards for 24 inches
- *   - Stop and close the claw.
- *
- *  The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
- *  that performs the actual movement.
- *  This methods assumes that each movement is relative to the last stopping place.
- *  There are other ways to perform encoder based moves, but this method is probably the simplest.
- *  This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ This program is used in the autonomous period
+ * The file is for the blue alliance
+ * The program is used to move the gripper and place the block on the foundation
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
@@ -84,8 +63,8 @@ public class GoofyBlue_Block_arm2 extends LinearOpMode {
     private static final double     ARM_GEAR_REDUCTION    = 4.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
     private static final double     Ticks_Per_Degree        = COUNTS_PER_ARM_MOTOR_REV * ARM_GEAR_REDUCTION/360;
     private static final double     GRIPPER_START    = 0.55 ; //optional to make sure it starts inside 18 inches
-    private static final double     GRIPPER_READY    = 0.7;
-    private static final double     GRIPPER_CLOSE    = 0.55;   // This is the stone holding position
+    private static final double     GRIPPER_READY    = 0.5;
+    private static final double     GRIPPER_CLOSE    = 0.75;   // This is the stone holding position
     private static final int     ARM_STONE_READY  = 20; // encoder counts where arm is ready to grab stone
     private static final int     ARM_STONE_CARRY  = 125; // encoder counts where arm is ready to grab stone
 
@@ -134,6 +113,7 @@ public class GoofyBlue_Block_arm2 extends LinearOpMode {
         robot.arm2.setPower(1);
         robot.closey.setPosition(GRIPPER_READY);// open ready to grab a stone.
         encoderDrive(DRIVE_SPEED, 47, 47, 10.);  // forward
+        robot.closey.setPosition(GRIPPER_CLOSE);// open ready to grab a stone.
         robot.arm.setTargetPosition(ARM_STONE_CARRY); //closing gripper
         robot.arm2.setTargetPosition(ARM_STONE_CARRY);
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -141,7 +121,7 @@ public class GoofyBlue_Block_arm2 extends LinearOpMode {
         robot.arm.setPower(Math.abs(ARM_SPEED));
         robot.arm2.setPower(Math.abs(ARM_SPEED));
         encoderDrive(DRIVE_SPEED,  -23.5,  -23.5, 5.);  // S1: going back half the original distance
-        encoderDrive(DRIVE_SPEED,  -11,  11, 5.);  // S1: going back half the original distance
+        encoderDrive(DRIVE_SPEED,  -22,  22, 5.);  // S1: going back half the original distance
         encoderDrive(DRIVE_SPEED,  30,  30, 5.);  // S1: going underneath the bridge
         robot.arm.setTargetPosition(ARM_STONE_READY);// lift up arm to allow gripper to open
         robot.arm2.setTargetPosition(ARM_STONE_READY);// lift up arm to allow gripper to open

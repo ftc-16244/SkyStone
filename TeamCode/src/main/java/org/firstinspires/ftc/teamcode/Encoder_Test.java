@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Exp: Encoder Test", group="Exp")
-//@Disabled
+@Disabled
 public class Encoder_Test extends LinearOpMode {
 
     // Declare OpMode members.

@@ -54,7 +54,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  */
 
 @TeleOp(name="Teleop Test", group="Teleop")
-//@Disabled
+@Disabled
 public class Teleop_Test extends OpMode{
 
 
