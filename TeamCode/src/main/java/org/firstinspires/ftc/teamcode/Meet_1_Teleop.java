@@ -70,7 +70,7 @@ public class Meet_1_Teleop extends OpMode{
     private static final double     GRIPPER_READY    = 0.5; //open gripper such that spatual touched inside frame when arm is on top of inside rail
     private static final double     GRIPPER_CLOSE    = 0.75;   // larger number grips tighter. 0.7 for sprocket is a good start
     private static final int     ARM_STONE_READY  = 20; // encoder counts where arm is ready to grab stone
-    private static final int     ARM_STONE_CARRY  = 125; // encoder counts where arm is ready to grab stone
+    private static final int     ARM_STONE_CARRY  = 115; // encoder counts where arm is ready to grab stone
     /*
      * Code to run ONCE when the driver hits INIT
      */
