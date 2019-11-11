@@ -13,7 +13,7 @@ when ready to move new code up to master you need to merge.
 
 To merge a branch
 
-go to the branch (in this case it is called "development"
+go to the branch (in this case it is called "test"
 
 git fetch origin master // this pulls the master into the branch so conflicts can be fixed without messing up master
 
@@ -21,7 +21,7 @@ regular commits seem to get hug up so do git commit -i -m "message" the i adds o
 
 git merge master // merges the master it to the branch
 
-git push origin development:master //
+git push origin test:master //
 
 The first line makes sure he has any upstream commits that have been made to master since the last time updated his local repository.
 
