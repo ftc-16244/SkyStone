@@ -34,6 +34,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+
+
 /**
  * This file provides basic Telop driving for a Pushbot robot.
  * The code is structured as an Iterative OpMode
@@ -66,6 +68,7 @@ public class Meet_2_Teleop extends OpMode{
     HardwarePushbot2 robot       = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
     private ElapsedTime runtime = new ElapsedTime();
     Auto_FoundationMove robotmotion = new Auto_FoundationMove();// adds arm drive and encoder drive methods
+
 
     private State    currentState;
     private static final double     GRIPPER_START    = 1 ; //optional to make sure it starts inside 18 inches
