@@ -33,22 +33,23 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+import org.firstinspires.ftc.teamcode.Auto_FoundationMove;
 
 /**
  * This program is used in the autonomous period
- *  * The file is for the red alliance
- *  * The robot starts at on the left of the red line and goes forward, turns right, and parks under the bridge
+ *  * The file is for the red or blue alliance.
+ *  * The robot starts against the wall and drives to the center line under the skybridge.
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
 @Autonomous(name="center_red", group="Pushbot")
 //@Disabled
-public class Drive_to_Center_Red extends LinearOpMode {
+public class Redwall extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
+    private Auto_FoundationMove     robotmotion = new Auto_FoundationMove();
 
     private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;         // REV HD HEX 40:1 motors
     private static final double     DRIVE_GEAR_REDUCTION    = 0.5 ;         // This is < 1.0 if geared UP 20 teeth drive 10 teeth driven
@@ -58,10 +59,10 @@ public class Drive_to_Center_Red extends LinearOpMode {
     private static final double     DRIVE_SPEED             = 1;
     private static final double     TURN_SPEED              = 0.5;
 
-    private static final double     COUNTS_PER_ARM_MOTOR_REV    = 280 ;         // REV HD HEX 40:1 motors
-    private static final double     ARM_SPEED             = 0.8;
-    private static final double     ARM_GEAR_REDUCTION    = 4.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
-    private static final double     Ticks_Per_Degree        = COUNTS_PER_ARM_MOTOR_REV * ARM_GEAR_REDUCTION/360;
+    //private static final double     COUNTS_PER_ARM_MOTOR_REV    = 280 ;         // REV HD HEX 40:1 motors
+    //private static final double     ARM_SPEED             = 0.8;
+    //private static final double     ARM_GEAR_REDUCTION    = 4.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
+    //private static final double     Ticks_Per_Degree        = COUNTS_PER_ARM_MOTOR_REV * ARM_GEAR_REDUCTION/360;
 
 
     @Override
@@ -99,21 +100,16 @@ public class Drive_to_Center_Red extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        //armDrive(ARM_SPEED,  15, 5.);  // S1: 180 degrees counterclockwise
-        // Step through each leg of the path. Drive forward, deploy hook, then backup.
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        //encoderDrive(DRIVE_SPEED,  25,  25, 5.);  // S1: Forward 30 Inches with 5 Sec timeout have to confirm
-        encoderDrive(DRIVE_SPEED, 5, 5, 5.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
-        //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
 
+        encoderDrive(DRIVE_SPEED, 25, 25, 5.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
+        robotmotion.armDrive(15,0,3);
 
         sleep(1000);     // pause for servos to grab foundation
        // armDrive(ARM_SPEED,  -15, 5.);  // S1: 180 degrees counterclockwise
-        encoderDrive(DRIVE_SPEED, 22, -22, 5.);  // S3: turn right with 10 Sec timeout have to confirm
-        encoderDrive(DRIVE_SPEED, 30, 30, 10.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
-        //armDrive(ARM_SPEED,  30, 5.);  // S1: 180 degrees cou
 
-        // nterclockwise
+
+
+
 
 
         telemetry.addData("Path", "Complete");
@@ -186,41 +182,5 @@ public class Drive_to_Center_Red extends LinearOpMode {
 
     }
 
-    public void armDrive(double speed,
-                         double armDegrees, double timeoutS) {
-
-        int newArmTarget;
-
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
-
-            // Determine new target position, and pass to motor controller
-            newArmTarget = robot.arm.getCurrentPosition() + (int) (armDegrees * Ticks_Per_Degree);
-            // set target position before "run to position"
-            robot.arm.setTargetPosition(newArmTarget);
-            // Turn On RUN_TO_POSITION
-            robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            // reset the timeout time and start motion.
-            runtime.reset();
-            robot.arm.setPower(Math.abs(speed));
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    (robot.arm.isBusy() )) {
-
-                // Display it for the driver.
-                telemetry.addData("Arm Target",  "Running to %7d", newArmTarget);
-                telemetry.addData("Arm Position",  "Running at %7d",robot.arm.getCurrentPosition());
-                telemetry.update();
-            }
-            // Stop all motion;
-            robot.arm.setPower(0);
-            // Turn off RUN_TO_POSITION
-            robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-            sleep(250);   // optional pause after each move
-
-        }
-
-    }
 
 }

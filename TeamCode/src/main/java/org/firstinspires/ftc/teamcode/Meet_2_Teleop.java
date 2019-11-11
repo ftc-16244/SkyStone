@@ -51,20 +51,22 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Meet 1 Teleop", group="Teleop")
 //@Disabled
-public class Meet_1_Teleop extends OpMode{
+public class Meet_2_Teleop extends OpMode{
 
 
 
     private enum State {
         STATE_DISCRETE,
         STATE_INFINITE,
-        
+
     } // Enums to choose which mode the arm will operate in. Preset discrete of infinite via joystick
 
 
     /* Declare OpMode members. */
     HardwarePushbot2 robot       = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
     private ElapsedTime runtime = new ElapsedTime();
+    Auto_FoundationMove robotmotion = new Auto_FoundationMove();// adds arm drive and encoder drive methods
+
     private State    currentState;
     private static final double     GRIPPER_START    = 1 ; //optional to make sure it starts inside 18 inches
     private static final double     GRIPPER_READY    = 0.5; //open gripper such that spatual touched inside frame when arm is on top of inside rail
