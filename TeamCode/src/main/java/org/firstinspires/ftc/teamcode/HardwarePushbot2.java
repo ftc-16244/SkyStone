@@ -94,6 +94,8 @@ public class HardwarePushbot2
     public DcMotor      arm2            = null;
     public Servo        closey         = null;
     public Servo        spinny           = null;
+    public Servo       foundationleft          = null;
+    public Servo        foundationright           = null;
     //public Servo        hook            = null;
 
 
@@ -151,5 +153,7 @@ public class HardwarePushbot2
         //hook    = hwMap.get(Servo.class, "Hook");
         closey = hwMap.get(Servo.class, "Closey");
         spinny   = hwMap.get(Servo.class, "Spinny");
+        foundationleft = hwMap.get(Servo.class, "foundationleft");
+        foundationright   = hwMap.get(Servo.class, "foundationright");
     }
  }

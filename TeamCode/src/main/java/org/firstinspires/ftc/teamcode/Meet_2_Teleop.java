@@ -76,6 +76,8 @@ public class Meet_2_Teleop extends OpMode{
     private static final double     GRIPPER_CLOSE    = 0.75;   // larger number grips tighter. 0.7 for sprocket is a good start
     private static final int     ARM_STONE_READY  = 20; // encoder counts where arm is ready to grab stone
     private static final int     ARM_STONE_CARRY  = 115; // encoder counts where arm is ready to grab stone
+    private static final int     FOUNDATIONUP  =0;
+    private static final int     FOUNDATIONDOWN  =1;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -101,6 +103,8 @@ public class Meet_2_Teleop extends OpMode{
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //robot.closey.setPosition(GRIPPER_START); // gripper is tucked in to stay at 18 inches.
+        robot.foundationright.setPosition(FOUNDATIONUP);
+        robot.foundationleft.setPosition(FOUNDATIONDOWN);
 
     }
 
@@ -180,7 +184,13 @@ public class Meet_2_Teleop extends OpMode{
         if (gamepad2.y) {
             robot.closey.setPosition(GRIPPER_READY);
         }
-
+        if (gamepad1.a) {
+            robot.foundationright.setPosition(FOUNDATIONUP);
+        }
+        if (gamepad1.b) {
+            robot.foundationleft.setPosition(FOUNDATIONDOWN);
+        }
+        
         if (gamepad2.left_bumper)
         {
             newState(State.STATE_INFINITE);
