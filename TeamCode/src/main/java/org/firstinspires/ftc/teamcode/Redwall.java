@@ -42,7 +42,7 @@ import org.firstinspires.ftc.teamcode.Auto_FoundationMove;
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
-@Autonomous(name="center_red", group="Pushbot")
+@Autonomous(name="Redwall", group="Pushbot")
 //@Disabled
 public class Redwall extends LinearOpMode {
 
