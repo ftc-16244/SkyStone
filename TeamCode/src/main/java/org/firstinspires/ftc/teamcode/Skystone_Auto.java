@@ -86,6 +86,14 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 //@Disabled
 public class Skystone_Auto extends LinearOpMode {
 
+
+    private enum State {
+        STATE_FWD,
+        STATE_LEFT,
+        STATE_RIGHT,
+
+    } // Enums to choose which drive mote to use to get the skystone
+
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
     // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
     // 2) Phone Orientation. Choices are: PHONE_IS_PORTRAIT = true (portrait) or PHONE_IS_PORTRAIT = false (landscape)
@@ -138,6 +146,7 @@ public class Skystone_Auto extends LinearOpMode {
     private float phoneZRotate    = 0;
 
     private double XPOS = 0;
+    private State driveState;
 
     @Override public void runOpMode() {
         /*
@@ -348,17 +357,18 @@ public class Skystone_Auto extends LinearOpMode {
                         translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
                 XPOS = translation.get(0)/mmPerInch;
                 if ((XPOS <=5) && (XPOS >= -5)) {
-
-                    telemetry.addData("Skystone Straight Ahead", XPOS);
+                    driveState = State.STATE_FWD;
+                    telemetry.addData("Drive State", driveState);
                 }
                 if ((XPOS <=15) && (XPOS > 5)) {
-
-                    telemetry.addData("Skystone Left of Center", XPOS);
+                    driveState = State.STATE_LEFT;
+                    telemetry.addData("Drive State", driveState);
                 }
 
                 if ((XPOS >-15) && (XPOS < -5)) {
+                    driveState = State.STATE_RIGHT;
+                    telemetry.addData("Drive State", driveState);
 
-                    telemetry.addData("Skystone Right of Center", XPOS);
                 }
 
                 // express the rotation of the robot in degrees.
