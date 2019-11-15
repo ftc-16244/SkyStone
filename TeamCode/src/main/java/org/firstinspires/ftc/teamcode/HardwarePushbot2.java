@@ -153,7 +153,7 @@ public class HardwarePushbot2
         //hook    = hwMap.get(Servo.class, "Hook");
         closey = hwMap.get(Servo.class, "Closey");
         spinny   = hwMap.get(Servo.class, "Spinny");
-        foundationleft = hwMap.get(Servo.class, "foundationleft");
-        foundationright   = hwMap.get(Servo.class, "foundationright");
+        foundationleft = hwMap.get(Servo.class, "fdnLeft");
+        foundationright   = hwMap.get(Servo.class, "fdnRight");
     }
  }
