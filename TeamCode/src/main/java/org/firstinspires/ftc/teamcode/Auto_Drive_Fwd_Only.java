@@ -33,20 +33,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.Auto_FoundationMove;
-
 
 /**
  * This program is used in the autonomous period
- * The file is for the blue alliance
- * The robot starts at on the right of the blue line and goes forward, turns left, and parks under the bridge
- *
+ *  * The file is for the red or blue alliance.
+ *  * The robot starts against the wall and drives to the center line under the skybridge.
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
-@Autonomous(name="centerblue", group="Pushbot")
+@Autonomous(name="Drive Forward Only", group="Pushbot")
 //@Disabled
-public class Drive_to_Center_Blue extends LinearOpMode {
+public class Auto_Drive_Fwd_Only extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
@@ -58,13 +55,9 @@ public class Drive_to_Center_Blue extends LinearOpMode {
     private static final double     WHEEL_DIAMETER_INCHES   = 3.54 ;   // 90mm wheels. For figuring circumference its a 90 millimeter wheel
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
-    private static final double     DRIVE_SPEED             = 0.8;
+    private static final double     DRIVE_SPEED             = 1;
     private static final double     TURN_SPEED              = 0.5;
 
-    private static final double     COUNTS_PER_ARM_MOTOR_REV    = 280 ;         // REV HD HEX 40:1 motors
-    private static final double     ARM_SPEED             = 0.8;
-    private static final double     ARM_GEAR_REDUCTION    = 4.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
-    private static final double     Ticks_Per_Degree        = COUNTS_PER_ARM_MOTOR_REV * ARM_GEAR_REDUCTION/360;
 
 
     @Override
@@ -98,41 +91,19 @@ public class Drive_to_Center_Blue extends LinearOpMode {
         telemetry.update();
 
 
-        sleep(1000);     // pause for servos to move
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        //armDrive(ARM_SPEED,  15, 5.);  // S1: 180 degrees counterclockwise
-        // Step through each leg of the path. Drive forward, deploy hook, then backup.
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        robotmotion.encoderDrive(DRIVE_SPEED,  25,  25, 5.);  // S1: Forward 30 Inches with 5 Sec timeout have to confirm
-        robotmotion.armDrive(  15,  0, 3);  // S1: Forward 30 Inches with 5 Sec timeout have to confirm
-        //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
 
+        sleep(1000);     //add stall time here if needed
 
-        sleep(1000);     // pause for servos to grab foundation
-       // armDrive(ARM_SPEED,  -15, 5.);  // S1: 180 degrees counterclockwise
-        robotmotion.encoderDrive(DRIVE_SPEED, -18, 18, 5.);  // S3: turn left with 10 Sec timeout have to confirm
-        robotmotion.encoderDrive(DRIVE_SPEED, 30, 30, 5.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
-        //armDrive(ARM_SPEED,  10, 5.);  // S1: 180 degrees counterclockwise
+        robotmotion.encoderDrive(DRIVE_SPEED, 25, 25, 5.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
+        //robotmotion.armDrive(15,0,3);
 
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
 
-    /*
-     *  Method to perfmorm a relative move, based on encoder counts.
-     *  Encoders are not reset as the move is based on the current position.
-     *  Move will stop if any of three conditions occur:
-     *  1) Move gets to the desired position
-     *  2) Move runs out of time
-     *  3) Driver stops the opmode running.
-     */
 
 
-
-
-            }
-
-
+}
