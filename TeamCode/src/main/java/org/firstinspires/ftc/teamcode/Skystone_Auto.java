@@ -295,8 +295,8 @@ public class Skystone_Auto extends LinearOpMode {
 
         // Next, translate the camera lens to where it is on the robot.
         // In this example, it is centered (left to right), but forward of the middle of the robot, and above ground level.
-        final float CAMERA_FORWARD_DISPLACEMENT  = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
-        final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
+        final float CAMERA_FORWARD_DISPLACEMENT  = 0.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
+        final float CAMERA_VERTICAL_DISPLACEMENT = 0.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
         final float CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
 
         OpenGLMatrix robotFromCamera = OpenGLMatrix
@@ -347,7 +347,20 @@ public class Skystone_Auto extends LinearOpMode {
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
                         translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
                 XPOS = translation.get(0)/mmPerInch;
-                telemetry.addData("X Position Test", "{X} = %.1f", XPOS);
+                if ((XPOS <=5) && (XPOS >= -5)) {
+
+                    telemetry.addData("Skystone Straight Ahead", XPOS);
+                }
+                if ((XPOS <=15) && (XPOS > 5)) {
+
+                    telemetry.addData("Skystone Left of Center", XPOS);
+                }
+
+                if ((XPOS >-15) && (XPOS < -5)) {
+
+                    telemetry.addData("Skystone Right of Center", XPOS);
+                }
+
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
                 telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
