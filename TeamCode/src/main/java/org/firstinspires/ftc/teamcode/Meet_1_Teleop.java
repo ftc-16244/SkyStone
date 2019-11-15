@@ -214,7 +214,7 @@ public class Meet_1_Teleop extends OpMode{
                 robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.arm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-                lift = -gamepad2.left_stick_y;
+                lift = -gamepad2.left_stick_y/2;
                 robot.arm.setPower(lift);
                 robot.arm2.setPower(lift);
                 telemetry.addData("Arm Mode",currentState);
