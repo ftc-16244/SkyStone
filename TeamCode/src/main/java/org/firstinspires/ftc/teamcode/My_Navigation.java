@@ -83,7 +83,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 
-@TeleOp(name="SKYSTONE Picker", group ="XConcept")
+@TeleOp(name="My_Navigation", group ="XConcept")
 //@Disabled
 public class My_Navigation extends LinearOpMode {
 
