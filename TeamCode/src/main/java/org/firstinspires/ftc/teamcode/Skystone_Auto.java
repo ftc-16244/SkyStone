@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -86,13 +87,22 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 //@Disabled
 public class Skystone_Auto extends LinearOpMode {
 
+    /* Declare OpMode members. */
+    HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
+    private ElapsedTime runtime = new ElapsedTime();
+    Auto_FoundationMove robotmotion = new Auto_FoundationMove();// adds arm drive and encoder drive methods
+
+
 
     private enum State {
         STATE_FWD,
         STATE_LEFT,
         STATE_RIGHT,
+        STATE_STOP
 
     } // Enums to choose which drive mote to use to get the skystone
+    // robit drive and arm constants
+    private static final double DRIVE_SPEED = 0.5;
 
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
     // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
@@ -146,7 +156,7 @@ public class Skystone_Auto extends LinearOpMode {
     private float phoneZRotate    = 0;
 
     private double XPOS = 0;
-    private State driveState;
+    private State driveState = State.STATE_FWD; //set the default to DWD in case Vuforia can 't see Skystone
 
     @Override public void runOpMode() {
         /*
@@ -384,6 +394,31 @@ public class Skystone_Auto extends LinearOpMode {
         waitForStart();
         // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
+
+        // use states from state machine in the init portion to choose which way to drive.
+        switch (driveState)
+        {
+            case STATE_FWD: //
+                telemetry.addData("Skystone Position",driveState);
+                // drive forward
+                robotmotion.encoderDrive(DRIVE_SPEED, 36, 36, 5);
+                //close gripper
+                // backup
+                // turn towards bridge
+                driveState = State.STATE_STOP;//set state to STOP/done so this only runs once
+            case STATE_LEFT:
+                telemetry.addData("Skystone Position",driveState);
+                // drive to the left
+            case STATE_RIGHT:
+                telemetry.addData("Skystone Position",driveState);
+                // drive to the right
+            case STATE_STOP:
+                telemetry.addData("Skystone Position",driveState);
+                // drive to the right
+
+        }
+
+
     }
 
 }
