@@ -8,7 +8,7 @@
  * of conditions and the following disclaimer.
  *
  * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
+ * list of conditions and the following disclaimer in the documentation and/ora
  * other materials provided with the distribution.
  *
  * Neither the name of FIRST nor the names of its contributors may be used to endorse or
@@ -156,6 +156,7 @@ public class Skystone_Auto extends LinearOpMode {
          */
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
 
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
@@ -323,7 +324,7 @@ public class Skystone_Auto extends LinearOpMode {
         // CONSEQUENTLY do not put any driving commands in this loop.
         // To restore the normal opmode structure, just un-comment the following line:
 
-        // waitForStart();
+
 
         // Note: To use the remote camera preview:
         // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
@@ -380,8 +381,9 @@ public class Skystone_Auto extends LinearOpMode {
             }
             telemetry.update();
         }
-
+        waitForStart();
         // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
     }
+
 }
