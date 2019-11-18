@@ -103,6 +103,15 @@ public class Skystone_Auto extends LinearOpMode {
     } // Enums to choose which drive mote to use to get the skystone
     // robit drive and arm constants
     private static final double DRIVE_SPEED = 0.5;
+    private static final double     GRIPPER_START    = 1 ; //optional to make sure it starts inside 18 inches
+    private static final double     GRIPPER_READY    = 0.5; //open gripper such that spatual touched inside frame when arm is on top of inside rail
+    private static final double     GRIPPER_CLOSE    = 0.75;   // larger number grips tighter. 0.7 for sprocket is a good start
+    private static final int     ARM_STONE_READY  = 20; // encoder counts where arm is ready to grab stone
+    private static final int     ARM_STONE_CARRY  = 115; // encoder counts where arm is ready to grab stone
+    private static final int     FOUNDATIONUP  =0;
+    private static final int     FOUNDATIONDOWN  =1;
+
+
 
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
     // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
@@ -400,11 +409,15 @@ public class Skystone_Auto extends LinearOpMode {
         {
             case STATE_FWD: //
                 telemetry.addData("Skystone Position",driveState);
-                // drive forward
-                robotmotion.encoderDrive(DRIVE_SPEED, 36, 36, 5);
-                //close gripper
-                // backup
-                // turn towards bridge
+                robotmotion.armDrive(.5,2,2); //raise arm slightly
+                robot.closey.setPosition(GRIPPER_READY); // open gripper
+                robotmotion.encoderDrive(DRIVE_SPEED, 36, 36, 5);//drive forward
+                robot.closey.setPosition(GRIPPER_CLOSE); // close gripper
+                robotmotion.encoderDrive(DRIVE_SPEED, -24, -24, 5);//drive forward
+                robotmotion.encoderDrive(DRIVE_SPEED, 12, -12, 5);//turn
+                robotmotion.encoderDrive(DRIVE_SPEED, 36, 36, 5);//drive to other side
+                robot.closey.setPosition(GRIPPER_READY); // open gripper to release Skystone
+                robotmotion.encoderDrive(DRIVE_SPEED, -12, -12, 5);//backup and park on line
                 driveState = State.STATE_STOP;//set state to STOP/done so this only runs once
             case STATE_LEFT:
                 telemetry.addData("Skystone Position",driveState);
