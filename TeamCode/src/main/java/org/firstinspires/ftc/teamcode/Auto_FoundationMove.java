@@ -116,7 +116,7 @@ public class Auto_FoundationMove extends LinearOpMode {
                           robot.rightFront.getCurrentPosition());
         telemetry.update();
 
-4
+
         sleep(1000);     // pause for servos to move
 
         // Wait for the game to start (driver presses PLAY)
