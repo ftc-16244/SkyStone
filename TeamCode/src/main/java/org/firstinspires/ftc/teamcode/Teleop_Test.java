@@ -60,7 +60,7 @@ public class Teleop_Test extends OpMode{
     private enum State {
         STATE_DISCRETE,
         STATE_INFINITE,
-        
+
     } // Enums to choose which mode the arm will operate in. Preset discrete of infinite via joystick
 
 
@@ -169,6 +169,7 @@ public class Teleop_Test extends OpMode{
                 telemetry.addData("Arm Mode",currentState);
                 if (gamepad2.a) {
                     robot.arm.setTargetPosition(400);
+                    robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     telemetry.addData("Arm Target", "400");
 
                 }
