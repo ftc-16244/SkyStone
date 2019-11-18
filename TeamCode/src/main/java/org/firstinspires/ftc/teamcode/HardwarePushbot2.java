@@ -91,8 +91,11 @@ public class HardwarePushbot2
    // public DcMotor      leftRear        = null;
    // public DcMotor      rightRear       = null;
     public DcMotor      arm             = null;
+    public DcMotor      arm2            = null;
     public Servo        closey         = null;
     public Servo        spinny           = null;
+    public Servo       foundationleft          = null;
+    public Servo        foundationright           = null;
     //public Servo        hook            = null;
 
 
@@ -118,6 +121,7 @@ public class HardwarePushbot2
         //leftRear    = hwMap.get(DcMotor.class, "Left_rear");
         //rightRear   = hwMap.get(DcMotor.class, "Right_rear");
         arm         = hwMap.get(DcMotor.class, "Arm");
+        arm2         = hwMap.get(DcMotor.class, "Arm_2");
 
 
 
@@ -127,6 +131,7 @@ public class HardwarePushbot2
         //leftRear.setDirection(DcMotor.Direction.FORWARD);
         //rightRear.setDirection(DcMotor.Direction.REVERSE);
         arm.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if needed
+        arm2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
 
         // Set all motors to zero power
         leftFront.setPower(0);
@@ -134,11 +139,13 @@ public class HardwarePushbot2
         //leftRear.setPower(0);
        // rightRear.setPower(0);
         arm.setPower(0);
+        arm2.setPower(0);
 
         // Set all motors to run with without encoders.
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        arm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // ================ SERVO SECTION===============================
 
@@ -146,5 +153,7 @@ public class HardwarePushbot2
         //hook    = hwMap.get(Servo.class, "Hook");
         closey = hwMap.get(Servo.class, "Closey");
         spinny   = hwMap.get(Servo.class, "Spinny");
+        foundationleft = hwMap.get(Servo.class, "fdnLeft");
+        foundationright   = hwMap.get(Servo.class, "fdnRight");
     }
  }

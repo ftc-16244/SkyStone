@@ -29,14 +29,10 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
  * This file provides basic Telop driving for a Pushbot robot.
@@ -53,14 +49,16 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Teleop Test", group="Teleop")
+@TeleOp(name="Meet 1 Teleop", group="Teleop")
 //@Disabled
-public class Teleop_Test extends OpMode{
+public class Meet_1_Teleop extends OpMode{
+
+
 
     private enum State {
         STATE_DISCRETE,
         STATE_INFINITE,
-
+        
     } // Enums to choose which mode the arm will operate in. Preset discrete of infinite via joystick
 
 
@@ -68,6 +66,11 @@ public class Teleop_Test extends OpMode{
     HardwarePushbot2 robot       = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
     private ElapsedTime runtime = new ElapsedTime();
     private State    currentState;
+    private static final double     GRIPPER_START    = 1 ; //optional to make sure it starts inside 18 inches
+    private static final double     GRIPPER_READY    = 0.5; //open gripper such that spatual touched inside frame when arm is on top of inside rail
+    private static final double     GRIPPER_CLOSE    = 0.75;   // larger number grips tighter. 0.7 for sprocket is a good start
+    private static final int     ARM_STONE_READY  = 20; // encoder counts where arm is ready to grab stone
+    private static final int     ARM_STONE_CARRY  = 115; // encoder counts where arm is ready to grab stone
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -91,7 +94,8 @@ public class Teleop_Test extends OpMode{
         //You have to create a separate instance in this case to get access to "armDrive"
 
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //robot.closey.setPosition(GRIPPER_START); // gripper is tucked in to stay at 18 inches.
 
     }
 
@@ -101,6 +105,7 @@ public class Teleop_Test extends OpMode{
     @Override
     public void init_loop() {
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);// in case robot gets bumped
+        robot.arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);// in case robot gets bumped
 
     }
 
@@ -109,7 +114,13 @@ public class Teleop_Test extends OpMode{
      */
     @Override
     public void start() {
-
+    robot.arm.setTargetPosition(ARM_STONE_READY);// lift up arm to allow gripper to open
+    robot.arm2.setTargetPosition(ARM_STONE_READY);// lift up arm to allow gripper to open
+    robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    robot.arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    robot.arm.setPower(.75);
+    robot.arm2.setPower(.75);
+    //robot.closey.setPosition(GRIPPER_READY);// open ready to grab a stone.
      // empty for now
     }
 
@@ -123,7 +134,7 @@ public class Teleop_Test extends OpMode{
         double drive;
         double turn;
         double max;
-        double ARM_SPEED = .8;
+        double ARM_SPEED = .5;
         double lift;
 
 
@@ -154,6 +165,16 @@ public class Teleop_Test extends OpMode{
         telemetry.addData("left",  "%.2f", left);
         telemetry.addData("right", "%.2f", right);
 
+        // gripper assignment to X and Y buttons.
+        if (gamepad2.x) {
+            robot.closey.setPosition(GRIPPER_CLOSE);
+
+
+        }
+
+        if (gamepad2.y) {
+            robot.closey.setPosition(GRIPPER_READY);
+        }
 
         if (gamepad2.left_bumper)
         {
@@ -168,24 +189,34 @@ public class Teleop_Test extends OpMode{
             case STATE_DISCRETE: // push button
                 telemetry.addData("Arm Mode",currentState);
                 if (gamepad2.a) {
-                    robot.arm.setTargetPosition(400);
+                    robot.arm.setTargetPosition(ARM_STONE_READY);
+                    robot.arm2.setTargetPosition(ARM_STONE_READY);
                     robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    telemetry.addData("Arm Target", "400");
+                    robot.arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.arm.setPower(Math.abs(ARM_SPEED));
+                    robot.arm2.setPower(Math.abs(ARM_SPEED));
+                    telemetry.addData("Arm Target", "Ready to get stone");
 
                 }
                 if (gamepad2.b) {
-                    robot.arm.setTargetPosition(0);
+                    robot.arm.setTargetPosition(ARM_STONE_CARRY);
+                    robot.arm2.setTargetPosition(ARM_STONE_CARRY);
                     robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.arm.setPower(Math.abs(ARM_SPEED));
-                    telemetry.addData("Arm Target", robot.arm.getTargetPosition());
+                    robot.arm2.setPower(Math.abs(ARM_SPEED));
+                    telemetry.addData("Carry Position", robot.arm.getTargetPosition());
 
                 }
 
                 break;
             case STATE_INFINITE:
                 robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                lift = -gamepad2.left_stick_y;
+                robot.arm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                lift = -gamepad2.left_stick_y/2;
                 robot.arm.setPower(lift);
+                robot.arm2.setPower(lift);
                 telemetry.addData("Arm Mode",currentState);
                 telemetry.addData("Arm Power", "%.2f", lift);
                 break;
