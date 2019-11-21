@@ -413,7 +413,7 @@ public class Skystone_Auto extends LinearOpMode {
                 robot.closey.setPosition(GRIPPER_READY); // open gripper
                 robotmotion.encoderDrive(DRIVE_SPEED, 36, 36, 5);//drive forward
                 robot.closey.setPosition(GRIPPER_CLOSE); // close gripper
-                robotmotion.encoderDrive(DRIVE_SPEED, -24, -24, 5);//drive forward
+                robotmotion.encoderDrive(DRIVE_SPEED, -24, -24, 5);//drive backward
                 robotmotion.encoderDrive(DRIVE_SPEED, 12, -12, 5);//turn
                 robotmotion.encoderDrive(DRIVE_SPEED, 36, 36, 5);//drive to other side
                 robot.closey.setPosition(GRIPPER_READY); // open gripper to release Skystone
@@ -421,10 +421,34 @@ public class Skystone_Auto extends LinearOpMode {
                 driveState = State.STATE_STOP;//set state to STOP/done so this only runs once
             case STATE_LEFT:
                 telemetry.addData("Skystone Position",driveState);
-                // drive to the left
+                robotmotion.armDrive(.5,2,2); //raise arm slightly
+                robot.closey.setPosition(GRIPPER_READY); // open gripper
+                robotmotion.encoderDrive(DRIVE_SPEED, -15, 15, 5);//turn left slightly
+                robotmotion.encoderDrive(DRIVE_SPEED, 10, 10, 5);//drive forward
+                robotmotion.encoderDrive(DRIVE_SPEED, 15, -15, 5);//turn right slightly
+                robotmotion.encoderDrive(DRIVE_SPEED, 5, 5, 5);//drive forward
+                robot.closey.setPosition(GRIPPER_CLOSE); // close gripper
+                robotmotion.encoderDrive(DRIVE_SPEED, -24, -24, 5);//drive backward
+                robotmotion.encoderDrive(DRIVE_SPEED, 12, -12, 5);//turn
+                robotmotion.encoderDrive(DRIVE_SPEED, 44, 44, 5);//drive to other side
+                robot.closey.setPosition(GRIPPER_READY); // open gripper to release Skystone
+                robotmotion.encoderDrive(DRIVE_SPEED, -12, -12, 5);//backup and park on line
+                driveState = State.STATE_STOP;//set state to STOP/done so this only runs once
             case STATE_RIGHT:
                 telemetry.addData("Skystone Position",driveState);
-                // drive to the right
+                robotmotion.armDrive(.5,2,2); //raise arm slightly
+                robot.closey.setPosition(GRIPPER_READY); // open gripper
+                robotmotion.encoderDrive(DRIVE_SPEED, 15, -15, 5);//turn right slightly
+                robotmotion.encoderDrive(DRIVE_SPEED, 10, 10, 5);//drive forward
+                robotmotion.encoderDrive(DRIVE_SPEED, -15, 15, 5);//turn left slightly
+                robotmotion.encoderDrive(DRIVE_SPEED, 5, 5, 5);//drive forward
+                robot.closey.setPosition(GRIPPER_CLOSE); // close gripper
+                robotmotion.encoderDrive(DRIVE_SPEED, -24, -24, 5);//drive backward
+                robotmotion.encoderDrive(DRIVE_SPEED, 12, -12, 5);//turn
+                robotmotion.encoderDrive(DRIVE_SPEED, 28, 28, 5);//drive to other side
+                robot.closey.setPosition(GRIPPER_READY); // open gripper to release Skystone
+                robotmotion.encoderDrive(DRIVE_SPEED, -12, -12, 5);//backup and park on line
+                driveState = State.STATE_STOP;//set state to STOP/done so this only runs once
             case STATE_STOP:
                 telemetry.addData("Skystone Position",driveState);
                 // drive to the right
