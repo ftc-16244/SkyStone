@@ -407,7 +407,7 @@ public class Skystone_Auto extends LinearOpMode {
         // use states from state machine in the init portion to choose which way to drive.
         switch (driveState)
         {
-            case STATE_FWD: //
+            case STATE_FWD: // 1st option
                 telemetry.addData("Skystone Position",driveState);
                 robotmotion.armDrive(.5,2,2); //raise arm slightly
                 robot.closey.setPosition(GRIPPER_READY); // open gripper
@@ -419,7 +419,7 @@ public class Skystone_Auto extends LinearOpMode {
                 robot.closey.setPosition(GRIPPER_READY); // open gripper to release Skystone
                 robotmotion.encoderDrive(DRIVE_SPEED, -12, -12, 5);//backup and park on line
                 driveState = State.STATE_STOP;//set state to STOP/done so this only runs once
-            case STATE_LEFT:
+            case STATE_LEFT: //2nd option
                 telemetry.addData("Skystone Position",driveState);
                 robotmotion.armDrive(.5,2,2); //raise arm slightly
                 robot.closey.setPosition(GRIPPER_READY); // open gripper
@@ -434,7 +434,7 @@ public class Skystone_Auto extends LinearOpMode {
                 robot.closey.setPosition(GRIPPER_READY); // open gripper to release Skystone
                 robotmotion.encoderDrive(DRIVE_SPEED, -12, -12, 5);//backup and park on line
                 driveState = State.STATE_STOP;//set state to STOP/done so this only runs once
-            case STATE_RIGHT:
+            case STATE_RIGHT: //3rd option
                 telemetry.addData("Skystone Position",driveState);
                 robotmotion.armDrive(.5,2,2); //raise arm slightly
                 robot.closey.setPosition(GRIPPER_READY); // open gripper
@@ -451,7 +451,7 @@ public class Skystone_Auto extends LinearOpMode {
                 driveState = State.STATE_STOP;//set state to STOP/done so this only runs once
             case STATE_STOP:
                 telemetry.addData("Skystone Position",driveState);
-                // drive to the right
+
 
         }
 
