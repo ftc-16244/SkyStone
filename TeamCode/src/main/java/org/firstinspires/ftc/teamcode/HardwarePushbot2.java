@@ -88,7 +88,7 @@ public class HardwarePushbot2
     /* Public OpMode members. */
     public DcMotor      leftFront       = null;
     public DcMotor      rightFront      = null;
-   // public DcMotor      leftRear        = null;
+    public DcMotor      accumulator        = null;
    // public DcMotor      rightRear       = null;
     public DcMotor      arm             = null;
     public DcMotor      arm2            = null;
@@ -122,7 +122,7 @@ public class HardwarePushbot2
         //rightRear   = hwMap.get(DcMotor.class, "Right_rear");
         arm         = hwMap.get(DcMotor.class, "Arm");
         arm2         = hwMap.get(DcMotor.class, "Arm_2");
-
+        accumulator   = hwMap.get(DcMotor.class, "ACCUM");
 
 
         // Set motor directions.
