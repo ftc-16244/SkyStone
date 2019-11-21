@@ -184,12 +184,12 @@ public class Meet_2_Teleop extends OpMode{
         if (gamepad2.y) {
             robot.closey.setPosition(GRIPPER_READY);
         }
-        if (gamepad1.a) {
+       // if (gamepad1.a) {
             robot.foundationright.setPosition(FOUNDATIONUP);
-        }
-        if (gamepad1.b) {
+        //}
+        //if (gamepad1.b) {
             robot.foundationleft.setPosition(FOUNDATIONDOWN);
-        }
+       // }
         
         if (gamepad2.left_bumper)
         {
