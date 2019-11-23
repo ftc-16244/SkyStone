@@ -86,17 +86,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwarePushbot2
 {
     /* Public OpMode members. */
-    public DcMotor      leftFront       = null;
-    public DcMotor      rightFront      = null;
-    public DcMotor      accumulator        = null;
-   // public DcMotor      rightRear       = null;
-    public DcMotor      arm             = null;
-    public DcMotor      arm2            = null;
-    public Servo        closey         = null;
-    public Servo        spinny           = null;
-    public Servo       foundationleft          = null;
-    public Servo        foundationright           = null;
-    //public Servo        hook            = null;
+    public DcMotor      leftFront           = null;
+    public DcMotor      rightFront          = null;
+    public DcMotor      accumulator         = null;
+    public DcMotor      arm                 = null;
+    public DcMotor      arm2                = null;
+    public Servo        closey              = null;
+    public Servo        spinny              = null;
+    public Servo        foundationleft      = null;
+    public Servo        foundationright     = null;
+
 
 
     /* local OpMode members. */
@@ -116,13 +115,13 @@ public class HardwarePushbot2
         //================ MOTOR SECTION===============================
         // Define and Initialize Motors.
         // IMPORTANT...."deviceNames" in green have to be typed exactly in the robot config
-        leftFront   = hwMap.get(DcMotor.class, "Left_front");
-        rightFront  = hwMap.get(DcMotor.class, "Right_front");
-        //leftRear    = hwMap.get(DcMotor.class, "Left_rear");
-        //rightRear   = hwMap.get(DcMotor.class, "Right_rear");
-        arm         = hwMap.get(DcMotor.class, "Arm");
-        arm2         = hwMap.get(DcMotor.class, "Arm_2");
-        accumulator   = hwMap.get(DcMotor.class, "ACCUM");
+        leftFront       = hwMap.get(DcMotor.class, "Left_front");
+        rightFront      = hwMap.get(DcMotor.class, "Right_front");
+        //leftRear      = hwMap.get(DcMotor.class, "Left_rear");
+        //rightRear     = hwMap.get(DcMotor.class, "Right_rear");
+        arm             = hwMap.get(DcMotor.class, "Arm");
+        arm2            = hwMap.get(DcMotor.class, "Arm_2");
+        accumulator     = hwMap.get(DcMotor.class, "ACCUM");
 
 
         // Set motor directions.

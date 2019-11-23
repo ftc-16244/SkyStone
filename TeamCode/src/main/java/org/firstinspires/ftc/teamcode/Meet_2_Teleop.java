@@ -77,7 +77,7 @@ public class Meet_2_Teleop extends OpMode{
     private static final int        ARM_STONE_READY  = 20; // encoder counts where arm is ready to grab stone
     private static final int        ARM_STONE_CARRY  = 115; // encoder counts where arm is ready to grab stone
     private static final double     FOUNDATION_UP     = 0.3; // reference the left servo for position
-    private static final double     FOUNDATION_DOWN   = 0.656;
+    private static final double     FOUNDATION_DOWN   = 0.65;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -100,9 +100,7 @@ public class Meet_2_Teleop extends OpMode{
         // using ghe armrotator method from our instance of Auto_FoundationMove created above.
         //You have to create a separate instance in this case to get access to "armDrive"
 
-        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //robot.closey.setPosition(GRIPPER_START); // gripper is tucked in to stay at 18 inches.
+
         robot.foundationright.setPosition(1-FOUNDATION_UP);
         robot.foundationleft.setPosition(FOUNDATION_UP);
 
