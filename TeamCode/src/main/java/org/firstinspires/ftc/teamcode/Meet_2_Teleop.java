@@ -56,7 +56,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Meet_2_Teleop extends OpMode{
 
 
-
+    //set up states to change how the arm operates. Pre-sets or variable.
     private enum State {
         STATE_DISCRETE,
         STATE_INFINITE,
@@ -162,7 +162,7 @@ public class Meet_2_Teleop extends OpMode{
         max = Math.max(Math.abs(left), Math.abs(right));
         if (max > 1.0)
         {
-            left /= max;
+            left /= max; // shortcut for saying left = (left / max)
             right /= max;
         }
 
@@ -174,22 +174,24 @@ public class Meet_2_Teleop extends OpMode{
         telemetry.addData("left",  "%.2f", left);
         telemetry.addData("right", "%.2f", right);
 
-        // gripper assignment to X and Y buttons.
+        // gripper assignment to X and Y buttons on implement gamepad
         if (gamepad2.x) {
             robot.closey.setPosition(GRIPPER_CLOSE);
-
-
         }
 
         if (gamepad2.y) {
             robot.closey.setPosition(GRIPPER_READY);
         }
+
+        // foundation moving servo assignment to drivers gampad
        if (gamepad1.a) {
-            robot.foundationright.setPosition(FOUNDATIONUP);
+            robot.foundationright.setPosition(FOUNDATIONUP); // a is up
         }
         if (gamepad1.b) {
-            robot.foundationleft.setPosition(FOUNDATIONDOWN);
+            robot.foundationleft.setPosition(FOUNDATIONDOWN); // b is down
        }
+
+        // turn on and off he accumulator motor
         if (gamepad1.x) {
             robot.accumulator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             robot.accumulator.setPower(ARM_SPEED);
@@ -197,6 +199,8 @@ public class Meet_2_Teleop extends OpMode{
         if (gamepad1.y) {
         robot.accumulator.setPower(0);
         }
+
+        // set-up arm states on bumpers of implement gampad
         if (gamepad2.left_bumper)
         {
             newState(State.STATE_INFINITE);
@@ -205,6 +209,8 @@ public class Meet_2_Teleop extends OpMode{
         {
             newState(State.STATE_DISCRETE);
         }
+
+        // switch case to determone what mode the arm needs to operate in.
         switch (currentState)
         {
             case STATE_DISCRETE: // push button
