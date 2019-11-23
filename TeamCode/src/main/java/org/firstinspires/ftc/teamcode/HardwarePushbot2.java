@@ -132,6 +132,7 @@ public class HardwarePushbot2
         //rightRear.setDirection(DcMotor.Direction.REVERSE);
         arm.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if needed
         arm2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
+        accumulator.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
         leftFront.setPower(0);
@@ -140,12 +141,14 @@ public class HardwarePushbot2
        // rightRear.setPower(0);
         arm.setPower(0);
         arm2.setPower(0);
+        accumulator.setPower(0);
 
         // Set all motors to run with without encoders.
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         arm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        accumulator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // ================ SERVO SECTION===============================
 
