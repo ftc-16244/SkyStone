@@ -85,8 +85,8 @@ public class Auto_FoundationMove extends LinearOpMode {
     private static final double     ARM_GEAR_REDUCTION    = 4.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
     private static final double     Ticks_Per_Degree        = COUNTS_PER_ARM_MOTOR_REV * ARM_GEAR_REDUCTION/360;
 
-    private static final double     FOUNDATIONUP =0.4;
-    private static final double     FOUNDATIONDOWN  =0.6;
+    private static final double     FOUNDATION_UP =0.4;
+    private static final double     FOUNDATION_DOWN  =0.6;
     @Override
     public void runOpMode() {
 
@@ -124,13 +124,13 @@ public class Auto_FoundationMove extends LinearOpMode {
         waitForStart();
         armDrive(ARM_SPEED,  2, 1.);  // S1: 180 degrees counterclockwise
         encoderDrive(DRIVE_SPEED,  -36,  -36, 5.);  // S1: Forward 24 Inches with 5 Sec timeout have to confirm
-        robot.foundationleft.setPosition(FOUNDATIONDOWN);
-        robot.foundationright.setPosition(1-FOUNDATIONDOWN);
-        robot.foundationleft.setPosition(FOUNDATIONUP);
+        robot.foundationleft.setPosition(FOUNDATION_DOWN);
+        robot.foundationright.setPosition(1-FOUNDATION_DOWN);
+        robot.foundationleft.setPosition(FOUNDATION_UP);
         armDrive(ARM_SPEED, 30,3.);
         encoderDrive(DRIVE_SPEED,  36,  36, 5.);  // S1: Forward 24 Inches with 5 Sec timeout have to confirm
-        robot.foundationleft.setPosition(FOUNDATIONUP);
-        robot.foundationright.setPosition(1-FOUNDATIONUP);
+        robot.foundationleft.setPosition(FOUNDATION_UP);
+        robot.foundationright.setPosition(1-FOUNDATION_UP);
 
         sleep(1000);     // pause for servos to grab foundation
         armDrive(ARM_SPEED,  -2, 1.);  // S1: 180 degrees counterclockwise
