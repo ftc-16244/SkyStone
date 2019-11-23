@@ -76,8 +76,8 @@ public class Meet_2_Teleop extends OpMode{
     private static final double     GRIPPER_CLOSE    = 0.75;   // larger number grips tighter. 0.7 for sprocket is a good start
     private static final int        ARM_STONE_READY  = 20; // encoder counts where arm is ready to grab stone
     private static final int        ARM_STONE_CARRY  = 115; // encoder counts where arm is ready to grab stone
-    private static final double     FOUNDATION_UP     = 0.4; // reference the left servo for position
-    private static final double     FOUNDATION_DOWN   = 0.6;
+    private static final double     FOUNDATION_UP     = 0.3; // reference the left servo for position
+    private static final double     FOUNDATION_DOWN   = 0.656;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -103,8 +103,8 @@ public class Meet_2_Teleop extends OpMode{
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //robot.closey.setPosition(GRIPPER_START); // gripper is tucked in to stay at 18 inches.
-        robot.foundationright.setPosition(FOUNDATION_UP);
-        robot.foundationleft.setPosition(FOUNDATION_DOWN);
+        robot.foundationright.setPosition(1-FOUNDATION_UP);
+        robot.foundationleft.setPosition(FOUNDATION_UP);
 
     }
 
@@ -185,12 +185,12 @@ public class Meet_2_Teleop extends OpMode{
 
         // foundation moving servo assignment to drivers gampad
        if (gamepad1.a) {
-            robot.foundationleft.setPosition(FOUNDATION_UP); // a is up
-            robot.foundationright.setPosition(1-FOUNDATION_UP); // how we "mirror" a servo since we can use a negative sign
+            robot.foundationleft.setPosition(FOUNDATION_DOWN); // a is up
+            robot.foundationright.setPosition(1-FOUNDATION_DOWN); // how we "mirror" a servo since we can use a negative sign
         }
         if (gamepad1.b) {
-            robot.foundationleft.setPosition(FOUNDATION_DOWN); // b is down
-            robot.foundationright.setPosition(1-FOUNDATION_DOWN); // how we "mirror" a servo since we can use a negative sign
+            robot.foundationleft.setPosition(FOUNDATION_UP); // b is down
+            robot.foundationright.setPosition(1-FOUNDATION_UP); // how we "mirror" a servo since we can use a negative sign
        }
 
         // turn on and off he accumulator motor

@@ -132,7 +132,7 @@ public class HardwarePushbot2
         //rightRear.setDirection(DcMotor.Direction.REVERSE);
         arm.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if needed
         arm2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
-        accumulator.setDirection(DcMotor.Direction.FORWARD);
+        accumulator.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
         leftFront.setPower(0);
