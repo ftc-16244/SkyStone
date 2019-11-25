@@ -59,9 +59,9 @@ public class Meet_2_Teleop extends OpMode{
     //set up states to change how the arm operates. Pre-sets or variable.
     private enum State {
         STATE_DISCRETE,
-        STATE_INFINITE,
+        STATE_CONTINUOUS,
 
-    } // Enums to choose which mode the arm will operate in. Preset discrete of infinite via joystick
+    } // Enums to choose which mode the arm will operate in. Preset discrete of continuous via joystick
 
 
     /* Declare OpMode members. */
@@ -88,12 +88,12 @@ public class Meet_2_Teleop extends OpMode{
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-        //newState(State.STATE_INFINITE);
+        //newState(State.STATE_CONTINUOUS);
         newState(State.STATE_DISCRETE);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");
-        telemetry.addData("Infinite","Mode");//
+        telemetry.addData("CONTINUOUS","Mode");//
         //telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -141,10 +141,10 @@ public class Meet_2_Teleop extends OpMode{
         double drive;
         double turn;
         double max;
-        double ARM_SPEED = .5;
+        double ARM_SPEED = .25;
         double lift;
 
-
+    //double-many decimal places
 
         // note isBusy() applies to the Run_USING ENCODER mods
         // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
@@ -160,7 +160,7 @@ public class Meet_2_Teleop extends OpMode{
         max = Math.max(Math.abs(left), Math.abs(right));
         if (max > 1.0)
         {
-            left /= max; // shortcut for saying left = (left / max)
+            left /= max; // does this to stay within the limit and keeps the ratio the same
             right /= max;
         }
 
@@ -193,24 +193,24 @@ public class Meet_2_Teleop extends OpMode{
 
         // turn on and off he accumulator motor
         if (gamepad1.x) {
-            robot.accumulator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.accumulator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); //turns the accumulator on
             robot.accumulator.setPower(ARM_SPEED);
         }
         if (gamepad1.y) {
-        robot.accumulator.setPower(0);
+        robot.accumulator.setPower(0); //turns the accumulator off
         }
 
         // set-up arm states on bumpers of implement gampad
         if (gamepad2.left_bumper)
         {
-            newState(State.STATE_INFINITE);
+            newState(State.STATE_CONTINUOUS); //did this to make it continuos
         }
         if (gamepad2.right_bumper)
         {
-            newState(State.STATE_DISCRETE);
+            newState(State.STATE_DISCRETE); //preset points
         }
 
-        // switch case to determone what mode the arm needs to operate in.
+        // switch case to determine what mode the arm needs to operate in.
         switch (currentState)
         {
             case STATE_DISCRETE: // push button
@@ -237,11 +237,11 @@ public class Meet_2_Teleop extends OpMode{
                 }
 
                 break;
-            case STATE_INFINITE:
+            case STATE_CONTINUOUS:
                 robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.arm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-                lift = -gamepad2.left_stick_y;
+                lift = (-gamepad2.left_stick_y)/2; //divides the power by 2 to reduce power
                 robot.arm.setPower(lift);
                 robot.arm2.setPower(lift);
                 telemetry.addData("Arm Mode",currentState);

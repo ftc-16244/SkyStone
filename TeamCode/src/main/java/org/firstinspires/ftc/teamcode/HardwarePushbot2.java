@@ -129,7 +129,7 @@ public class HardwarePushbot2
         rightFront.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
         //leftRear.setDirection(DcMotor.Direction.FORWARD);
         //rightRear.setDirection(DcMotor.Direction.REVERSE);
-        arm.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if needed
+        arm.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
         arm2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
         accumulator.setDirection(DcMotor.Direction.REVERSE);
 

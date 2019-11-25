@@ -107,6 +107,7 @@ public class Auto_FoundationMove extends LinearOpMode {
         robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -121,22 +122,15 @@ public class Auto_FoundationMove extends LinearOpMode {
         sleep(1000);     // pause for servos to move
 
         // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+        waitForStart(); //once press start, everything below will happen
         armDrive(ARM_SPEED,  2, 1.);  // S1: 180 degrees counterclockwise
-        encoderDrive(DRIVE_SPEED,  -36,  -36, 5.);  // S1: Forward 24 Inches with 5 Sec timeout have to confirm
+        encoderDrive(DRIVE_SPEED,  -36,  -36, 5.);  // S1: backwards 36 Inches with 5 Sec timeout have to confirm
         robot.foundationleft.setPosition(FOUNDATION_DOWN);
         robot.foundationright.setPosition(1-FOUNDATION_DOWN);
-        robot.foundationleft.setPosition(FOUNDATION_UP);
-        armDrive(ARM_SPEED, 30,3.);
-        encoderDrive(DRIVE_SPEED,  36,  36, 5.);  // S1: Forward 24 Inches with 5 Sec timeout have to confirm
-        robot.foundationleft.setPosition(FOUNDATION_UP);
+        armDrive(ARM_SPEED, 30,3.); //keep arm up to not hit the wall
+        encoderDrive(DRIVE_SPEED,  36,  36, 5.);  // S1: Forward 36 Inches with 5 Sec timeout have to confirm
+        robot.foundationleft.setPosition(FOUNDATION_UP); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1-FOUNDATION_UP);
-
-        sleep(1000);     // pause for servos to grab foundation
-        armDrive(ARM_SPEED,  -2, 1.);  // S1: 180 degrees counterclockwise
-        encoderDrive(DRIVE_SPEED,  36,  36, 5.);
-        encoderDrive(DRIVE_SPEED, -36, -36, 10.);  // S3: Reverse 48 Inches with 4 Sec timeout have to confirm
-        armDrive(ARM_SPEED,  30, 5.);  // S1: 180 degrees counterclockwise
 
 
         telemetry.addData("Path", "Complete");
@@ -221,11 +215,14 @@ public class Auto_FoundationMove extends LinearOpMode {
             newArmTarget = robot.arm.getCurrentPosition() + (int) (armDegrees * Ticks_Per_Degree);
             // set target position before "run to position"
             robot.arm.setTargetPosition(newArmTarget);
+            robot.arm2.setTargetPosition(newArmTarget);
             // Turn On RUN_TO_POSITION
             robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             // reset the timeout time and start motion.
             runtime.reset();
             robot.arm.setPower(Math.abs(speed));
+            robot.arm2.setPower(Math.abs(speed));
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
                     (robot.arm.isBusy() )) {
@@ -237,9 +234,10 @@ public class Auto_FoundationMove extends LinearOpMode {
             }
             // Stop all motion;
             robot.arm.setPower(0);
+            robot.arm2.setPower(0);
             // Turn off RUN_TO_POSITION
             robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+            robot.arm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             sleep(250);   // optional pause after each move
 
         }
