@@ -192,12 +192,15 @@ public class Meet_2_Teleop extends OpMode{
        }
 
         // turn on and off he accumulator motor
-        if (gamepad1.x) {
+        if (gamepad2.dpad_down) {
             robot.accumulator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); //turns the accumulator on
             robot.accumulator.setPower(ARM_SPEED);
         }
-        if (gamepad1.y) {
+        if ((gamepad2.dpad_left) |(gamepad2.dpad_right))  {
         robot.accumulator.setPower(0); //turns the accumulator off
+        }
+        if (gamepad2.dpad_up) {
+            robot.accumulator.setPower(-ARM_SPEED); //turns the accumulator off
         }
 
         // set-up arm states on bumpers of implement gampad
@@ -209,8 +212,9 @@ public class Meet_2_Teleop extends OpMode{
         {
             newState(State.STATE_DISCRETE); //preset points
         }
-
         // switch case to determine what mode the arm needs to operate in.
+
+        
         switch (currentState)
         {
             case STATE_DISCRETE: // push button
