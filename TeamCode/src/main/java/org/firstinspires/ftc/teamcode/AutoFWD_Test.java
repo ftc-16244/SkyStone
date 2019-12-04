@@ -43,39 +43,17 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="Test FWD", group="Pushbot")
 //@Disabled
-public class AutoFWD_Test extends LinearOpMode {
+
+// extend AutoFoundation becasue it has all the Fields (constants) and methods we need to reuse here
+public class AutoFWD_Test extends Auto_FoundationMove {
 
     /* Declare OpMode members. */
-    HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
-    private ElapsedTime     runtime = new ElapsedTime();
-    private Auto_FoundationMove     robotmotion = new Auto_FoundationMove();
-
-    private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;         // REV HD HEX 40:1 motors
-    private static final double     DRIVE_GEAR_REDUCTION    = 0.5 ;         // This is < 1.0 if geared UP 20 teeth drive 10 teeth driven
-    private static final double     WHEEL_DIAMETER_INCHES   = 3.54 ;   // 90mm wheels. For figuring circumference its a 90 millimeter wheel
-    private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-                                                      (WHEEL_DIAMETER_INCHES * 3.1415);
-    private static final double     DRIVE_SPEED             = 1;
-    private static final double     TURN_SPEED              = 0.5;
-    private static final double     COUNTS_PER_ARM_MOTOR_REV    = 280 ;         // REV HD HEX 40:1 motors
-    private static final double     ARM_SPEED             = 0.8;
-    private static final double     ARM_GEAR_REDUCTION    = 4.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
-    private static final double     Ticks_Per_Degree        = COUNTS_PER_ARM_MOTOR_REV * ARM_GEAR_REDUCTION/360;
-
-
 
     @Override
     public void runOpMode() {
 
-        //Local variables//
 
-
-
-        /*
-         * Initialize the drive system variables.
-         * The init() method of the hardware class does all the work here
-         */
-        robot.init(hardwareMap);
+        robot.init(hardwareMap); // don't forget this line
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
@@ -100,8 +78,8 @@ public class AutoFWD_Test extends LinearOpMode {
 
         //sleep(1000);     //add stall time here if needed
 
-        robotmotion.encoderDrive(DRIVE_SPEED, 25, 25, 5.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
-        //robotmotion.armDrive(15,0,3);
+        encoderDrive(DRIVE_SPEED, 10, 10, 3.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
+        armDrive(ARM_SPEED,10,3);
 
 
         telemetry.addData("Path", "Complete");
