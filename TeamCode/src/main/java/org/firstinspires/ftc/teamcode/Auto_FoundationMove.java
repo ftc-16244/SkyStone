@@ -117,7 +117,8 @@ public class Auto_FoundationMove extends LinearOpMode {
                           robot.leftFront.getCurrentPosition(),
                           robot.rightFront.getCurrentPosition());
         telemetry.update();
-
+        robot.foundationleft.setPosition(FOUNDATION_UP);
+        robot.foundationright.setPosition(1-FOUNDATION_UP);
 
         sleep(1000);     // pause for servos to move
 
@@ -125,12 +126,12 @@ public class Auto_FoundationMove extends LinearOpMode {
         waitForStart(); //once press start, everything below will happen
         //armDrive(ARM_SPEED,  2, 1.);  // S1: 180 degrees counterclockwise
         encoderDrive(DRIVE_SPEED,  -36,  -36, 5.);  // S1: backwards 36 Inches with 5 Sec timeout have to confirm
-        robot.foundationleft.setPosition(FOUNDATION_DOWN);
-        robot.foundationright.setPosition(1-FOUNDATION_DOWN);
         //armDrive(ARM_SPEED, 30,3.); //keep arm up to not hit the wall
+        robot.foundationleft.setPosition(FOUNDATION_DOWN); //lift them so they don't get destroyed
+        robot.foundationright.setPosition(1-FOUNDATION_DOWN);
+        sleep(1000);     // pause for servos to move
         encoderDrive(DRIVE_SPEED,  36,  36, 5.);  // S1: Forward 36 Inches with 5 Sec timeout have to confirm
-        robot.foundationleft.setPosition(FOUNDATION_UP); //lift them so they don't get destroyed
-        robot.foundationright.setPosition(1-FOUNDATION_UP);
+
 
 
         telemetry.addData("Path", "Complete");
