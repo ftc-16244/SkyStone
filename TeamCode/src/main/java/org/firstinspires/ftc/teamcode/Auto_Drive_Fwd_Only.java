@@ -41,14 +41,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
-@Autonomous(name="Drive Forward Only", group="Pushbot")
+@Autonomous(name="#1 Drive Forward Only", group="Pushbot")
 //@Disabled
 public class Auto_Drive_Fwd_Only extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
-   // private Auto_FoundationMove     robotmotion = new Auto_FoundationMove();
+   private Auto_FoundationMove     robotmotion = new Auto_FoundationMove();
 
     private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;         // REV HD HEX 40:1 motors
     private static final double     DRIVE_GEAR_REDUCTION    = 0.5 ;         // This is < 1.0 if geared UP 20 teeth drive 10 teeth driven
@@ -100,8 +100,8 @@ public class Auto_Drive_Fwd_Only extends LinearOpMode {
 
         //sleep(1000);     //add stall time here if needed
 
-        encoderDrive(DRIVE_SPEED, 25, 25, 5.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
-        //robotmotion.armDrive(15,0,3);
+        //encoderDrive(DRIVE_SPEED, 25, 25, 5.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
+        robotmotion.armDrive(15,0,3);
 
 
         telemetry.addData("Path", "Complete");

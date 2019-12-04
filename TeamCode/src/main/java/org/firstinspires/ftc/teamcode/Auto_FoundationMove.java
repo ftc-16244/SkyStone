@@ -64,7 +64,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
-@Autonomous(name="AutoFoundation Move", group="Pushbot")
+@Autonomous(name="#4 AutoFoundation Move", group="Pushbot")
 //@Disabled
 public class Auto_FoundationMove extends LinearOpMode {
 
@@ -77,11 +77,11 @@ public class Auto_FoundationMove extends LinearOpMode {
     private static final double     WHEEL_DIAMETER_INCHES   = 3.54 ;   // 90mm wheels. For figuring circumference its a 90 millimeter wheel
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
-    private static final double     DRIVE_SPEED             = 0.3;
+    public static final double     DRIVE_SPEED             = 0.3;
     private static final double     TURN_SPEED              = 0.5;
 
     private static final double     COUNTS_PER_ARM_MOTOR_REV    = 280 ;         // REV HD HEX 40:1 motors
-    private static final double     ARM_SPEED             = 0.8;
+    public static final double     ARM_SPEED             = 0.8;
     private static final double     ARM_GEAR_REDUCTION    = 4.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
     private static final double     Ticks_Per_Degree        = COUNTS_PER_ARM_MOTOR_REV * ARM_GEAR_REDUCTION/360;
 
@@ -125,13 +125,14 @@ public class Auto_FoundationMove extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart(); //once press start, everything below will happen
         //armDrive(ARM_SPEED,  2, 1.);  // S1: 180 degrees counterclockwise
-        encoderDrive(DRIVE_SPEED,  -36,  -36, 5.);  // S1: backwards 36 Inches with 5 Sec timeout have to confirm
+        encoderDrive(DRIVE_SPEED,  -36,  -36, 7.);  // S1: backwards 36 Inches with 5 Sec timeout have to confirm
         //armDrive(ARM_SPEED, 30,3.); //keep arm up to not hit the wall
         robot.foundationleft.setPosition(FOUNDATION_DOWN); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1-FOUNDATION_DOWN);
         sleep(1000);     // pause for servos to move
-        encoderDrive(DRIVE_SPEED,  36,  36, 5.);  // S1: Forward 36 Inches with 5 Sec timeout have to confirm
-
+        encoderDrive(DRIVE_SPEED,  37,  37, 7.);  // S1: Forward 36 Inches with 5 Sec timeout have to confirm
+        robot.foundationleft.setPosition(FOUNDATION_UP); //lift them so they don't get destroyed
+        robot.foundationright.setPosition(1-FOUNDATION_UP);
 
 
         telemetry.addData("Path", "Complete");
