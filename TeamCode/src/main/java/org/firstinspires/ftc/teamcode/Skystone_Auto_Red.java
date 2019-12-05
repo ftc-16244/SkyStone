@@ -85,7 +85,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 
 @Autonomous(name="SKYSTONE Auto Red", group ="Concept")
-//@Disabled
+@Disabled
 public class Skystone_Auto_Red extends LinearOpMode {
 
     /* Declare OpMode members. */
