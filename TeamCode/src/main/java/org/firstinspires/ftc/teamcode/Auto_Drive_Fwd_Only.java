@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 /**
  * This program is used in the autonomous period
@@ -42,7 +43,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 // Code to move the foundation into the building zone during Autonomous Mode
 
 @Autonomous(name="#1 Drive Forward Only", group="Pushbot")
-//@Disabled
+@Disabled
 public class Auto_Drive_Fwd_Only extends LinearOpMode {
 
     /* Declare OpMode members. */

@@ -130,9 +130,11 @@ public class Auto_FoundationMove extends LinearOpMode {
         robot.foundationleft.setPosition(FOUNDATION_DOWN); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1-FOUNDATION_DOWN);
         sleep(1000);     // pause for servos to move
-        encoderDrive(DRIVE_SPEED,  37,  37, 7.);  // S1: Forward 36 Inches with 5 Sec timeout have to confirm
+        encoderDrive(DRIVE_SPEED,  38,  38, 7.);  // S1: Forward 36 Inches with 5 Sec timeout have to confirm
         robot.foundationleft.setPosition(FOUNDATION_UP); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1-FOUNDATION_UP);
+        sleep(1000);
+
 
 
         telemetry.addData("Path", "Complete");

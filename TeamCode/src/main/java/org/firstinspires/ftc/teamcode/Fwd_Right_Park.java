@@ -30,9 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * This program is used in the autonomous period
@@ -41,11 +39,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
-@Autonomous(name="Test FWD", group="Pushbot")
+@Autonomous(name="#3 Forward Right Park", group="Pushbot")
 //@Disabled
 
 // extend AutoFoundation becasue it has all the Fields (constants) and methods we need to reuse here
-public class AutoFWD_Test extends Auto_FoundationMove {
+public class Fwd_Right_Park extends Auto_FoundationMove {
 
     /* Declare OpMode members. */
 
@@ -78,8 +76,10 @@ public class AutoFWD_Test extends Auto_FoundationMove {
 
         //sleep(1000);     //add stall time here if needed
 
-        encoderDrive(DRIVE_SPEED, 10, 10, 3.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
-        armDrive(ARM_SPEED,10,3);
+        encoderDrive(DRIVE_SPEED, 28, 28, 3.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
+        encoderDrive(DRIVE_SPEED, 13, -13, 3.);
+        encoderDrive(DRIVE_SPEED, 25, 25, 3.);
+        //armDrive(ARM_SPEED,10,3);
 
 
         telemetry.addData("Path", "Complete");
