@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -64,9 +63,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
-@Autonomous(name="#4 AutoFoundation Move", group="Pushbot")
+@Autonomous(name="#4 RedAutoFoundation Move", group="Pushbot")
 //@Disabled
-public class Auto_FoundationMove extends LinearOpMode {
+public class Red_Auto_FoundationMove extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
@@ -126,18 +125,18 @@ public class Auto_FoundationMove extends LinearOpMode {
         waitForStart(); //once press start, everything below will happen
         //armDrive(ARM_SPEED,  2, 1.);  // S1: 180 degrees counterclockwise
         encoderDrive(DRIVE_SPEED, -12, -12, 4);
-        encoderDrive(DRIVE_SPEED, -6, 6, 3); //first turn
-                encoderDrive(DRIVE_SPEED, -12, -12, 3);
-                encoderDrive(DRIVE_SPEED, 6, -6, 3);
-                encoderDrive(DRIVE_SPEED, -14, -14, 4);
+        encoderDrive(DRIVE_SPEED, 6, -6, 3); //first turn
+                encoderDrive(DRIVE_SPEED, -14, -14, 3);// straight part between turns
+                encoderDrive(DRIVE_SPEED, -6, 6, 3);
+                encoderDrive(DRIVE_SPEED, -13, -13, 4);
 
         //encoderDrive(DRIVE_SPEED,  -36,  -36, 7.);  // S1: backwards 36 Inches with 5 Sec timeout have to confirm
         //armDrive(ARM_SPEED, 30,3.); //keep arm up to not hit the wall
         robot.foundationleft.setPosition(FOUNDATION_DOWN); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1-FOUNDATION_DOWN);
+        encoderDrive(DRIVE_SPEED, 2, -2, 2);
         sleep(1000);     // pause for servos to move
         encoderDrive(DRIVE_SPEED,  42,  42, 7.);  // S1: Forward 36 Inches with 5 Sec timeout have to confirm
-        encoderDrive(DRIVE_SPEED, -2, 2, 2);
         robot.foundationleft.setPosition(FOUNDATION_UP); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1-FOUNDATION_UP);
         sleep(1000);
