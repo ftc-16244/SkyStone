@@ -144,6 +144,7 @@ public class Red_Auto_FoundationMove extends LinearOpMode {
 
 
         telemetry.addData("Path", "Complete");
+
         telemetry.update();
     }
 
