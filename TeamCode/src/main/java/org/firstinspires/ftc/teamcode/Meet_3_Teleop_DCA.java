@@ -265,6 +265,7 @@ public class Meet_3_Teleop_DCA extends OpMode{
 
                 break;
             case STATE_CONTINUOUS:
+                telemetry.addData("Drive Speed",currDriveState);
                 robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.arm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -278,7 +279,9 @@ public class Meet_3_Teleop_DCA extends OpMode{
         // switch case for the drive speed state
 
         switch(currDriveState) {
+
             case STATE_FAST:
+                telemetry.addData("Drive Speed",currDriveState);
                 robot.leftFront.setPower(left);
                 robot.rightFront.setPower(right);
 
