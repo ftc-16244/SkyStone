@@ -170,7 +170,7 @@ public class Meet_3_Teleop extends OpMode{
             robot.closey.setPosition(GRIPPER_READY);
         }
 
-        // foundation moving servo assignment to drivers gampad
+        // foundation moving servo assignment to drivers gampad1
        if (gamepad1.a) {
             robot.foundationleft.setPosition(FOUNDATION_DOWN); // a is up
             robot.foundationright.setPosition(1-FOUNDATION_DOWN); // how we "mirror" a servo since we can use a negative sign
