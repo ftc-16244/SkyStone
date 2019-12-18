@@ -58,11 +58,12 @@ public class Meet_3_Teleop extends OpMode{
     //set up states to change how the arm operates. Pre-sets or variable.
     private enum State {
         STATE_DISCRETE,
-        STATE_CONTINUOUS,
-        STATE_SLOW,
-        STATE_FAST,
+        STATE_CONTINUOUS
     } // Enums to choose which mode the arm will operate in. Preset discrete of continuous via joystick
-
+    private enum Drive_State {
+        STATE_FAST,
+        STATE_SLOW
+    }
 
     /* Declare OpMode members. */
     HardwarePushbot2 robot       = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
@@ -71,6 +72,7 @@ public class Meet_3_Teleop extends OpMode{
 
 
     private State                   currentState;
+    private Drive_State                   currentDRIVE_STATE;
     private static final double     GRIPPER_START    = 1 ; //optional to make sure it starts inside 18 inches
     private static final double     GRIPPER_READY    = 0.5; //open gripper such that spatual touched inside frame when arm is on top of inside rail
     private static final double     GRIPPER_CLOSE    = 0.75;   // larger number grips tighter. 0.7 for sprocket is a good start
@@ -91,7 +93,7 @@ public class Meet_3_Teleop extends OpMode{
         robot.init(hardwareMap);
         //newState(State.STATE_CONTINUOUS);
         newState(State.STATE_DISCRETE);
-        newState(State.STATE_FAST);
+        currentDRIVE_STATE = Drive_State.STATE_FAST;
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");
@@ -145,8 +147,23 @@ public class Meet_3_Teleop extends OpMode{
         double max;
         double ARM_SPEED = .25;
         double lift;
+        double speedfactor = 2;
 
     //double-many decimal places
+        drive = -gamepad1.left_stick_y;
+        // right joystick is for turning
+        turn  =  gamepad1.right_stick_x;
+        // Combine drive and turn for blended motion.
+        left  = drive + turn;
+        right = drive - turn;
+
+        // Normalize the values so neither exceed +/- 1.0
+        max = Math.max(Math.abs(left), Math.abs(right));
+        if (max > 1.0)
+        {
+            left /= max; // does this to stay within the limit and keeps the ratio the same
+            right /= max;
+        }
 
         // note isBusy() applies to the Run_USING ENCODER mods
         // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
@@ -195,19 +212,18 @@ public class Meet_3_Teleop extends OpMode{
         // set-up arm states on bumpers of implement gampad
         if (gamepad1.left_bumper)
         {
-            newState(State.STATE_FAST); //did this to make it continuos
+            currentDRIVE_STATE = Drive_State.STATE_FAST; //did this to make it continuos
         }
         if (gamepad1.right_bumper)
         {
-            newState(State.STATE_SLOW); //preset points
+            currentDRIVE_STATE = Drive_State.STATE_SLOW; //preset points
         }
         // switch case to determine what mode the arm needs to operate in.
 
         
-        switch (currentState)
-        {
+        switch (currentState) {
             case STATE_DISCRETE: // push button
-                telemetry.addData("Arm Mode",currentState);
+                telemetry.addData("Arm Mode", currentState);
                 if (gamepad2.a) {
                     robot.arm.setTargetPosition(ARM_STONE_READY);
                     robot.arm2.setTargetPosition(ARM_STONE_READY);
@@ -231,54 +247,32 @@ public class Meet_3_Teleop extends OpMode{
 
 
                 break;
-            case STATE_CONTINUOUS:
+            case STATE_CONTINUOUS: {
                 robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.arm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-                lift = (-gamepad2.left_stick_y)/2; //divides the power by 2 to reduce power
+                lift = (-gamepad2.left_stick_y) / 2; //divides the power by 2 to reduce power
                 robot.arm.setPower(lift);
                 robot.arm2.setPower(lift);
-                telemetry.addData("Arm Mode",currentState);
+                telemetry.addData("Arm Mode", currentState);
                 telemetry.addData("Arm Power", "%.2f", lift);
                 break;
-
-            case STATE_FAST:
-
-                drive = (-gamepad1.left_stick_y);
-                turn  =  (gamepad1.right_stick_x);
-                left  = drive + turn;
-                right = drive - turn;
-
-                // Normalize the values so neither exceed +/- 1.0
-                max = Math.max(Math.abs(left), Math.abs(right));
-                if (max > 1.0)
-                {
-                    left /= max; // does this to stay within the limit and keeps the ratio the same
-                    right /= max;
-                    robot.leftFront.setPower(left);
-                    robot.rightFront.setPower(right);
-
-                }
-                break;
-            case STATE_SLOW:
-                drive = (-gamepad1.left_stick_y)/2;
-                turn  = ( gamepad1.right_stick_x)/2;
-                left  = drive + turn;
-                right = drive - turn;
-
-                // Normalize the values so neither exceed +/- 1.0
-                max = Math.max(Math.abs(left), Math.abs(right));
-                if (max > 1.0)
-                {
-                    left /= max; // does this to stay within the limit and keeps the ratio the same
-                    right /= max;
-                    robot.leftFront.setPower(left);
-                    robot.rightFront.setPower(right);
-
-                }
-                break;
+            }
 
         }
+              switch (currentDRIVE_STATE) {
+                   case STATE_FAST:
+                          robot.leftFront.setPower(left);
+                          robot.rightFront.setPower(right);
+                          break;
+
+                      case STATE_SLOW:
+                          robot.leftFront.setPower(left / speedfactor);
+                          robot.rightFront.setPower(right / speedfactor);
+                          break;
+
+              }
+
 
 
     }

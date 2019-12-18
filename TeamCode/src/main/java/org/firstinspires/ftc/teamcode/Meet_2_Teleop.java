@@ -199,6 +199,7 @@ public class Meet_2_Teleop extends OpMode{
         if ((gamepad2.dpad_left) |(gamepad2.dpad_right))  {
         robot.accumulator.setPower(0); //turns the accumulator off
         }
+        
         if (gamepad2.dpad_up) {
             robot.accumulator.setPower(-ARM_SPEED); //turns the accumulator off
         }
@@ -237,6 +238,8 @@ public class Meet_2_Teleop extends OpMode{
                     robot.arm.setPower(Math.abs(ARM_SPEED));
                     robot.arm2.setPower(Math.abs(ARM_SPEED));
                     telemetry.addData("Carry Position", robot.arm.getTargetPosition());
+
+
 
                 }
 
