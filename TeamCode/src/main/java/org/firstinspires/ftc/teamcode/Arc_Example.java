@@ -63,11 +63,13 @@ public class Arc_Example extends LinearOpMode {
     private static final double     WHEEL_DIAMETER_INCHES   =   3.54 ;   // 90mm wheels. For figuring circumference its a 90 millimeter wheel
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
-    public static final double      DRIVE_SPEED             =   0.5;
+    public static final double      DRIVE_SPEED             =   0.35;
 
     public static final double      ARM_SPEED               =   0.8;
     private static final double     TRACK_WIDTH             =   15;
 
+    private static final double     FOUNDATION_UP =0.4;
+    private static final double     FOUNDATION_DOWN  =0.65;
     @Override
     public void runOpMode() {
 
@@ -76,7 +78,10 @@ public class Arc_Example extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-
+        // grab foundation
+        robot.foundationleft.setPosition(FOUNDATION_DOWN); //lift them so they don't get destroyed
+        robot.foundationright.setPosition(1-FOUNDATION_DOWN);
+        sleep(250);
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
@@ -101,10 +106,11 @@ public class Arc_Example extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart(); //once press start, everything below will happen
 
-        leftArcDrive(DRIVE_SPEED,25,90,4);
+        leftArcDrive(DRIVE_SPEED,25,90,5);
+        robot.foundationleft.setPosition(FOUNDATION_UP);
+        robot.foundationright.setPosition(1-FOUNDATION_UP);
 
-
-       sleep(1000);
+       sleep(250);
 
 
 
