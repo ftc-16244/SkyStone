@@ -141,13 +141,16 @@ public class Arc_Example extends LinearOpMode {
             leftDist = sweptAngle/360*3.14159*(radius-(TRACK_WIDTH /2))*2; // distance leftwheel needs to go
             rightDist = sweptAngle/360*3.14159*(radius+(TRACK_WIDTH /2))*2; // distance right wheel needs to go
             newLeftTarget = robot.leftFront.getCurrentPosition() + (int)(leftDist * COUNTS_PER_INCH);
-            newRightTarget = robot.rightFront.getCurrentPosition() + (int)(leftDist * COUNTS_PER_INCH);
+            newRightTarget = robot.rightFront.getCurrentPosition() + (int)(rightDist * COUNTS_PER_INCH);
             centerlineDist =  sweptAngle/360*3.14159*(radius*2); // distance center needs to go
             leftFrac = leftDist/ centerlineDist;
             rightFrac= rightDist/centerlineDist;
             leftSpeed = DRIVE_SPEED  * leftFrac;
             rightSpeed =  DRIVE_SPEED  * rightFrac;
 
+            // set target positions
+            robot.leftFront.setTargetPosition(newLeftTarget);
+            robot.rightFront.setTargetPosition(newRightTarget);
 
             // Turn On RUN_TO_POSITION
             robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -166,7 +169,7 @@ public class Arc_Example extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                    (runtime.seconds() < timeoutS) &&
-                   (robot.leftFront.isBusy() && robot.rightFront.isBusy())) {
+                   (robot.leftFront.isBusy() || robot.rightFront.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Target",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
