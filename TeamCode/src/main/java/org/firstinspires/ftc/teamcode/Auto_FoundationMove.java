@@ -79,7 +79,7 @@ public class Auto_FoundationMove extends LinearOpMode {
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
     public static final double     DRIVE_SPEED             = 0.3;
     private static final double     TURN_SPEED              = 0.5;
-
+    private static final double     TRACK_WIDTH             =   15;
     private static final double     COUNTS_PER_ARM_MOTOR_REV    = 280 ;         // REV HD HEX 40:1 motors
     public static final double     ARM_SPEED             = 0.8;
     private static final double     ARM_GEAR_REDUCTION    = 4.0 ;   // This should be 1.0 or more for an arm. Count teeth and calculate
@@ -136,8 +136,7 @@ public class Auto_FoundationMove extends LinearOpMode {
         robot.foundationleft.setPosition(FOUNDATION_DOWN); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1-FOUNDATION_DOWN);
         sleep(1000);     // pause for servos to move
-        encoderDrive(DRIVE_SPEED,  42,  42, 7.);  // S1: Forward 36 Inches with 5 Sec timeout have to confirm
-        encoderDrive(DRIVE_SPEED, -2, 2, 2);
+
         robot.foundationleft.setPosition(FOUNDATION_UP); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1-FOUNDATION_UP);
         sleep(1000);
@@ -252,6 +251,79 @@ public class Auto_FoundationMove extends LinearOpMode {
             sleep(250);   // optional pause after each move
 
         }
+
+    }
+    public void leftArcDrive(double speed,
+                             double radius, double sweptAngle,
+                             double timeoutS) {
+        int newLeftTarget;
+        int newRightTarget;
+        double leftSpeed;
+        double rightSpeed;
+        double leftDist;
+        double rightDist;
+        double centerlineDist;
+        double leftFrac;
+        double rightFrac;
+
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            leftDist = sweptAngle/360*3.14159*(radius-(TRACK_WIDTH /2))*2; // distance leftwheel needs to go
+            rightDist = sweptAngle/360*3.14159*(radius+(TRACK_WIDTH /2))*2; // distance right wheel needs to go
+            newLeftTarget = robot.leftFront.getCurrentPosition() + (int)(leftDist * COUNTS_PER_INCH);
+            newRightTarget = robot.rightFront.getCurrentPosition() + (int)(rightDist * COUNTS_PER_INCH);
+            centerlineDist =  sweptAngle/360*3.14159*(radius*2); // distance center needs to go
+            leftFrac = leftDist/ centerlineDist;
+            rightFrac= rightDist/centerlineDist;
+            leftSpeed = speed  * leftFrac;
+            rightSpeed =  speed  * rightFrac;
+
+            // set target positions
+            robot.leftFront.setTargetPosition(newLeftTarget);
+            robot.rightFront.setTargetPosition(newRightTarget);
+
+            // Turn On RUN_TO_POSITION
+            robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            robot.leftFront.setPower(Math.abs(leftSpeed));
+            robot.rightFront.setPower(Math.abs(rightSpeed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (robot.leftFront.isBusy() || robot.rightFront.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Target",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
+                telemetry.addData("Actual_Position",  "Running at %7d :%7d",robot.leftFront.getCurrentPosition(),robot.rightFront.getCurrentPosition());
+                telemetry.update();
+            }
+
+            // Stop all motion;
+
+            robot.leftFront.setPower(0);
+            robot.rightFront.setPower(0);
+
+
+            // Turn off RUN_TO_POSITION
+            robot.leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+            sleep(250);   // optional pause after each move
+        }
+
+
 
     }
 
