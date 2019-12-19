@@ -106,7 +106,7 @@ public class Arc_Example extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart(); //once press start, everything below will happen
 
-        leftArcDrive(DRIVE_SPEED,25,90,5);
+        leftArcDrive(DRIVE_SPEED,19,120,5);
         robot.foundationleft.setPosition(FOUNDATION_UP);
         robot.foundationright.setPosition(1-FOUNDATION_UP);
 
@@ -149,7 +149,7 @@ public class Arc_Example extends LinearOpMode {
             newLeftTarget = robot.leftFront.getCurrentPosition() + (int)(leftDist * COUNTS_PER_INCH);
             newRightTarget = robot.rightFront.getCurrentPosition() + (int)(rightDist * COUNTS_PER_INCH);
             centerlineDist =  sweptAngle/360*3.14159*(radius*2); // distance center needs to go
-            leftFrac = leftDist/ centerlineDist;
+            leftFrac = leftDist/centerlineDist;
             rightFrac= rightDist/centerlineDist;
             leftSpeed = DRIVE_SPEED  * leftFrac;
             rightSpeed =  DRIVE_SPEED  * rightFrac;
