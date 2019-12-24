@@ -56,7 +56,7 @@ public class Meet_1_Teleop extends OpMode{
 
 
 
-    private enum State {
+    public enum State {
         STATE_DISCRETE,
         STATE_INFINITE,
         

@@ -56,7 +56,7 @@ public class Meet_3_Teleop_DCA extends OpMode{
 
 
     //set up states to change how the arm operates. Pre-sets or variable.
-    private enum State {
+    public enum State {
         STATE_DISCRETE,
         STATE_CONTINUOUS,
 

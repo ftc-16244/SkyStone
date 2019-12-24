@@ -56,7 +56,7 @@ public class Meet_3_Teleop extends OpMode{
 
 
     //set up states to change how the arm operates. Pre-sets or variable.
-    private enum State {
+    public enum State {
         STATE_DISCRETE,
         STATE_CONTINUOUS
     } // Enums to choose which mode the arm will operate in. Preset discrete of continuous via joystick
