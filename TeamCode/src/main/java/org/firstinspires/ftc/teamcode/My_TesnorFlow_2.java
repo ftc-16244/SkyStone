@@ -51,9 +51,9 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
-@Disabled
-public class My_TensorFlow extends LinearOpMode {
+@TeleOp(name = "TensorFlow 2", group = "Concept")
+//@Disabled
+public class My_TesnorFlow_2 extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
     private static final String LABEL_SECOND_ELEMENT = "Skystone";
@@ -89,11 +89,6 @@ public class My_TensorFlow extends LinearOpMode {
     public void runOpMode() {
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
-
-        double  DistToTarget; // distance diplayed in inches
-        double  DistCalFactor = -20.3; //manual calibration of dist target
-        double  DistCalOffset = 708; //manual calibration of dist target
-        double PixelDelta;
         initVuforia();
 
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
@@ -132,15 +127,7 @@ public class My_TensorFlow extends LinearOpMode {
                                           recognition.getLeft(), recognition.getTop());
                         telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                 recognition.getRight(), recognition.getBottom());
-
-                        // converts bow height in pixles to an approximate distance from target.
-                          PixelDelta = recognition.getBottom() - recognition.getTop();
-                          DistToTarget = ((PixelDelta - DistCalOffset)/DistCalFactor);
-                        telemetry.addData(String.format("  Dist (%d)", i), "%.03f" , DistToTarget);
-                        telemetry.addData(String.format("  PixelHeight (%d)", i), "%.03f" , PixelDelta);
-
                       }
-
                       telemetry.update();
                     }
                 }
