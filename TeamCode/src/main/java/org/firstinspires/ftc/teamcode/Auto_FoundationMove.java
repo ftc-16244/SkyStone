@@ -132,10 +132,10 @@ public class Auto_FoundationMove extends LinearOpMode {
         waitForStart(); //once press start, everything below will happen
         //armDrive(ARM_SPEED,  2, 1.);  // S1: 180 degrees counterclockwise
         encoderDrive(DRIVE_SPEED, -12, -12, 4);
-        encoderDrive(DRIVE_SPEED, -6, 6, 3); //first turn
-        encoderDrive(DRIVE_SPEED, -12, -12, 3);
-        encoderDrive(DRIVE_SPEED, 6, -6, 3);
-        encoderDrive(DRIVE_SPEED, -14, -14, 4);
+        encoderDrive(DRIVE_SPEED, -7, 7, 3); //first turn
+        encoderDrive(DRIVE_SPEED, -14, -14, 3);
+        encoderDrive(DRIVE_SPEED, 7.5, -7.5, 3);
+        encoderDrive(DRIVE_SPEED, -13, -13, 4);
         //grab foundation - both servos
         robot.foundationleft.setPosition(FOUNDATION_DOWN); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1 - FOUNDATION_DOWN);
