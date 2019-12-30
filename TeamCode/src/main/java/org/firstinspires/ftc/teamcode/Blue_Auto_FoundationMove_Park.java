@@ -63,13 +63,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
-@Autonomous(name="#6A AutoFoundation Move w/ Park", group="Pushbot")
+@Autonomous(name="#5B Blue Foundation w/ Park", group="Pushbot")
 //@Disabled
-public class Blue_Auto_FoundationMove_Park extends LinearOpMode {
+public class Blue_Auto_FoundationMove_Park extends Auto_FoundationMove {
 
     /* Declare OpMode members. */
     HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
     private ElapsedTime     runtime = new ElapsedTime();
+    Auto_FoundationMove     motion = new Auto_FoundationMove();
 
 
     private static final double     COUNTS_PER_MOTOR_REV    = 1120 ;         // REV HD HEX 40:1 motors
@@ -87,6 +88,8 @@ public class Blue_Auto_FoundationMove_Park extends LinearOpMode {
 
     private static final double     FOUNDATION_UP =0.4;
     private static final double     FOUNDATION_DOWN  =0.65;
+
+
     @Override
     public void runOpMode() {
 
@@ -130,20 +133,23 @@ public class Blue_Auto_FoundationMove_Park extends LinearOpMode {
         encoderDrive(DRIVE_SPEED, -12, -12, 3);
         encoderDrive(DRIVE_SPEED, 6, -6, 3);
         encoderDrive(DRIVE_SPEED, -13, -13, 4);
-        // grab foundation
+        // grab foundation with servos
         robot.foundationleft.setPosition(FOUNDATION_DOWN); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1-FOUNDATION_DOWN);
-        sleep(500);     // pause for servos to move
+        //pause for servos to capture foundation
+        sleep(500);
 
-        // Return in an arc to be able to drive to centerline
+        // Drive forward in a left arc to rotate foundation 90 degrees
         leftArcDrive(DRIVE_SPEED,22,115,5);
-        encoderDrive(DRIVE_SPEED, -23, -23, 10);
+        // backup and push foundation inot the corner
+        encoderDrive(DRIVE_SPEED, -20, -20, 4);
+        // release foundation
         robot.foundationleft.setPosition(FOUNDATION_UP); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1-FOUNDATION_UP);
-
-        sleep(1000);
+        // pause for servos
+        sleep(500);//
+        // drive to center parking spot
         encoderDrive(DRIVE_SPEED, 40, 40, 4);
-
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -157,6 +163,7 @@ public class Blue_Auto_FoundationMove_Park extends LinearOpMode {
      *  2) Move runs out of time
      *  3) Driver stops the opmode running.
      */
+
     public void encoderDrive(double speed,
                              double leftInches, double rightInches,
                              double timeoutS) {
@@ -168,8 +175,8 @@ public class Blue_Auto_FoundationMove_Park extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.leftFront.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
-            newRightTarget = robot.rightFront.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+            newLeftTarget = robot.leftFront.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
+            newRightTarget = robot.rightFront.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
             robot.leftFront.setTargetPosition(newLeftTarget);
             robot.rightFront.setTargetPosition(newRightTarget);
 
@@ -189,12 +196,12 @@ public class Blue_Auto_FoundationMove_Park extends LinearOpMode {
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
-                   (runtime.seconds() < timeoutS) &&
-                   (robot.leftFront.isBusy() && robot.rightFront.isBusy())) {
+                    (runtime.seconds() < timeoutS) &&
+                    (robot.leftFront.isBusy() && robot.rightFront.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Target",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
-                telemetry.addData("Actual_Position",  "Running at %7d :%7d",robot.leftFront.getCurrentPosition(),robot.rightFront.getCurrentPosition());
+                telemetry.addData("Target", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+                telemetry.addData("Actual_Position", "Running at %7d :%7d", robot.leftFront.getCurrentPosition(), robot.rightFront.getCurrentPosition());
                 telemetry.update();
             }
 
@@ -212,9 +219,7 @@ public class Blue_Auto_FoundationMove_Park extends LinearOpMode {
         }
 
 
-
     }
-
     public void armDrive(double speed,
                          double armDegrees, double timeoutS) {
 
@@ -255,6 +260,7 @@ public class Blue_Auto_FoundationMove_Park extends LinearOpMode {
         }
 
     }
+
     public void leftArcDrive(double speed,
                              double radius, double sweptAngle,
                              double timeoutS) {
@@ -273,15 +279,15 @@ public class Blue_Auto_FoundationMove_Park extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            leftDist = sweptAngle/360*3.14159*(radius-(TRACK_WIDTH /2))*2; // distance leftwheel needs to go
-            rightDist = sweptAngle/360*3.14159*(radius+(TRACK_WIDTH /2))*2; // distance right wheel needs to go
-            newLeftTarget = robot.leftFront.getCurrentPosition() + (int)(leftDist * COUNTS_PER_INCH);
-            newRightTarget = robot.rightFront.getCurrentPosition() + (int)(rightDist * COUNTS_PER_INCH);
-            centerlineDist =  sweptAngle/360*3.14159*(radius*2); // distance center needs to go
-            leftFrac = leftDist/ centerlineDist;
-            rightFrac= rightDist/centerlineDist;
-            leftSpeed = speed  * leftFrac;
-            rightSpeed =  speed  * rightFrac;
+            leftDist = sweptAngle / 360 * 3.14159 * (radius - (TRACK_WIDTH / 2)) * 2; // distance leftwheel needs to go
+            rightDist = sweptAngle / 360 * 3.14159 * (radius + (TRACK_WIDTH / 2)) * 2; // distance right wheel needs to go
+            newLeftTarget = robot.leftFront.getCurrentPosition() + (int) (leftDist * COUNTS_PER_INCH);
+            newRightTarget = robot.rightFront.getCurrentPosition() + (int) (rightDist * COUNTS_PER_INCH);
+            centerlineDist = sweptAngle / 360 * 3.14159 * (radius * 2); // distance center needs to go
+            leftFrac = leftDist / centerlineDist;
+            rightFrac = rightDist / centerlineDist;
+            leftSpeed = speed * leftFrac;
+            rightSpeed = speed * rightFrac;
 
             // set target positions
             robot.leftFront.setTargetPosition(newLeftTarget);
@@ -307,8 +313,8 @@ public class Blue_Auto_FoundationMove_Park extends LinearOpMode {
                     (robot.leftFront.isBusy() || robot.rightFront.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Target",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
-                telemetry.addData("Actual_Position",  "Running at %7d :%7d",robot.leftFront.getCurrentPosition(),robot.rightFront.getCurrentPosition());
+                telemetry.addData("Target", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+                telemetry.addData("Actual_Position", "Running at %7d :%7d", robot.leftFront.getCurrentPosition(), robot.rightFront.getCurrentPosition());
                 telemetry.update();
             }
 
@@ -326,7 +332,5 @@ public class Blue_Auto_FoundationMove_Park extends LinearOpMode {
         }
 
 
-
     }
-
 }

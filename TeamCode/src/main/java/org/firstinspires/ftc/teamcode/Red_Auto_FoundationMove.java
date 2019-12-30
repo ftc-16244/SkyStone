@@ -63,7 +63,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 // Code to move the foundation into the building zone during Autonomous Mode
 
-@Autonomous(name="#4 RedAutoFoundation Move", group="Pushbot")
+@Autonomous(name="#4R Red Foundation Only", group="Pushbot")
 //@Disabled
 public class Red_Auto_FoundationMove extends LinearOpMode {
 

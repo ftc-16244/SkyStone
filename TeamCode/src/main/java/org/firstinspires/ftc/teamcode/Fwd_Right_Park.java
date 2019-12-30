@@ -76,7 +76,7 @@ public class Fwd_Right_Park extends Auto_FoundationMove {
 
         //sleep(1000);     //add stall time here if needed
 
-        encoderDrive(DRIVE_SPEED, 28, 28, 3.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
+        encoderDrive(DRIVE_SPEED, 26, 26, 3.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
         encoderDrive(DRIVE_SPEED, 13, -13, 3.);
         encoderDrive(DRIVE_SPEED, 25, 25, 3.);
         //armDrive(ARM_SPEED,10,3);
