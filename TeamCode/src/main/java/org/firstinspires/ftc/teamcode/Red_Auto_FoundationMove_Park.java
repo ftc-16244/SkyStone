@@ -128,9 +128,9 @@ public class Red_Auto_FoundationMove_Park extends Auto_FoundationMove {
         waitForStart(); //once press start, everything below will happen
         //armDrive(ARM_SPEED,  2, 1.);  // S1: 180 degrees counterclockwise
         encoderDrive(DRIVE_SPEED, -12, -12, 4);
-        encoderDrive(DRIVE_SPEED, -6, 6, 3); //first turn
-        encoderDrive(DRIVE_SPEED, -12, -12, 3);
-        encoderDrive(DRIVE_SPEED, 6, -6, 3);
+        encoderDrive(DRIVE_SPEED, 7, -7, 3); //first turn
+        encoderDrive(DRIVE_SPEED, -14, -14, 3);
+        encoderDrive(DRIVE_SPEED, -6.5, 6.5, 3);
         encoderDrive(DRIVE_SPEED, -13, -13, 4);
         // grab foundation with servos
         robot.foundationleft.setPosition(FOUNDATION_DOWN); //lift them so they don't get destroyed
@@ -141,14 +141,14 @@ public class Red_Auto_FoundationMove_Park extends Auto_FoundationMove {
         // Drive forward in a left arc to rotate foundation 90 degrees
         rightArcDrive(DRIVE_SPEED,22,115,5);
         // backup and push foundation inot the corner
-        encoderDrive(DRIVE_SPEED, -20, -20, 4);
+        encoderDrive(DRIVE_SPEED, -18, -18, 4);
         // release foundation
         robot.foundationleft.setPosition(FOUNDATION_UP); //lift them so they don't get destroyed
         robot.foundationright.setPosition(1-FOUNDATION_UP);
         // pause for servos
         sleep(500);//
         // drive to center parking spot
-        encoderDrive(DRIVE_SPEED, 40, 40, 4);
+        encoderDrive(DRIVE_SPEED, 38, 38, 4);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
