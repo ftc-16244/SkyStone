@@ -72,18 +72,13 @@ public class X01_Methods_Share_Test extends Auto_FoundationMove {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //sleep(1000);     //add stall time here if needed
 
         encoderDrive(DRIVE_SPEED, 20, 20, 3.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
-        //encoderDrive(DRIVE_SPEED, -13, 13, 3.);
-        //encoderDrive(DRIVE_SPEED, 25, 25, 3.);
         armDrive(.5,40,3);
         leftArcDrive(.5,25,25,5);
         rightArcDrive(.5,25,25,5);
         armDrive(.5,-40,3);
         encoderDrive(DRIVE_SPEED, -20, -20, 3.);  // S3: Forward 30 Inches with 10 Sec timeout have to confirm
-
-        //armDrive(ARM_SPEED,10,3);
 
 
         telemetry.addData("Path", "Complete");
