@@ -84,9 +84,9 @@ public class Auto_FoundationMove extends LinearOpMode {
     public static final double ARM_SPEED = 0.8;
     private static final double ARM_GEAR_REDUCTION = 4.0;   // This should be 1.0 or more for an arm. Count teeth and calculate
     private static final double Ticks_Per_Degree = COUNTS_PER_ARM_MOTOR_REV * ARM_GEAR_REDUCTION / 360;
-
-    private static final double FOUNDATION_UP = 0.4;
-    private static final double FOUNDATION_DOWN = 0.65;
+    // these variables are used in other opmodes
+    public static final double FOUNDATION_UP = 0.4;
+    public static final double FOUNDATION_DOWN = 0.65;
 
     /* Constructor */
     public Auto_FoundationMove(){
