@@ -351,8 +351,8 @@ public class Auto_FoundationMove extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            leftDist = sweptAngle / 360 * 3.14159 * (radius - (TRACK_WIDTH / 2)) * 2; // distance leftwheel needs to go
-            rightDist = sweptAngle / 360 * 3.14159 * (radius + (TRACK_WIDTH / 2)) * 2; // distance right wheel needs to go
+            leftDist = sweptAngle / 360 * 3.14159 * (radius + (TRACK_WIDTH / 2)) * 2; // distance leftwheel needs to go
+            rightDist = sweptAngle / 360 * 3.14159 * (radius - (TRACK_WIDTH / 2)) * 2; // distance right wheel needs to go
             newLeftTarget = robot.leftFront.getCurrentPosition() + (int) (leftDist * COUNTS_PER_INCH);
             newRightTarget = robot.rightFront.getCurrentPosition() + (int) (rightDist * COUNTS_PER_INCH);
             centerlineDist = sweptAngle / 360 * 3.14159 * (radius * 2); // distance center needs to go
