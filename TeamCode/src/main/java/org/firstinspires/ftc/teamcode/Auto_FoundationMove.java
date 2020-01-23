@@ -215,7 +215,6 @@ public class Auto_FoundationMove extends LinearOpMode {
             sleep(250);   // optional pause after each move
         }
 
-
     }
 
     public void armDrive(double speed,
@@ -271,7 +270,6 @@ public class Auto_FoundationMove extends LinearOpMode {
         double centerlineDist;
         double leftFrac;
         double rightFrac;
-
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
