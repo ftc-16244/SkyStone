@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
@@ -38,7 +39,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 // Code to move the foundation into the building zone during Autonomous Mode
 
 @Autonomous(name="X02 5B Alternate Test Only", group="Experimental")
-//@Disabled
+@Disabled
 
 // extend AutoFoundation becasue it has all the Fields (constants) and methods we need to reuse here
 public class X02_5B_Test_only extends Auto_FoundationMove {
