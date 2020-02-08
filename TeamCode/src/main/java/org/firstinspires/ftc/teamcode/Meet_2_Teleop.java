@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Meet 2 Teleop", group="Teleop")
-//@Disabled
+@Disabled
 public class Meet_2_Teleop extends OpMode{
 
 
