@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
 
@@ -48,9 +49,10 @@ public class SimpleTeleop extends OpMode{
 
 
     /* Declare OpMode members. */
-    private ElapsedTime runtime = new ElapsedTime();
+    private ElapsedTime runtime             = new ElapsedTime();
     private FoundationMover foundationMover = new FoundationMover(hardwareMap);
-    private Gripper gripper = new Gripper(hardwareMap);
+    private Gripper gripper                 = new Gripper(hardwareMap);
+    private Arm arm                         = new Arm(hardwareMap);
 
        /*
      * Code to run ONCE when the driver hits INIT
@@ -111,6 +113,14 @@ public class SimpleTeleop extends OpMode{
 
         if (gamepad2.y) {
             gripper.moveToOpen();
+        }
+
+        if (gamepad2.a) {
+            arm.moveToPickupStone();
+        }
+
+        if (gamepad2.b) {
+            arm.moveToCarryStone();
         }
     }
 
