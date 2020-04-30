@@ -64,7 +64,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Gripper
 {
    // Define hardware objects
-    public Servo  gripper;
+    private Servo  gripper;
 
 
 
