@@ -56,8 +56,6 @@
  */
 
 package org.firstinspires.ftc.teamcode.Subsystems;
-
-
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -72,11 +70,15 @@ public class FoundationMover
     private static final double STORING = 0.4;// Left side reference
 
     // Contructor for Foundation Mover that specified a new hardware map also
-    public FoundationMover(HardwareMap hardwareMap){
+
+
+
+    public FoundationMover(HardwareMap hardwareMap) {
         // set up the names for the servos. MUST match name in
         // Robot Config file (on the phone)
-        foundationleft = hardwareMap.servo.get("fdnLeft");
-        foundationright = hardwareMap.servo.get("fdnRight");
+
+        foundationleft  = hardwareMap.get(Servo.class, "fdnLeft");
+        foundationright   = hardwareMap.get(Servo.class, "fdnRight");
     }
     public void moveToGrab(){
         foundationleft.setPosition(GRABBING);

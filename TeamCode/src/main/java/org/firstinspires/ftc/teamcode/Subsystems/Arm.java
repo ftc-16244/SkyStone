@@ -78,7 +78,7 @@ public class Arm
         // set up the names for the servos. MUST match name in
         // Robot Config file (on the phone)
         armLeft = hardwareMap.get(DcMotor.class,"Arm");
-        armRight = hardwareMap.get(DcMotor.class,"Arm2");
+        armRight = hardwareMap.get(DcMotor.class,"Arm_2");
 
         armLeft.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
         armRight.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed

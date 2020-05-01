@@ -76,7 +76,8 @@ public class Gripper
     public Gripper(HardwareMap hardwareMap){
         // set up the names for the servos. MUST match name in
         // Robot Config file (on the phone)
-        gripper = hardwareMap.servo.get("Closey");
+
+        gripper = hardwareMap.get(Servo.class, "Closey");
     }
     public void moveToStartPsn(){
         gripper.setPosition(GRIPPER_START);
