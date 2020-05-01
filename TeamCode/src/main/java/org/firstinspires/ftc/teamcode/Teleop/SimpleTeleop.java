@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
@@ -49,19 +50,26 @@ public class SimpleTeleop extends OpMode{
 
 
     /* Declare OpMode members. */
-    private ElapsedTime runtime             = new ElapsedTime();
-    private FoundationMover foundationMover = new FoundationMover(hardwareMap);
-    private Gripper gripper                 = new Gripper(hardwareMap);
-    private Arm arm                         = new Arm(hardwareMap);
+
+    //private Gripper gripper                 = new Gripper(hardwareMap);
+    //private Arm arm                         = new Arm(hardwareMap);
 
        /*
      * Code to run ONCE when the driver hits INIT
      */
+    // Constructor
+
+
     @Override
     public void init() {
-
+        //ElapsedTime runtime             = new ElapsedTime();
+        FoundationMover foundationMover = new FoundationMover(hardwareMap);
+        //Arm arm = new Arm(hardwareMap);
+        Gripper gripper = new Gripper(hardwareMap);
+        //
         foundationMover.moveToStore();
         gripper.moveToStartPsn();
+        telemetry.addData("Init Loop", "Complete ");
     }
 
     /*
@@ -69,7 +77,7 @@ public class SimpleTeleop extends OpMode{
      */
     @Override
     public void init_loop() {
-
+        
     }
 
     /*
@@ -94,11 +102,11 @@ public class SimpleTeleop extends OpMode{
 
         // foundation moving servo assignment to drivers gamepad
         if (gamepad1.a) {
-            foundationMover.moveToStore();
+            //foundationMover.moveToStore();
         }
 
         if (gamepad1.b) {
-            foundationMover.moveToGrab();
+            //foundationMover.moveToGrab();
         }
 
 
@@ -107,6 +115,7 @@ public class SimpleTeleop extends OpMode{
         //========================================
 
         // gripper assignment to X and Y buttons on implement gamepad
+        /*
         if (gamepad2.x) {
             gripper.moveToClose();
         }
@@ -122,6 +131,8 @@ public class SimpleTeleop extends OpMode{
         if (gamepad2.b) {
             arm.moveToCarryStone();
         }
+        */
+
     }
 
     /*
