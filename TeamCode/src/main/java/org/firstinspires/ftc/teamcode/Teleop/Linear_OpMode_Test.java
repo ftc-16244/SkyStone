@@ -33,8 +33,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 
 
 /**
@@ -50,7 +54,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
+@TeleOp(name="All in One File", group="Linear Opmode")
 @Disabled
 public class Copy_Simple_Linear_Op_Mode extends LinearOpMode {
 
@@ -58,17 +62,26 @@ public class Copy_Simple_Linear_Op_Mode extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
+    private Servo fdnLeft = null;
+    private Servo fdnRight = null;
+
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "Left_front");
         rightDrive = hardwareMap.get(DcMotor.class, "Right_front");
+        FoundationMover foundationMover = new FoundationMover(hardwareMap);
+        foundationMover.moveToStore();
+        //foundationMover.init(hardwareMap);
+        //fdnLeft = hardwareMap.get(Servo.class, "fdnLeft");
+        //fdnRight = hardwareMap.get(Servo.class, "fdnRight");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -104,6 +117,22 @@ public class Copy_Simple_Linear_Op_Mode extends LinearOpMode {
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
+
+            //========================================
+            // GAME PAD 1
+            //========================================
+            // left joystick is assigned to drive speed
+
+
+            // foundation moving servo assignment to drivers gamepad
+            if (gamepad1.a) {
+                foundationMover.moveToGrab();
+
+            }
+
+            if (gamepad1.b) {
+                foundationMover.moveToStore();
+            }
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());

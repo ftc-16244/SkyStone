@@ -73,12 +73,19 @@ public class Arm
     private static final int ARM_STONE_CARRY = 500;// Left side reference
     private static final double ARM_SPEED = .5;
 
+    HardwareMap hwMap           =  null;        // create a hardware mao object here
+
     // Contructor for Foundation Mover that specified a new hardware map also
-    public Arm(HardwareMap hardwareMap){
-        // set up the names for the servos. MUST match name in
-        // Robot Config file (on the phone)
-        armLeft = hardwareMap.get(DcMotor.class,"Arm");
-        armRight = hardwareMap.get(DcMotor.class,"Arm_2");
+
+    public Arm(){
+
+    }
+
+    public void initArmMotors(HardwareMap ahwMap){
+
+        hwMap = ahwMap;
+        armLeft = hwMap.get(DcMotor.class,"Arm");
+        armRight =  hwMap.get(DcMotor.class,"Arm_2");
 
         armLeft.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
         armRight.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
@@ -92,6 +99,7 @@ public class Arm
         armRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
+
     public void moveToPickupStone(){
         armLeft.setTargetPosition(ARM_STONE_LOAD);
         armRight.setTargetPosition(ARM_STONE_LOAD);

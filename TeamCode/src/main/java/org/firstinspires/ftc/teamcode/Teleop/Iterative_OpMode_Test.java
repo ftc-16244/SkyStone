@@ -41,14 +41,14 @@ import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
 
 
 
-@TeleOp(name="Simple Teleop for Testing", group="Teleop")
+@TeleOp(name="Simple Teleop ", group="Teleop")
 //@Disabled
 public class SimpleTeleop extends OpMode{
 
 
     //set up states to change how the arm operates. Pre-sets or variable.
 
-
+    FoundationMover foundationMover = new FoundationMover(hardwareMap);
     /* Declare OpMode members. */
 
     //private Gripper gripper                 = new Gripper(hardwareMap);
@@ -77,7 +77,7 @@ public class SimpleTeleop extends OpMode{
      */
     @Override
     public void init_loop() {
-        
+
     }
 
     /*
@@ -85,6 +85,14 @@ public class SimpleTeleop extends OpMode{
      */
     @Override
     public void start() {
+        //ElapsedTime runtime             = new ElapsedTime();
+        FoundationMover foundationMover = new FoundationMover(hardwareMap);
+        //Arm arm = new Arm(hardwareMap);
+        Gripper gripper = new Gripper(hardwareMap);
+        //
+        foundationMover.moveToStore();
+        gripper.moveToStartPsn();
+        telemetry.addData("Start Loop", "Complete ");
 
     }
 
@@ -102,7 +110,7 @@ public class SimpleTeleop extends OpMode{
 
         // foundation moving servo assignment to drivers gamepad
         if (gamepad1.a) {
-            //foundationMover.moveToStore();
+            foundationMover.moveToStore();
         }
 
         if (gamepad1.b) {
