@@ -66,19 +66,23 @@ public class FoundationMover
     public Servo        foundationright     = null;
 
 
-    private static final double GRABBING = 0.65; // Left side reference
-    private static final double STORING = 0.4;// Left side reference
+    private static final double GRABBING = 0.65; // Left side is the master
+    private static final double STORING = 0.4;// Left side is the master
 
-    // Contructor for Foundation Mover that specified a new hardware map also
+    HardwareMap hwMap           =  null;        // create a hardware mao object here
 
 
+    // Contructor
+    public FoundationMover() {
 
-    public FoundationMover(HardwareMap hardwareMap) {
-        // set up the names for the servos. MUST match name in
-        // Robot Config file (on the phone)
+    }
 
-        foundationleft  = hardwareMap.get(Servo.class, "fdnLeft");
-        foundationright   = hardwareMap.get(Servo.class, "fdnRight");
+    public void initFdnMoverServo(HardwareMap ahwMap){
+
+        hwMap = ahwMap;
+        foundationleft  =hwMap.get(Servo.class, "fdnLeft");
+        foundationright   = hwMap.get(Servo.class, "fdnRight");
+
     }
     public void moveToGrab(){
         foundationleft.setPosition(GRABBING);
@@ -89,6 +93,8 @@ public class FoundationMover
         foundationleft.setPosition(STORING);
         foundationright.setPosition(1-STORING);
     }
+
+
 
 
 }
