@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -41,14 +42,15 @@ import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
 
 
 
-@TeleOp(name="Simple Teleop ", group="Teleop")
+@TeleOp(name="Iterative OpMode Test ", group="Teleop")
 //@Disabled
-public class SimpleTeleop extends OpMode{
+public class Iterative_OpMode_Test extends OpMode{
 
 
     //set up states to change how the arm operates. Pre-sets or variable.
 
-    FoundationMover foundationMover = new FoundationMover(hardwareMap);
+    FoundationMover foundationMover = new FoundationMover();
+    Arm arm = new Arm();
     /* Declare OpMode members. */
 
     //private Gripper gripper                 = new Gripper(hardwareMap);
@@ -63,13 +65,15 @@ public class SimpleTeleop extends OpMode{
     @Override
     public void init() {
         //ElapsedTime runtime             = new ElapsedTime();
-        FoundationMover foundationMover = new FoundationMover(hardwareMap);
+
         //Arm arm = new Arm(hardwareMap);
         Gripper gripper = new Gripper(hardwareMap);
         //
-        foundationMover.moveToStore();
+       foundationMover. initFdnMoverServo(hardwareMap);
+       arm.initArmMotors(hardwareMap);
+
         gripper.moveToStartPsn();
-        telemetry.addData("Init Loop", "Complete ");
+        telemetry.addData("Fdn Movere Init ", "Complete ");
     }
 
     /*
@@ -85,15 +89,8 @@ public class SimpleTeleop extends OpMode{
      */
     @Override
     public void start() {
-        //ElapsedTime runtime             = new ElapsedTime();
-        FoundationMover foundationMover = new FoundationMover(hardwareMap);
-        //Arm arm = new Arm(hardwareMap);
-        Gripper gripper = new Gripper(hardwareMap);
-        //
         foundationMover.moveToStore();
-        gripper.moveToStartPsn();
-        telemetry.addData("Start Loop", "Complete ");
-
+        arm.moveToCarryStone();
     }
 
     /*
