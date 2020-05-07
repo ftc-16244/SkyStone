@@ -54,9 +54,9 @@ import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="All in One File", group="Linear Opmode")
-@Disabled
-public class Copy_Simple_Linear_Op_Mode extends LinearOpMode {
+@TeleOp(name="Linear Opmode Test", group="Linear Opmode")
+//@Disabled
+public class Linear_OpMode_Test extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -77,8 +77,8 @@ public class Copy_Simple_Linear_Op_Mode extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "Left_front");
         rightDrive = hardwareMap.get(DcMotor.class, "Right_front");
-        FoundationMover foundationMover = new FoundationMover(hardwareMap);
-        foundationMover.moveToStore();
+        //FoundationMover foundationMover = new FoundationMover(hardwareMap);
+        //foundationMover.moveToStore();
         //foundationMover.init(hardwareMap);
         //fdnLeft = hardwareMap.get(Servo.class, "fdnLeft");
         //fdnRight = hardwareMap.get(Servo.class, "fdnRight");
@@ -126,12 +126,12 @@ public class Copy_Simple_Linear_Op_Mode extends LinearOpMode {
 
             // foundation moving servo assignment to drivers gamepad
             if (gamepad1.a) {
-                foundationMover.moveToGrab();
+                //foundationMover.moveToGrab();
 
             }
 
             if (gamepad1.b) {
-                foundationMover.moveToStore();
+               // foundationMover.moveToStore();
             }
 
             // Show the elapsed game time and wheel power.
