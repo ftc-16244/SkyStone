@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
+import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
 
@@ -54,6 +55,7 @@ public class Iterative_OpMode_Test extends OpMode{
     FoundationMover foundationMover = new FoundationMover();
     Arm arm = new Arm();
     Gripper gripper = new Gripper();
+    Drivetrain drivetrain = new Drivetrain();
 
 
 
@@ -63,10 +65,12 @@ public class Iterative_OpMode_Test extends OpMode{
        foundationMover. init(hardwareMap);
        arm.init(hardwareMap);
        gripper.init(hardwareMap);
+       drivetrain.init(hardwareMap);
 
        //position robot into start position - for example the 18x18x18 inch dimensions
        gripper.moveToStartPsn();
        telemetry.addData("Fdn Mover Init ", "Complete ");
+       drivetrain.setDrive2Teleop(hardwareMap);
     }
 
     /*
