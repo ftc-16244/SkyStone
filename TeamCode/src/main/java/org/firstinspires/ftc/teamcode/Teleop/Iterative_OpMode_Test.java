@@ -69,7 +69,7 @@ public class Iterative_OpMode_Test extends OpMode{
         //Arm arm = new Arm(hardwareMap);
         Gripper gripper = new Gripper(hardwareMap);
         //
-       foundationMover. initFdnMoverServo(hardwareMap);
+       foundationMover. init(hardwareMap);
        arm.initArmMotors(hardwareMap);
 
         gripper.moveToStartPsn();
