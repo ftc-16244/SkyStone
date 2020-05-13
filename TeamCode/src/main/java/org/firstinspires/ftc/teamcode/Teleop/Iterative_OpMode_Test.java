@@ -47,33 +47,26 @@ import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
 public class Iterative_OpMode_Test extends OpMode{
 
 
-    //set up states to change how the arm operates. Pre-sets or variable.
+
+    // Create instances for all of the subsystem components for this opmode.
+    // because this is a teleop opmode we need all of the systems
 
     FoundationMover foundationMover = new FoundationMover();
     Arm arm = new Arm();
-    /* Declare OpMode members. */
+    Gripper gripper = new Gripper();
 
-    //private Gripper gripper                 = new Gripper(hardwareMap);
-    //private Arm arm                         = new Arm(hardwareMap);
-
-       /*
-     * Code to run ONCE when the driver hits INIT
-     */
-    // Constructor
 
 
     @Override
     public void init() {
-        //ElapsedTime runtime             = new ElapsedTime();
-
-        //Arm arm = new Arm(hardwareMap);
-        Gripper gripper = new Gripper(hardwareMap);
-        //
+        // Initialize hardware of all sub-systems
        foundationMover. init(hardwareMap);
-       arm.initArmMotors(hardwareMap);
+       arm.init(hardwareMap);
+       gripper.init(hardwareMap);
 
-        gripper.moveToStartPsn();
-        telemetry.addData("Fdn Movere Init ", "Complete ");
+       //position robot into start position - for example the 18x18x18 inch dimensions
+       gripper.moveToStartPsn();
+       telemetry.addData("Fdn Mover Init ", "Complete ");
     }
 
     /*
@@ -81,7 +74,7 @@ public class Iterative_OpMode_Test extends OpMode{
      */
     @Override
     public void init_loop() {
-
+    // vision code to scan for objects would go here. Possibly encoder resets as well
     }
 
     /*
@@ -89,7 +82,8 @@ public class Iterative_OpMode_Test extends OpMode{
      */
     @Override
     public void start() {
-        foundationMover.moveToStore();
+        // move implements to "game ready position" can unfold or move outside the 18 in cube.
+        foundationMover.moveToStore(); // start match with foundation mover in the "up" position
         arm.moveToCarryStone();
     }
 
