@@ -65,23 +65,22 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Arm
 {
    // Define hardware objects
-    public DcMotor      armLeft      = null;
-    public DcMotor      armRight     = null;
+    private DcMotor      armLeft      = null;
+    private DcMotor      armRight     = null;
 
 
     private static final int ARM_STONE_LOAD = 250; // Left side reference
     private static final int ARM_STONE_CARRY = 500;// Left side reference
     private static final double ARM_SPEED = .5;
 
-    HardwareMap hwMap           =  null;        // create a hardware mao object here
+    HardwareMap hwMap           =  null;        // create a hardware map object here
 
-    // Contructor for Foundation Mover that specified a new hardware map also
-
+    // Contructor for Arm
     public Arm(){
 
     }
 
-    public void initArmMotors(HardwareMap ahwMap){
+    public void init(HardwareMap ahwMap){
 
         hwMap = ahwMap;
         armLeft = hwMap.get(DcMotor.class,"Arm");

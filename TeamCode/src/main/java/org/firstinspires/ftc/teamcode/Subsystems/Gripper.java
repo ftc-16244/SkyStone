@@ -72,12 +72,17 @@ public class Gripper
     private static final double GRIPPER_OPEN     = 0.5;//
     private static final double GRIPPER_CLOSE   = 0.75; //
 
-    // Contructor for Foundation Mover that specified a new hardware map also
-    public Gripper(HardwareMap hardwareMap){
-        // set up the names for the servos. MUST match name in
-        // Robot Config file (on the phone)
+    HardwareMap hwMap           =  null;        // create a hardware mao object here
 
-        gripper = hardwareMap.get(Servo.class, "Closey");
+    // Contructor for Gripper
+    public Gripper(){
+
+    }
+    // Initialize the hardware
+    public void init(HardwareMap ahwMap){
+        hwMap = ahwMap;
+        gripper  =hwMap.get(Servo.class, "Closey");
+
     }
     public void moveToStartPsn(){
         gripper.setPosition(GRIPPER_START);
