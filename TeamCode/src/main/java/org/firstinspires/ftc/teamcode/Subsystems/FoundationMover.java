@@ -77,7 +77,7 @@ public class FoundationMover
 
     }
 
-    public void initFdnMoverServo(HardwareMap ahwMap){
+    public void init(HardwareMap ahwMap){
 
         hwMap = ahwMap;
         foundationleft  =hwMap.get(Servo.class, "fdnLeft");
