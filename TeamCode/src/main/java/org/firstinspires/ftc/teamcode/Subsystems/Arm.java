@@ -10,7 +10,7 @@ public class Arm
    // Define hardware objects
     private DcMotor      armLeft      = null;
     private DcMotor      armRight     = null;
-
+    // adding a comment to demonstarte Git and Github
 
     private static final int ARM_STONE_LOAD = 250; // Left side reference
     private static final int ARM_STONE_CARRY = 500;// Left side reference
