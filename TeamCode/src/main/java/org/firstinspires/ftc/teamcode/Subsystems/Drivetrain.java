@@ -17,13 +17,13 @@ public class Drivetrain {
             (WHEEL_DIAMETER_INCHES * 3.1415);
     private static final double DRIVE_SPEED = 1;
     private static final double TURN_SPEED = 0.5;
-
+    private boolean inTeleOp;
 
     HardwareMap hwMap = null;        // create a hardware map object here
 
     // Contructor for Drivetrain
-    public Drivetrain() {
-
+    public Drivetrain(boolean inTeleOp) {
+    this.inTeleOp = inTeleOp;
 
     }
 
@@ -42,17 +42,17 @@ public class Drivetrain {
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-    }
+        // not in teleop means autooous so we need encoders
+        if (!inTeleOp) {
+            leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-    public void setDrive2Teleop(HardwareMap hwMap) {
-        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
+        } else {
 
-    public void setDrive2Auto(HardwareMap hwMap) {
-        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
+        }
     }
 }
