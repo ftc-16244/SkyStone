@@ -55,8 +55,7 @@ public class Iterative_OpMode_Test extends OpMode{
     FoundationMover foundationMover = new FoundationMover();
     Arm arm = new Arm();
     Gripper gripper = new Gripper();
-    Drivetrain drivetrain = new Drivetrain();
-
+    Drivetrain drivetrain = new Drivetrain(true);
 
 
     @Override
@@ -70,7 +69,7 @@ public class Iterative_OpMode_Test extends OpMode{
        //position robot into start position - for example the 18x18x18 inch dimensions
        gripper.moveToStartPsn();
        telemetry.addData("Fdn Mover Init ", "Complete ");
-       drivetrain.setDrive2Teleop(hardwareMap);
+       //drivetrain.setDrive2Teleop(hardwareMap);
     }
 
     /*
