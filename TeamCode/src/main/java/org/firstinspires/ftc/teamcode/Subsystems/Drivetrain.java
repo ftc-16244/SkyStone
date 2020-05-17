@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import org.firstinspires.ftc.teamcode.Enums.GameMode;
 
 public class Drivetrain {
     // Define hardware objects
-    private DcMotor leftFront = null;
-    private DcMotor rightFront = null;
+    public DcMotor leftFront = null;
+    public DcMotor rightFront = null;
 
 
     private static final double COUNTS_PER_MOTOR_REV = 1120;         // REV HD HEX 40:1 motors
@@ -42,13 +43,13 @@ public class Drivetrain {
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        // not in teleop means autooous so we need encoders
+        // not in teleop means autonomous which meansd we need encoders
         if (!inTeleOp) {
             leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         } else {
-
+        // for InTeleop we don't need encoders
             leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
