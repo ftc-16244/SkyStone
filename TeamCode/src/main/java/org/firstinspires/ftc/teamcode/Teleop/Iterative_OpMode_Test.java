@@ -35,12 +35,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
-
-
+import org.firstinspires.ftc.teamcode.Enums.DriveState;
 
 
 @TeleOp(name="Iterative OpMode Test ", group="Teleop")
@@ -48,15 +48,14 @@ import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
 public class Iterative_OpMode_Test extends OpMode{
 
 
-
     // Create instances for all of the subsystem components for this opmode.
     // because this is a teleop opmode we need all of the systems
 
     FoundationMover foundationMover = new FoundationMover();
-    Arm arm = new Arm();
-    Gripper gripper = new Gripper();
-    Drivetrain drivetrain = new Drivetrain(true);
-
+    private Arm arm = new Arm();
+    private Gripper gripper = new Gripper();
+    private  Drivetrain drivetrain = new Drivetrain(true);
+    private  DriveState   currDriveState;
 
     @Override
     public void init() {
@@ -68,8 +67,10 @@ public class Iterative_OpMode_Test extends OpMode{
 
        //position robot into start position - for example the 18x18x18 inch dimensions
        gripper.moveToStartPsn();
+       foundationMover.moveToStore(); // start match with foundation mover in the "up" position
        telemetry.addData("Fdn Mover Init ", "Complete ");
-       //drivetrain.setDrive2Teleop(hardwareMap);
+
+
     }
 
     /*
@@ -86,7 +87,7 @@ public class Iterative_OpMode_Test extends OpMode{
     @Override
     public void start() {
         // move implements to "game ready position" can unfold or move outside the 18 in cube.
-        foundationMover.moveToStore(); // start match with foundation mover in the "up" position
+
         arm.moveToCarryStone();
     }
 
@@ -95,12 +96,33 @@ public class Iterative_OpMode_Test extends OpMode{
      */
     @Override
     public void loop() {
+        double left;
+        double right;
+        double drive;
+        double turn;
+        double max;
+        double speedfactor = 0.5;
+
 
         //========================================
         // GAME PAD 1
         //========================================
         // left joystick is assigned to drive speed
+        // left joystick is assigned to drive speed
+        drive = -gamepad1.left_stick_y;
+        // right joystick is for turning
+        turn  =  gamepad1.right_stick_x;
+        // Combine drive and turn for blended motion.
+        left  = drive + turn;
+        right = drive - turn;
 
+        // Normalize the values so neither exceed +/- 1.0
+        max = Math.max(Math.abs(left), Math.abs(right));
+        if (max > 1.0)
+        {
+            left /= max; // does this to stay within the limit and keeps the ratio the same
+            right /= max;
+        }
 
         // foundation moving servo assignment to drivers gamepad
         if (gamepad1.a) {
@@ -108,16 +130,25 @@ public class Iterative_OpMode_Test extends OpMode{
         }
 
         if (gamepad1.b) {
-            //foundationMover.moveToGrab();
+            foundationMover.moveToGrab();
         }
 
+        // set-up drive speed states on bumpers
+        if (gamepad1.left_bumper)
+        {
+            currDriveState = DriveState.STATE_FAST;
+        }
+        if (gamepad1.right_bumper)
+        {
+            currDriveState = DriveState.STATE_SLOW;
+        }
 
         //========================================
         // GAME PAD 2
         //========================================
 
         // gripper assignment to X and Y buttons on implement gamepad
-        /*
+
         if (gamepad2.x) {
             gripper.moveToClose();
         }
@@ -133,8 +164,30 @@ public class Iterative_OpMode_Test extends OpMode{
         if (gamepad2.b) {
             arm.moveToCarryStone();
         }
-        */
 
+        // switch case for the drive speed state
+
+        switch(currDriveState) {
+
+            case STATE_FAST:
+                telemetry.addData("Drive Speed",currDriveState);
+                drivetrain.leftFront.setPower(left);
+                drivetrain.rightFront.setPower(right);
+
+                // Send telemetry message to signify robot running;
+                telemetry.addData("left",  "%.2f", left);
+                telemetry.addData("right", "%.2f", right);
+                break;
+
+            case STATE_SLOW:
+                drivetrain.leftFront.setPower(left*speedfactor);
+                drivetrain.rightFront.setPower(right*speedfactor);
+
+                // Send telemetry message to signify robot running;
+                telemetry.addData("left",  "%.2f", left);
+                telemetry.addData("right", "%.2f", right);
+                break;
+        }
     }
 
     /*
