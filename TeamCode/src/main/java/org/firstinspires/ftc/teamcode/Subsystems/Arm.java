@@ -16,6 +16,7 @@ public class Arm
     private static final int ARM_STONE_CARRY = 500;// Left side reference
     private static final double ARM_SPEED = .5;
 
+
     //HardwareMap hwMap           =  null;        // create a hardware map object here
 
     // Contructor for Arm
@@ -59,5 +60,6 @@ public class Arm
         armLeft.setPower(Math.abs(ARM_SPEED));
         armRight.setPower(Math.abs(ARM_SPEED));
     }
+ 
 
 }
