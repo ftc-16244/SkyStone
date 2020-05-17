@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
+
 
 public class Arm
 {
@@ -16,16 +16,16 @@ public class Arm
     private static final int ARM_STONE_CARRY = 500;// Left side reference
     private static final double ARM_SPEED = .5;
 
-    HardwareMap hwMap           =  null;        // create a hardware map object here
+    //HardwareMap hwMap           =  null;        // create a hardware map object here
 
     // Contructor for Arm
     public Arm(){
 
     }
 
-    public void init(HardwareMap ahwMap){
+    public void init(HardwareMap hwMap){
 
-        hwMap = ahwMap;
+        //hwMap = ahwMap;
         armLeft = hwMap.get(DcMotor.class,"Arm");
         armRight =  hwMap.get(DcMotor.class,"Arm_2");
 
