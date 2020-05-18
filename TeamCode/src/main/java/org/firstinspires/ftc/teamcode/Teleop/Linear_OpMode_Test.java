@@ -52,15 +52,17 @@ import static org.firstinspires.ftc.teamcode.Subsystems.Drivetrain.DRIVE_SPEED;
 public class Linear_OpMode_Test extends LinearOpMode {
 
     // Declare OpMode members.
-    private ElapsedTime     runtime          =    new ElapsedTime();
-    private FoundationMover foundationMover  =    new FoundationMover();
-    private Arm             arm              =    new Arm();
-    private Gripper         gripper          =    new Gripper();
-    private Drivetrain      drivetrain       =    new Drivetrain(false);
+    ElapsedTime     runtime          =    new ElapsedTime();
 
 
     @Override
     public void runOpMode() {
+
+
+        FoundationMover foundationMover  =    new FoundationMover();
+        Arm             arm              =    new Arm();
+        Gripper         gripper          =    new Gripper();
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -92,7 +94,10 @@ public class Linear_OpMode_Test extends LinearOpMode {
                              double timeoutS) {
         int newLeftTarget;
         int newRightTarget;
-
+        // Drive train is used by the encodedrive method, not the Foundation move method.
+        // Don't forget to initialize after the drivertain instance is created.
+        Drivetrain      drivetrain       =    new Drivetrain(false);
+        drivetrain.init(hardwareMap);
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
