@@ -52,10 +52,12 @@ public class Abstract_Test extends EncoderDrive {
 
 
 
+
     @Override
     public void runOpMode() {
 
-
+        Drivetrain drivetrain = new Drivetrain(false);
+        drivetrain.init(hardwareMap); // some issues here still
         FoundationMover foundationMover  =    new FoundationMover();
         Arm             arm              =    new Arm();
         Gripper         gripper          =    new Gripper();
