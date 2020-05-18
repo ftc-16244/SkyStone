@@ -50,11 +50,11 @@ public class Iterative_OpMode_Test extends OpMode{
     // Create instances for all of the subsystem components for this opmode.
     // because this is a teleop opmode we need all of the systems
 
-    FoundationMover foundationMover = new FoundationMover();
-    private Arm         arm = new Arm();
-    private Gripper     gripper = new Gripper();
-    private Drivetrain  drivetrain = new Drivetrain(true);
-    private DriveState  currDriveState;
+    private FoundationMover foundationMover  =    new FoundationMover();
+    private Arm             arm              =    new Arm();
+    private Gripper         gripper          =    new Gripper();
+    private Drivetrain      drivetrain       =    new Drivetrain(true);
+    private DriveState      currDriveState;
 
     @Override
     public void init() {
