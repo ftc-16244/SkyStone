@@ -31,16 +31,15 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-
+import org.firstinspires.ftc.teamcode.Enums.DriveState;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.Enums.DriveState;
+
+import static org.firstinspires.ftc.teamcode.Enums.DriveState.STATE_FAST;
+import static org.firstinspires.ftc.teamcode.Enums.DriveState.STATE_SLOW;
+
 
 
 @TeleOp(name="Iterative OpMode Test ", group="Teleop")
@@ -52,10 +51,10 @@ public class Iterative_OpMode_Test extends OpMode{
     // because this is a teleop opmode we need all of the systems
 
     FoundationMover foundationMover = new FoundationMover();
-    private Arm arm = new Arm();
-    private Gripper gripper = new Gripper();
-    private  Drivetrain drivetrain = new Drivetrain(true);
-    private  DriveState   currDriveState;
+    private Arm         arm = new Arm();
+    private Gripper     gripper = new Gripper();
+    private Drivetrain  drivetrain = new Drivetrain(true);
+    private DriveState  currDriveState;
 
     @Override
     public void init() {
@@ -69,7 +68,7 @@ public class Iterative_OpMode_Test extends OpMode{
        gripper.moveToStartPsn();
        foundationMover.moveToStore(); // start match with foundation mover in the "up" position
        telemetry.addData("Fdn Mover Init ", "Complete ");
-
+       currDriveState = DriveState.STATE_FAST;
 
     }
 
@@ -101,7 +100,7 @@ public class Iterative_OpMode_Test extends OpMode{
         double drive;
         double turn;
         double max;
-        double speedfactor = 0.5;
+        double speedfactor = 0.5;  //multiplier for SLOW speed
 
 
         //========================================
@@ -136,11 +135,11 @@ public class Iterative_OpMode_Test extends OpMode{
         // set-up drive speed states on bumpers
         if (gamepad1.left_bumper)
         {
-            currDriveState = DriveState.STATE_FAST;
+            currDriveState = STATE_FAST;
         }
         if (gamepad1.right_bumper)
         {
-            currDriveState = DriveState.STATE_SLOW;
+            currDriveState = STATE_SLOW;
         }
 
         //========================================
@@ -179,7 +178,7 @@ public class Iterative_OpMode_Test extends OpMode{
                 telemetry.addData("right", "%.2f", right);
                 break;
 
-            case STATE_SLOW:
+            case STATE_SLOW: // power reduced with speedfactor variable
                 drivetrain.leftFront.setPower(left*speedfactor);
                 drivetrain.rightFront.setPower(right*speedfactor);
 
