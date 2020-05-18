@@ -60,6 +60,6 @@ public class Arm
         armLeft.setPower(Math.abs(ARM_SPEED));
         armRight.setPower(Math.abs(ARM_SPEED));
     }
- 
+
 
 }
