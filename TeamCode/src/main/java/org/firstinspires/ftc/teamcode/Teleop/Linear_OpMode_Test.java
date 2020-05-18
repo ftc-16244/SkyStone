@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.DriveState;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
@@ -51,12 +52,12 @@ import static org.firstinspires.ftc.teamcode.Subsystems.Drivetrain.DRIVE_SPEED;
 public class Linear_OpMode_Test extends LinearOpMode {
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private FoundationMover foundationMover = new FoundationMover();
-    private Arm arm = new Arm();
-    private Gripper gripper = new Gripper();
-    private Drivetrain drivetrain = new Drivetrain(true);
-    private DriveState currDriveState;
+    private ElapsedTime     runtime          =    new ElapsedTime();
+    private FoundationMover foundationMover  =    new FoundationMover();
+    private Arm             arm              =    new Arm();
+    private Gripper         gripper          =    new Gripper();
+    private Drivetrain      drivetrain       =    new Drivetrain(false);
+
 
     @Override
     public void runOpMode() {
@@ -82,10 +83,7 @@ public class Linear_OpMode_Test extends LinearOpMode {
         foundationMover.moveToStore(); //lift them so they don't get destroyed
         sleep(500);
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
 
-
-        }
     }
 
 
