@@ -29,38 +29,32 @@
 
 package org.firstinspires.ftc.teamcode.Autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+
+
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Arm;
+
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
-import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
-
-import static org.firstinspires.ftc.teamcode.Subsystems.Drivetrain.COUNTS_PER_INCH;
-import static org.firstinspires.ftc.teamcode.Subsystems.Drivetrain.DRIVE_SPEED;
 
 
-@TeleOp(name="Abstract Testt", group="Linear Opmode")
+
+@TeleOp(name="Abstract Auto Test", group="Linear Opmode")
 //@Disabled
-public class Abstract_Test extends EncoderDrive {
+abstract class Abstrat_Auto_Test extends EncoderDrive {
 
     // Declare OpMode members.
-    ElapsedTime     runtime          =    new ElapsedTime();
-
-
-
+    ElapsedTime runtime = new ElapsedTime();
+    Drivetrain drivetrain = new Drivetrain(false);
+    FoundationMover foundationMover = new FoundationMover();
 
     @Override
     public void runOpMode() {
 
-        Drivetrain drivetrain = new Drivetrain(false);
         drivetrain.init(hardwareMap); // some issues here still
-        FoundationMover foundationMover  =    new FoundationMover();
-        Arm             arm              =    new Arm();
-        Gripper         gripper          =    new Gripper();
+        foundationMover.init(hardwareMap);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -69,10 +63,10 @@ public class Abstract_Test extends EncoderDrive {
         waitForStart();
         runtime.reset();
         encoderDrive(DRIVE_SPEED, -12, -12, 4);
-        encoderDrive(DRIVE_SPEED, -7, 7, 3); //first turn
-        //encoderDrive(DRIVE_SPEED, -14, -14, 3);
-        //encoderDrive(DRIVE_SPEED, 7.5, -7.5, 3);
-        //encoderDrive(DRIVE_SPEED, -13, -13, 4);
+        encoderDrive(DRIVE_SPEED, -7, 7, 3); //
+        encoderDrive(DRIVE_SPEED, -14, -14, 3);
+        encoderDrive(DRIVE_SPEED, 7.5, -7.5, 3);
+        encoderDrive(DRIVE_SPEED, -13, -13, 4);
         //grab foundation - both servos
         foundationMover.moveToGrab();
 
@@ -86,8 +80,6 @@ public class Abstract_Test extends EncoderDrive {
         // run until the end of the match (driver presses STOP)
 
     }
-
-
 
 
 }
