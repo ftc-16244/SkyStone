@@ -35,7 +35,7 @@ abstract class EncoderDrive extends LinearOpMode {
         double timeoutS){
             int newLeftTarget;
             int newRightTarget;
-
+        drivetrain.init(hardwareMap);
 
             // Ensure that the opmode is still active
             if (opModeIsActive()) {

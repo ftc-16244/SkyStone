@@ -43,7 +43,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 
 @TeleOp(name="Abstract Auto Test", group="Linear Opmode")
 //@Disabled
-abstract class Abstrat_Auto_Test extends EncoderDrive {
+public class Abstrat_Auto_Test extends EncoderDrive {
 
     // Declare OpMode members.
     ElapsedTime runtime = new ElapsedTime();
