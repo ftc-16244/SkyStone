@@ -58,16 +58,17 @@ public class Iterative_OpMode_Test extends OpMode{
 
     @Override
     public void init() {
-        // Initialize hardware of all sub-systems
+        // Call init methods in all needed system classes
        foundationMover. init(hardwareMap);
        arm.init(hardwareMap);
        gripper.init(hardwareMap);
        drivetrain.init(hardwareMap);
-
+       telemetry.addData("Hardware is Initiaized ", "Complete ");
        //position robot into start position - for example the 18x18x18 inch dimensions
-       gripper.moveToStartPsn();
-       foundationMover.moveToStore(); // start match with foundation mover in the "up" position
-       telemetry.addData("Fdn Mover Init ", "Complete ");
+        gripper.moveToStartPsn();
+        arm.resetArmPosn();
+
+       telemetry.addData("Arm and Gripper Reset", "Complete ");
        currDriveState = DriveState.STATE_FAST;
 
     }
@@ -87,6 +88,8 @@ public class Iterative_OpMode_Test extends OpMode{
     public void start() {
         // move implements to "game ready position" can unfold or move outside the 18 in cube.
 
+
+        foundationMover.moveToStore(); // start match with foundation mover in the "up" position
         arm.moveToCarryStone();
     }
 
