@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 
+import android.media.MediaPlayer;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -9,9 +11,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Arm
 {
-   // Define hardware objects
-    private DcMotor      armLeft      = null;
-    private DcMotor      armRight     = null;
+
+    // Define hardware objects
+    public DcMotor      armLeft      = null;
+    public DcMotor      armRight     = null;
     // adding a comment to demo a git pull command
 
     private static final int ARM_STONE_LOAD = 50; // Left side reference
@@ -47,13 +50,14 @@ public class Arm
         armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void moveToPickupStone(){
+    public void moveToPickupStone()  {
         armLeft.setTargetPosition(ARM_STONE_LOAD);
         armRight.setTargetPosition(ARM_STONE_LOAD);
         armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armLeft.setPower(Math.abs(ARM_SPEED));
         armRight.setPower(Math.abs(ARM_SPEED));
+
     }
 
     public void moveToCarryStone() {
@@ -63,6 +67,8 @@ public class Arm
         armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armLeft.setPower(Math.abs(ARM_SPEED));
         armRight.setPower(Math.abs(ARM_SPEED));
+
+
     }
 
     public void resetArmPosn(){

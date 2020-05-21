@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.teamcode.Enums.GameMode;
 
-public class Drivetrain {
+public class Drivetrain  {
     // Define hardware objects
     public DcMotor leftFront = null;
     public DcMotor rightFront = null;
@@ -19,6 +22,7 @@ public class Drivetrain {
     public static final double DRIVE_SPEED = 1;
     private static final double TURN_SPEED = 0.5;
     private boolean inTeleOp;
+    private ElapsedTime runtime = new ElapsedTime();
 
     HardwareMap hwMap = null;        // create a hardware map object here
 
@@ -53,7 +57,9 @@ public class Drivetrain {
             leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-
         }
+
     }
+
+
 }
