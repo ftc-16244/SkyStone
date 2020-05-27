@@ -32,12 +32,15 @@ package org.firstinspires.ftc.teamcode.Test;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Enums.ArmState;
 import org.firstinspires.ftc.teamcode.Enums.DriveState;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
 
+import static org.firstinspires.ftc.teamcode.Enums.ArmState.CONTINUOUS;
+import static org.firstinspires.ftc.teamcode.Enums.ArmState.DISCRETE;
 import static org.firstinspires.ftc.teamcode.Enums.DriveState.STATE_FAST;
 import static org.firstinspires.ftc.teamcode.Enums.DriveState.STATE_SLOW;
 
@@ -55,6 +58,7 @@ public class Iterative_OpMode_Test extends OpMode{
     private Gripper         gripper          =    new Gripper();
     private Drivetrain      drivetrain       =    new Drivetrain(true);
     private DriveState      currDriveState;
+    private ArmState        currArmMode;
 
     @Override
     public void init() {
@@ -71,6 +75,7 @@ public class Iterative_OpMode_Test extends OpMode{
 
        telemetry.addData("Arm and Gripper Reset", "Complete ");
        currDriveState = DriveState.STATE_FAST;
+       currArmMode =ArmState.DISCRETE;
 
     }
 
@@ -161,12 +166,18 @@ public class Iterative_OpMode_Test extends OpMode{
             gripper.moveToOpen();
         }
 
-        if (gamepad2.a) {
-            arm.moveToPickupStone();
-        }
 
-        if (gamepad2.b) {
-            arm.moveToCarryStone();
+
+        // set-up arm mode states on bumpers
+        if (gamepad2.left_bumper)
+        {
+            currArmMode =    CONTINUOUS;
+
+
+        }
+        if (gamepad2.right_bumper)
+        {
+            currArmMode = DISCRETE;
         }
 
         // switch case for the drive speed state
@@ -184,6 +195,7 @@ public class Iterative_OpMode_Test extends OpMode{
                 break;
 
             case STATE_SLOW: // power reduced with speedfactor variable
+                telemetry.addData("Drive Speed",currDriveState);
                 drivetrain.leftFront.setPower(left*speedfactor);
                 drivetrain.rightFront.setPower(right*speedfactor);
 
@@ -192,6 +204,29 @@ public class Iterative_OpMode_Test extends OpMode{
                 telemetry.addData("right", "%.2f", right);
                 break;
         }
+
+        switch(currArmMode) {
+
+            case DISCRETE://gamepad buttons go to preset arm positions
+                telemetry.addData("Arm Mode",currArmMode);
+                if (gamepad2.a) {
+                    arm.moveToPickupStone();
+                }
+
+                if (gamepad2.b) {
+                    arm.moveToCarryStone();
+                }
+                break;
+
+            case CONTINUOUS: //joystick controls arm
+                telemetry.addData("Arm Mode",currArmMode);
+                arm.moveByJoystick(-gamepad2.left_stick_y);
+                break;
+        }
+
+
+
+
     }
 
     /*
