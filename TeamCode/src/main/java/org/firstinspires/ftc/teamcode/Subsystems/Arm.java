@@ -56,7 +56,7 @@ public class Arm
         armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armLeft.setPower(Math.abs(ARM_SPEED));
         armRight.setPower(Math.abs(ARM_SPEED));
-        
+
 
     }
 
