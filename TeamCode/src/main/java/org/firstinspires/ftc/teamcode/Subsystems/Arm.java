@@ -78,4 +78,12 @@ public class Arm
             armRight.setPower(-ARM_RESET_POWER);
         }
     }
+
+    public void moveByJoystick(float y){
+        float lift;
+        lift = (-y/2); //divides the power by 2 to reduce power
+        armLeft.setPower(lift);
+        armRight.setPower(lift);
+
+    }
 }
