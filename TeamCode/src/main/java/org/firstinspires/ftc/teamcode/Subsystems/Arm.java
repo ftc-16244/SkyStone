@@ -31,7 +31,6 @@ public class Arm
 
     public void init(HardwareMap hwMap){
 
-        //hwMap = ahwMap;
         armLeft = hwMap.get(DcMotor.class,"Arm");
         armRight =  hwMap.get(DcMotor.class,"Arm_2");
 
@@ -41,7 +40,7 @@ public class Arm
         armLeft.setPower(0);
         armRight.setPower(0);
 
-        // Set all motors to run with without encoders.
+        // Set all motors to run with encoders.
 
         armLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -77,5 +76,15 @@ public class Arm
             armLeft.setPower(- ARM_RESET_POWER);
             armRight.setPower(-ARM_RESET_POWER);
         }
+        armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void moveByJoystick(float y){
+        float lift;
+        lift = (-y/2); //divides the power by 2 to reduce power
+        armLeft.setPower(lift);
+        armRight.setPower(lift);
+
     }
 }
