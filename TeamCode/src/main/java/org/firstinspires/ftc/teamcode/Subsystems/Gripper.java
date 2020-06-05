@@ -79,8 +79,8 @@ public class Gripper
 
     }
     // Initialize the hardware
-    public void init(HardwareMap ahwMap){
-        hwMap = ahwMap;
+    public void init(HardwareMap hwMap){
+        //hwMap = ahwMap;
         gripper  =hwMap.get(Servo.class, "Closey");
 
     }

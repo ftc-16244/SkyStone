@@ -21,7 +21,7 @@ public class Arm
     private static final int ARM_STONE_LOAD = 50; // Left side reference
     private static final int ARM_STONE_CARRY = 200;// Left side reference
     private static final double ARM_SPEED = .5;
-    private static final double ARM_RESET_POWER = .1;
+    private static final double ARM_RESET_POWER = .5;
 
     private ElapsedTime     runtime = new ElapsedTime();
 
@@ -74,6 +74,7 @@ public class Arm
 
     public void resetArmPosn(){
         runtime.reset();
+<<<<<<< HEAD
         armLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armLeft.setPower(-.3);
@@ -81,6 +82,11 @@ public class Arm
         while  (runtime.seconds() < 3.0) {
             //telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
 
+=======
+        while (runtime.seconds() < 2.0) {
+            armLeft.setPower(- ARM_RESET_POWER);
+            armRight.setPower(-ARM_RESET_POWER);
+>>>>>>> 8b1cd77f8d15b611af1d548b6f6f49705996a71f
         }
 
         armLeft.setPower(0);

@@ -65,7 +65,7 @@ public class Abstrat_Auto_Test extends MotionLib {
         driveByEncoder(DRIVE_SPEED, -13, -13, 4);
         //grab foundation - both servos
         foundationMover.moveToGrab();
-
+        //servo do not move here
         //pause to let servos get to their position
         sleep(500);     // pause for servos to move
         // now pull foundation straight into building zone

@@ -41,6 +41,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
 
+import static java.lang.Thread.sleep;
 import static org.firstinspires.ftc.teamcode.Enums.ArmState.CONTINUOUS;
 import static org.firstinspires.ftc.teamcode.Enums.ArmState.DISCRETE;
 import static org.firstinspires.ftc.teamcode.Enums.DriveState.STATE_FAST;
@@ -72,13 +73,15 @@ public class Iterative_OpMode_Test extends OpMode{
        drivetrain.init(hardwareMap);
        telemetry.addData("Hardware is Initiaized ", "Complete ");
        //position robot into start position - for example the 18x18x18 inch dimensions
-        gripper.moveToStartPsn();
 
 
        telemetry.addData("Arm and Gripper Reset", "Complete ");
        currDriveState = DriveState.STATE_FAST;
        currArmMode =ArmState.DISCRETE;
+       //gripper.moveToStartPsn();
 
+       //foundationMover.moveToStore(); // start match with foundation mover in the "up" position
+        //arm.moveToCarryStone();
     }
 
     /*
@@ -87,6 +90,7 @@ public class Iterative_OpMode_Test extends OpMode{
     @Override
     public void init_loop() {
     // vision code to scan for objects would go here. Possibly encoder resets as well
+
     }
 
     /*
@@ -95,11 +99,15 @@ public class Iterative_OpMode_Test extends OpMode{
     @Override
     public void start() {
         // move implements to "game ready position" can unfold or move outside the 18 in cube.
+        //  arm.resetArmPosn();
 
+<<<<<<< HEAD
         arm.resetArmPosn();
 
         //foundationMover.moveToStore(); // start match with foundation mover in the "up" position
         //arm.moveToCarryStone();
+=======
+>>>>>>> 8b1cd77f8d15b611af1d548b6f6f49705996a71f
     }
 
     /*
@@ -139,7 +147,7 @@ public class Iterative_OpMode_Test extends OpMode{
         if (gamepad1.a) {
             foundationMover.moveToStore();
         }
-
+        //this works 5/28 for a and b
         if (gamepad1.b) {
             foundationMover.moveToGrab();
 
@@ -160,7 +168,7 @@ public class Iterative_OpMode_Test extends OpMode{
         //========================================
 
         // gripper assignment to X and Y buttons on implement gamepad
-
+        // does not work 5/28. wires are in correct port too
         if (gamepad2.x) {
             gripper.moveToClose();
         }
