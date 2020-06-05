@@ -10,12 +10,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-public class Arm
-{
+public class Arm {
 
     // Define hardware objects
-    public DcMotor      armLeft      = null;
-    public DcMotor      armRight     = null;
+    public DcMotor armLeft = null;
+    public DcMotor armRight = null;
     // adding a comment to demo a git pull command
 
     private static final int ARM_STONE_LOAD = 50; // Left side reference
@@ -23,18 +22,18 @@ public class Arm
     private static final double ARM_SPEED = .5;
     private static final double ARM_RESET_POWER = .5;
 
-    private ElapsedTime     runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
 
     // Contructor for Arm
-    public Arm(){
+    public Arm() {
 
     }
 
-    public void init(HardwareMap hwMap){
+    public void init(HardwareMap hwMap) {
 
         //hwMap = ahwMap;
-        armLeft = hwMap.get(DcMotor.class,"Arm");
-        armRight =  hwMap.get(DcMotor.class,"Arm_2");
+        armLeft = hwMap.get(DcMotor.class, "Arm");
+        armRight = hwMap.get(DcMotor.class, "Arm_2");
 
         armLeft.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if needed
         armRight.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
@@ -51,7 +50,7 @@ public class Arm
         armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void moveToPickupStone()  {
+    public void moveToPickupStone() {
         armLeft.setTargetPosition(ARM_STONE_LOAD);
         armRight.setTargetPosition(ARM_STONE_LOAD);
         armLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -72,23 +71,17 @@ public class Arm
 
     }
 
-    public void resetArmPosn(){
+    public void resetArmPosn() {
         runtime.reset();
-<<<<<<< HEAD
+
         armLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armLeft.setPower(-.3);
         armRight.setPower(-.3);
-        while  (runtime.seconds() < 3.0) {
+        while (runtime.seconds() < 3.0) {
             //telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
 
-=======
-        while (runtime.seconds() < 2.0) {
-            armLeft.setPower(- ARM_RESET_POWER);
-            armRight.setPower(-ARM_RESET_POWER);
->>>>>>> 8b1cd77f8d15b611af1d548b6f6f49705996a71f
         }
-
         armLeft.setPower(0);
         armRight.setPower(0);
         armLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -96,14 +89,5 @@ public class Arm
 
         armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-    }
-
-    public void moveByJoystick(float y){
-        float lift;
-        lift = (-y/2); //divides the power by 2 to reduce power
-        armLeft.setPower(lift);
-        armRight.setPower(lift);
-
     }
 }
