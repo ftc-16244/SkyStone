@@ -59,10 +59,34 @@ public class Linear_OpMode_Test extends LinearOpMode {
         FoundationMover foundationMover  =    new FoundationMover();
         Arm             arm              =    new Arm();
         Gripper         gripper          =    new Gripper();
+        Drivetrain      drivetrain       =    new Drivetrain(false);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+        // Initialize HW
+        foundationMover. init(hardwareMap);
+        arm.init(hardwareMap);
+        gripper.init(hardwareMap);
+        drivetrain.init(hardwareMap);
+        telemetry.addData("Hardware is Initiaized ", "Complete ");
+        //position robot into start position - for example the 18x18x18 inch dimensions
+        gripper.moveToStartPsn();
+        sleep(500);
+
+        arm.armLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        arm.armRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        arm.armLeft.setPower(-.3);
+        arm.armRight.setPower(-.3);
+        runtime.reset();
+
+        while  (runtime.seconds() < 3.0) {
+            telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+
+        }
+
+        arm.armLeft.setPower(0);
+        arm.armRight.setPower(0);
 
         waitForStart();
         runtime.reset();

@@ -31,6 +31,8 @@ package org.firstinspires.ftc.teamcode.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.ArmState;
 import org.firstinspires.ftc.teamcode.Enums.DriveState;
@@ -59,6 +61,7 @@ public class Iterative_OpMode_Test extends OpMode{
     private Drivetrain      drivetrain       =    new Drivetrain(true);
     private DriveState      currDriveState;
     private ArmState        currArmMode;
+    private ElapsedTime     runtime         =       new ElapsedTime();
 
     @Override
     public void init() {
@@ -71,7 +74,6 @@ public class Iterative_OpMode_Test extends OpMode{
        //position robot into start position - for example the 18x18x18 inch dimensions
         gripper.moveToStartPsn();
 
-        arm.resetArmPosn();
 
        telemetry.addData("Arm and Gripper Reset", "Complete ");
        currDriveState = DriveState.STATE_FAST;
@@ -94,9 +96,10 @@ public class Iterative_OpMode_Test extends OpMode{
     public void start() {
         // move implements to "game ready position" can unfold or move outside the 18 in cube.
 
+        arm.resetArmPosn();
 
-        foundationMover.moveToStore(); // start match with foundation mover in the "up" position
-        arm.moveToCarryStone();
+        //foundationMover.moveToStore(); // start match with foundation mover in the "up" position
+        //arm.moveToCarryStone();
     }
 
     /*
