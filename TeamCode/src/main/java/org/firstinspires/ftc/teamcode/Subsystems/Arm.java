@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -35,7 +36,7 @@ public class Arm
         armLeft = hwMap.get(DcMotor.class,"Arm");
         armRight =  hwMap.get(DcMotor.class,"Arm_2");
 
-        armLeft.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
+        armLeft.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if needed
         armRight.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
 
         armLeft.setPower(0);
@@ -73,10 +74,23 @@ public class Arm
 
     public void resetArmPosn(){
         runtime.reset();
-        while (runtime.seconds() < 3.0) {
-            armLeft.setPower(- ARM_RESET_POWER);
-            armRight.setPower(-ARM_RESET_POWER);
+        armLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armLeft.setPower(-.3);
+        armRight.setPower(-.3);
+        while  (runtime.seconds() < 3.0) {
+            //telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+
         }
+
+        armLeft.setPower(0);
+        armRight.setPower(0);
+        armLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
     }
 
     public void moveByJoystick(float y){
