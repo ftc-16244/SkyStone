@@ -58,6 +58,7 @@ public class Arm {
         armLeft.setPower(Math.abs(ARM_SPEED));
         armRight.setPower(Math.abs(ARM_SPEED));
 
+
     }
 
     public void moveToCarryStone() {
@@ -90,4 +91,8 @@ public class Arm {
         armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+
+    public void moveByJoystick(float v){
+
+    };
 }
