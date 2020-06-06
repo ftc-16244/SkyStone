@@ -104,7 +104,7 @@ public class Drivetrain_Encoder {
             leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-            sleep(250);   // optional pause after each move
+            //sleep(250);   // optional pause after each move
 
 
     }
