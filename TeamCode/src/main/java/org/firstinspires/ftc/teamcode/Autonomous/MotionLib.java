@@ -32,9 +32,9 @@ public abstract class MotionLib extends LinearOpMode {
     public MotionLib() {
 
     }
-        public void driveByEncoder ( double speed,
-        double leftInches, double rightInches,
-        double timeoutS){
+        protected void driveByEncoder(double speed,
+                                      double leftInches, double rightInches,
+                                      double timeoutS){
             int newLeftTarget;
             int newRightTarget;
         drivetrain.init(hardwareMap);
@@ -87,8 +87,8 @@ public abstract class MotionLib extends LinearOpMode {
             }
 
         }
-    public void armDriveByEncoder(double speed,
-                         double armDegrees, double timeoutS) {
+    protected void armDriveByEncoder(double speed,
+                                     double armDegrees, double timeoutS) {
         arm.init(hardwareMap);
         int newArmTarget;
 
