@@ -79,8 +79,7 @@ public class Iterative_OpMode_Test extends OpMode{
 
 
        //position robot into start position - for example the 18x18x18 inch dimensions
-       gripper.moveToStartPsn();
-       arm.resetArmPosn();
+
 
 
        telemetry.addData("Arm and Gripper Reset", "Complete ");
@@ -110,10 +109,13 @@ public class Iterative_OpMode_Test extends OpMode{
         //  arm.resetArmPosn();
 
 
+
         arm.resetArmPosn();
+
 
         //foundationMover.moveToStore(); // start match with foundation mover in the "up" position
         //arm.moveToCarryStone();
+
 
     }
 

@@ -32,10 +32,11 @@ public class Arm {
     public void init(HardwareMap hwMap) {
 
 
-        armLeft = hwMap.get(DcMotor.class,"Arm");
-        armRight =  hwMap.get(DcMotor.class,"Arm_2");
+        //hwMap = ahwMap;
+        armLeft = hwMap.get(DcMotor.class, "Arm");
+        armRight = hwMap.get(DcMotor.class, "Arm_2");
 
-
+>>>>>>> master
         armLeft.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if needed
         armRight.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
 
@@ -85,17 +86,13 @@ public class Arm {
 
         }
 
+        armLeft.setPower(0);
+        armRight.setPower(0);
+        armLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
-
-    public void moveByJoystick(float y){
-        float lift;
-        lift = (-y/2); //divides the power by 2 to reduce power
-        armLeft.setPower(lift);
-        armRight.setPower(lift);
-
-
     }
 
 
