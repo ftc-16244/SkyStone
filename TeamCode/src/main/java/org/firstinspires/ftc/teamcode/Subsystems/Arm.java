@@ -15,7 +15,7 @@ public class Arm {
     // Define hardware objects
     public DcMotor armLeft = null;
     public DcMotor armRight = null;
-    // adding a comment to demo a git pull command
+
 
     private static final int ARM_STONE_LOAD = 50; // Left side reference
     private static final int ARM_STONE_CARRY = 200;// Left side reference
@@ -36,7 +36,7 @@ public class Arm {
         armLeft = hwMap.get(DcMotor.class, "Arm");
         armRight = hwMap.get(DcMotor.class, "Arm_2");
 
->>>>>>> master
+
         armLeft.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if needed
         armRight.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
 
@@ -94,6 +94,11 @@ public class Arm {
         armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+
+    public void moveByJoystick(double joystick_Y){
+        armLeft.setPower(joystick_Y);
+        armRight.setPower(joystick_Y);
+    };
 
 
 }
