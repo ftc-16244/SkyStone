@@ -31,57 +31,48 @@ package org.firstinspires.ftc.teamcode.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.ArmState;
 import org.firstinspires.ftc.teamcode.Enums.DriveState;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
-import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain_Encoder;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.SkystoneRobot;
 
-import static java.lang.Thread.sleep;
 import static org.firstinspires.ftc.teamcode.Enums.ArmState.CONTINUOUS;
 import static org.firstinspires.ftc.teamcode.Enums.ArmState.DISCRETE;
 import static org.firstinspires.ftc.teamcode.Enums.DriveState.STATE_FAST;
 import static org.firstinspires.ftc.teamcode.Enums.DriveState.STATE_SLOW;
 
 
-@TeleOp(name="Iterative OpMode Test ", group="Teleop")
+@TeleOp(name="Iterative OpMode Test #2", group="Teleop")
 //@Disabled
-public class Iterative_OpMode_Test extends OpMode{
+public class Iterative_OpMode_Test_Encoder_Robot extends OpMode{
 
 
     // Create instances for all of the subsystem components for this opmode.
     // because this is a teleop opmode we need all of the systems
 
-    private FoundationMover foundationMover  =    new FoundationMover();
-    private Arm             arm              =    new Arm();
-    private Gripper         gripper          =    new Gripper();
-    private Drivetrain      drivetrain       =    new Drivetrain(true);
-    private Intake          intake           =    new Intake();
-    private DriveState      currDriveState;
-    private ArmState        currArmMode;
-    private ElapsedTime     runtime         =       new ElapsedTime();
+    private SkystoneRobot robot  =    new SkystoneRobot();
+
 
     @Override
     public void init() {
-        // Call init methods for all implements needed in this opmode. Usually it will be all
-       foundationMover. init(hardwareMap);
-       arm.init(hardwareMap);
-       gripper.init(hardwareMap);
-       drivetrain.init(hardwareMap);
-       intake.init(hardwareMap);
-
+        // Call init methods in all needed system classes
+       robot.foundationMover. init(hardwareMap);
+       robot.arm.init(hardwareMap);
+       robot.gripper.init(hardwareMap);
+       robot.drivetrain.init(hardwareMap);
        telemetry.addData("Hardware is Initiaized ", "Complete ");
-
        //position robot into start position - for example the 18x18x18 inch dimensions
 
+
        telemetry.addData("Arm and Gripper Reset", "Complete ");
-       currDriveState = DriveState.STATE_FAST;
-       currArmMode =ArmState.DISCRETE;
+       robot.currDriveState = DriveState.STATE_FAST;
+       robot.currArmMode =ArmState.DISCRETE;
        //gripper.moveToStartPsn();
 
        //foundationMover.moveToStore(); // start match with foundation mover in the "up" position
@@ -106,13 +97,10 @@ public class Iterative_OpMode_Test extends OpMode{
         //  arm.resetArmPosn();
 
 
-
-        arm.resetArmPosn();
-
+        robot.arm.resetArmPosn();
 
         //foundationMover.moveToStore(); // start match with foundation mover in the "up" position
         //arm.moveToCarryStone();
-
 
     }
 
@@ -132,6 +120,8 @@ public class Iterative_OpMode_Test extends OpMode{
         //========================================
         // GAME PAD 1
         //========================================
+        // left joystick is assigned to drive speed
+        // left joystick is assigned to drive speed
         drive = -gamepad1.left_stick_y;
         // right joystick is for turning
         turn  =  gamepad1.right_stick_x;
@@ -149,22 +139,22 @@ public class Iterative_OpMode_Test extends OpMode{
 
         // foundation moving servo assignment to drivers gamepad
         if (gamepad1.a) {
-            foundationMover.moveToStore();
+            robot.foundationMover.moveToStore();
         }
         //this works 5/28 for a and b
         if (gamepad1.b) {
-            foundationMover.moveToGrab();
+            robot.foundationMover.moveToGrab();
 
         }
 
         // set-up drive speed states on bumpers
         if (gamepad1.left_bumper)
         {
-            currDriveState = STATE_FAST;
+            robot.currDriveState = STATE_FAST;
         }
         if (gamepad1.right_bumper)
         {
-            currDriveState = STATE_SLOW;
+            robot.currDriveState = STATE_SLOW;
         }
 
         //========================================
@@ -174,11 +164,11 @@ public class Iterative_OpMode_Test extends OpMode{
         // gripper assignment to X and Y buttons on implement gamepad
         // does not work 5/28. wires are in correct port too
         if (gamepad2.x) {
-            gripper.moveToClose();
+            robot.gripper.moveToClose();
         }
 
         if (gamepad2.y) {
-            gripper.moveToOpen();
+            robot.gripper.moveToOpen();
         }
 
 
@@ -186,13 +176,13 @@ public class Iterative_OpMode_Test extends OpMode{
         // set-up arm mode states on bumpers
         if (gamepad2.left_bumper)
         {
-            currArmMode =    CONTINUOUS;
+            robot.currArmMode =    CONTINUOUS;
 
 
         }
         if (gamepad2.right_bumper)
         {
-            currArmMode = DISCRETE;
+            robot.ArmMode = DISCRETE;
         }
 
         // switch case for the drive speed state
@@ -235,9 +225,7 @@ public class Iterative_OpMode_Test extends OpMode{
 
             case CONTINUOUS: //joystick controls arm
                 telemetry.addData("Arm Mode",currArmMode);
-                arm.armLeft.setPower(-gamepad2.left_stick_y);
-                arm.armRight.setPower(-gamepad2.left_stick_y);
-
+                arm.moveByJoystick(-gamepad2.left_stick_y);
                 break;
         }
 
