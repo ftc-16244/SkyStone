@@ -31,27 +31,25 @@ package org.firstinspires.ftc.teamcode.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.ArmState;
 import org.firstinspires.ftc.teamcode.Enums.DriveState;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain_Encoder;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 
-import static java.lang.Thread.sleep;
 import static org.firstinspires.ftc.teamcode.Enums.ArmState.CONTINUOUS;
 import static org.firstinspires.ftc.teamcode.Enums.ArmState.DISCRETE;
 import static org.firstinspires.ftc.teamcode.Enums.DriveState.STATE_FAST;
 import static org.firstinspires.ftc.teamcode.Enums.DriveState.STATE_SLOW;
 
 
-@TeleOp(name="Iterative OpMode Test ", group="Teleop")
+@TeleOp(name="Iterative OpMode Test #2", group="Teleop")
 //@Disabled
-public class Iterative_OpMode_Test extends OpMode{
+public class Iterative_OpMode_Test_Encoder extends OpMode{
 
 
     // Create instances for all of the subsystem components for this opmode.
@@ -60,27 +58,20 @@ public class Iterative_OpMode_Test extends OpMode{
     private FoundationMover foundationMover  =    new FoundationMover();
     private Arm             arm              =    new Arm();
     private Gripper         gripper          =    new Gripper();
-    private Drivetrain      drivetrain       =    new Drivetrain(true);
-    private Intake          intake           =    new Intake();
+    private Drivetrain_Encoder drivetrain       =    new Drivetrain_Encoder(true);
     private DriveState      currDriveState;
     private ArmState        currArmMode;
     private ElapsedTime     runtime         =       new ElapsedTime();
 
     @Override
     public void init() {
-        // Call init methods for all implements needed in this opmode. Usually it will be all
+        // Call init methods in all needed system classes
        foundationMover. init(hardwareMap);
        arm.init(hardwareMap);
        gripper.init(hardwareMap);
        drivetrain.init(hardwareMap);
-       intake.init(hardwareMap);
-
        telemetry.addData("Hardware is Initiaized ", "Complete ");
-
-
        //position robot into start position - for example the 18x18x18 inch dimensions
-       gripper.moveToStartPsn();
-       arm.resetArmPosn();
 
 
        telemetry.addData("Arm and Gripper Reset", "Complete ");
