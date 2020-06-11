@@ -37,6 +37,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
+import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 
 import static org.firstinspires.ftc.teamcode.Enums.DriveState.STATE_FAST;
 import static org.firstinspires.ftc.teamcode.Enums.DriveState.STATE_SLOW;
@@ -54,20 +55,23 @@ public class Iterative_OpMode_Test extends OpMode{
     private Arm             arm              =    new Arm();
     private Gripper         gripper          =    new Gripper();
     private Drivetrain      drivetrain       =    new Drivetrain(true);
+    private Intake          intake           =    new Intake();
     private DriveState      currDriveState;
 
     @Override
     public void init() {
-        // Call init methods in all needed system classes
+        // Call init methods for all implements needed in this opmode. Usually it will be all
        foundationMover. init(hardwareMap);
        arm.init(hardwareMap);
        gripper.init(hardwareMap);
        drivetrain.init(hardwareMap);
-       telemetry.addData("Hardware is Initiaized ", "Complete ");
-       //position robot into start position - for example the 18x18x18 inch dimensions
-        gripper.moveToStartPsn();
+       intake.init(hardwareMap);
 
-        arm.resetArmPosn();
+       telemetry.addData("Hardware is Initiaized ", "Complete ");
+
+       //position robot into start position - for example the 18x18x18 inch dimensions
+       gripper.moveToStartPsn();
+       arm.resetArmPosn();
 
        telemetry.addData("Arm and Gripper Reset", "Complete ");
        currDriveState = DriveState.STATE_FAST;
