@@ -84,7 +84,7 @@ public class Arm {
             //telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
 
         }
-<<<<<<< HEAD
+
         armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
@@ -95,18 +95,8 @@ public class Arm {
         armLeft.setPower(lift);
         armRight.setPower(lift);
 
-=======
-        armLeft.setPower(0);
-        armRight.setPower(0);
-        armLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
->>>>>>> master
     }
 
-    public void moveByJoystick(float v){
 
-    };
 }
