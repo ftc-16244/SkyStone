@@ -240,7 +240,9 @@ public class Iterative_OpMode_Test extends OpMode{
 
             case CONTINUOUS: //joystick controls arm
                 telemetry.addData("Arm Mode",currArmMode);
-                arm.moveByJoystick(-gamepad2.left_stick_y);
+                arm.armLeft.setPower(-gamepad2.left_stick_y);
+                arm.armRight.setPower(-gamepad2.left_stick_y);
+
                 break;
         }
 
