@@ -63,7 +63,6 @@ public class Lift_Only_Test extends OpMode{
     public void init() {
         // Call init methods for all implements needed in this opmode. Usually it will be all
        lift.init(hardwareMap);
-
        telemetry.addData("Hardware is Initiaized ", "Complete ");
 
     }
@@ -99,17 +98,23 @@ public class Lift_Only_Test extends OpMode{
         // does not work 5/28. wires are in correct port too
         if (gamepad2.x) {
             lift.moveToPickup();
+            telemetry.addData("Button X Pushed", "Complete ");
+            telemetry.addData("Count",  "Running at %7d",
+                   lift.liftmtr.getCurrentPosition());
         }
 
         if (gamepad2.y) {
             lift.moveToStackLevel1();
+            telemetry.addData("Button Y Pushed", "Complete ");
         }
         if (gamepad2.a) {
             lift.moveToStackLevel2();
+            telemetry.addData("Button A Pushed", "Complete ");
         }
 
         if (gamepad2.b) {
             lift.resetLift();
+            telemetry.addData("Reset", "Complete ");
         }
 
 
