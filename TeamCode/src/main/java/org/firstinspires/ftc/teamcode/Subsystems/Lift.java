@@ -8,20 +8,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Lift {
 
     // Define hardware objects
-    public DcMotor lift = null;
+    public DcMotor lift = null; // REV Core HEX motor
     public DigitalChannel liftswitch = null;
 
 
     private static final int LIFT_STONE_LOAD = 50; // Left side reference
-    private static final int LIFT_ARM_STONE_LEVEL1 = 200;// Left side reference
-    private static final int LIFT_ARM_STONE_LEVEL2 = 300;// Left side reference
+    private static final int LIFT_ARM_STONE_LEVEL1 = 100;// Left side reference
+    private static final int LIFT_ARM_STONE_LEVEL2 = 200;// Left side reference
     private static final double LIFT_SPEED = .5;
-
-
+    private static final double LIFT_RESET_SPEED = -.2;
+    private static final int timeoutS = 2; // time out in seconds
     private ElapsedTime runtime = new ElapsedTime();
 
     public void init(HardwareMap hwMap) {
-
 
         //motor
         lift = hwMap.get(DcMotor.class, "Lift");
@@ -59,14 +58,14 @@ public class Lift {
     }
 
     public void resetLift() {
-        if  (liftswitch.getState() == true) {
-
-            lift.setPower(-LIFT_SPEED);
-            while (runtime.seconds() < 3.0) {
-                //telemetry here....
-
-            }
-            lift.setPower(0);
+        runtime.reset();
+        lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lift.setPower(-LIFT_SPEED);
+        while ((runtime.seconds() < timeoutS) &&
+                (liftswitch.getState() == true )) {
+            // put telemetry here when it gets sorted out
         }
+        lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
