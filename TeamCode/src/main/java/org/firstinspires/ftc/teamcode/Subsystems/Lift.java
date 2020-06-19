@@ -12,10 +12,10 @@ public class Lift {
     public DigitalChannel liftswitch;
 
 
-    private static final int LIFT_STONE_LOAD = 50; // Left side reference
-    private static final int LIFT_ARM_STONE_LEVEL1 = 100;// Left side reference
-    private static final int LIFT_ARM_STONE_LEVEL2 = 200;// Left side reference
-    private static final double LIFT_SPEED = .5;
+    private static final int LIFT_STONE_LOAD = 100; // Left side reference
+    private static final int LIFT_ARM_STONE_LEVEL1 = 200;// Left side reference
+    private static final int LIFT_ARM_STONE_LEVEL2 = 350;// Left side reference
+    private static final double LIFT_SPEED = 1.0;
     private static final double LIFT_RESET_SPEED = -.2;
     private static final int timeoutS = 10; // time out in seconds
     private ElapsedTime runtime = new ElapsedTime();
