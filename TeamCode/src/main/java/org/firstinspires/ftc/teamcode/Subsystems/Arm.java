@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 
-import android.media.MediaPlayer;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
 public class Arm {
@@ -15,7 +13,7 @@ public class Arm {
     // Define hardware objects
     public DcMotor armLeft = null;
     public DcMotor armRight = null;
-
+    public Telemetry telemetry;
 
     private static final int ARM_STONE_LOAD = 50; // Left side reference
     private static final int ARM_STONE_CARRY = 200;// Left side reference
@@ -82,7 +80,7 @@ public class Arm {
         armLeft.setPower(-.3);
         armRight.setPower(-.3);
         while (runtime.seconds() < 3.0) {
-            //telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+            telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
 
         }
 
