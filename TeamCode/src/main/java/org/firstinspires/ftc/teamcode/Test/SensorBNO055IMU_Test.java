@@ -56,7 +56,7 @@ import java.util.Locale;
  * @see <a href="http://www.adafruit.com/products/2472">Adafruit IMU</a>
  */
 @TeleOp(name = "Sensor: BNO055 IMU", group = "Sensor")
-@Disabled                            // Comment this out to add to the opmode list
+//@Disabled                            // Comment this out to add to the opmode list
 public class SensorBNO055IMU_Test extends LinearOpMode
     {
     //----------------------------------------------------------------------------------------------
@@ -123,6 +123,7 @@ public class SensorBNO055IMU_Test extends LinearOpMode
                 // to do that in each of the three items that need that info, as that's
                 // three times the necessary expense.
                 angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                //axes order was XYZ before this Y y first is for heading. Don't care about the others
                 gravity  = imu.getGravity();
                 }
             });
@@ -143,6 +144,7 @@ public class SensorBNO055IMU_Test extends LinearOpMode
             .addData("heading", new Func<String>() {
                 @Override public String value() {
                     return formatAngle(angles.angleUnit, angles.firstAngle);
+                    //return formatAngle(angles.angleUnit, angles.thirdAngle);
                     }
                 })
             .addData("roll", new Func<String>() {
@@ -153,6 +155,7 @@ public class SensorBNO055IMU_Test extends LinearOpMode
             .addData("pitch", new Func<String>() {
                 @Override public String value() {
                     return formatAngle(angles.angleUnit, angles.thirdAngle);
+                    //return formatAngle(angles.angleUnit, angles.firstAngle);
                     }
                 });
 
