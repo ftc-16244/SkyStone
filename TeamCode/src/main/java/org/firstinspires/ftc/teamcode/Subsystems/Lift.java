@@ -5,11 +5,14 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class Lift {
 
     // Define hardware objects
     public DcMotor liftmtr = null; // REV Core HEX motor
-    public DigitalChannel liftswitch;
+    private DigitalChannel liftswitch;
+    public Telemetry telemetry;
 
 
     private static final int LIFT_STONE_LOAD = 100; // Left side reference
@@ -65,7 +68,7 @@ public class Lift {
         while ((runtime.seconds() < timeoutS) &&
                 (liftswitch.getState() == true )) {
 
-            // put telemetry here when it gets sorted out
+            telemetry.addData("Lift Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
         }
         liftmtr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftmtr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

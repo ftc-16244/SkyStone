@@ -14,7 +14,7 @@ public class Arm {
     public DcMotor armLeft = null;
     public DcMotor armRight = null;
     public Telemetry telemetry;
-    
+
 
     private static final int ARM_STONE_LOAD = 50; // Left side reference
     private static final int ARM_STONE_CARRY = 200;// Left side reference
