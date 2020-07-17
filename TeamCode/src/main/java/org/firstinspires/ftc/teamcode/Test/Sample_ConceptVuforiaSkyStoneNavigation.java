@@ -361,7 +361,7 @@ public class Sample_ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
             String positionSkystone = "";
             // make sure camera can see all 3 stones. The intent is to place the robot at stone #2
             // you can't see all 6 stones. So go for the group of 3 that is closest to the center of
-            // the field. 
+            // the field.
             if (targetVisible) {
                 // express position (translation) of robot in inches.
                 VectorF translation = lastLocation.getTranslation();
