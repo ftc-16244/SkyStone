@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode.Test;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.vuforia.CameraDevice;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -51,7 +50,6 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
-import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
 
 /**
  * This 2019-2020 OpMode illustrates the basics of using the Vuforia localizer to determine
@@ -84,9 +82,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 
-@TeleOp(name="SKYSTONE Vuforia Nav", group ="Concept")
-//@Disabled
-public class Sample_ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
+@TeleOp(name="SKYSTONE Vuforia Nav Original", group ="Concept")
+@Disabled
+public class No_change_ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
 
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
     // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
@@ -95,7 +93,7 @@ public class Sample_ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
     // NOTE: If you are running on a CONTROL HUB, with only one USB WebCam, you must select CAMERA_CHOICE = BACK; and PHONE_IS_PORTRAIT = false;
     //
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
-    private static final boolean PHONE_IS_PORTRAIT = false;
+    private static final boolean PHONE_IS_PORTRAIT = false  ;
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -290,14 +288,13 @@ public class Sample_ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
         // Rotate the phone vertical about the X axis if it's in portrait mode
         if (PHONE_IS_PORTRAIT) {
             phoneXRotate = 90 ;
-
         }
 
         // Next, translate the camera lens to where it is on the robot.
         // In this example, it is centered (left to right), but forward of the middle of the robot, and above ground level.
-        final float CAMERA_FORWARD_DISPLACEMENT  = 0.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
-        final float CAMERA_VERTICAL_DISPLACEMENT = 0.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
-        final float CAMERA_LEFT_DISPLACEMENT     = 0.0f * mmPerInch;     // eg: Camera is ON the robot's center line
+        final float CAMERA_FORWARD_DISPLACEMENT  = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot center
+        final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
+        final float CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
 
         OpenGLMatrix robotFromCamera = OpenGLMatrix
                     .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
@@ -321,30 +318,13 @@ public class Sample_ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
         // Tap the preview window to receive a fresh image.
 
         targetsSkyStone.activate();
-        //Turn the flash on
-        com.vuforia.CameraDevice.getInstance().setFlashTorchMode(true);
-
-        //Set zoom of the camera
-        //com.vuforia.CameraDevice.getInstance().setField("opti-zoom", "opti-zoom-on");
-        //com.vuforia.CameraDevice.getInstance().setField("zoom", "30");
-
         while (!isStopRequested()) {
 
-            // offse tis used to set up center, left right spacing for the Skystones. It will depend on distace back for
-            // the skystones. Use this to avoid hard coding numbers.
-            double offset = 4.0;
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
                 if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
                     telemetry.addData("Visible Target", trackable.getName());
-
-
-                    if(trackable.getName().equals("Stone Target")){
-                        telemetry.addLine(("Stone Target is Visible"));
-
-                    }
-
                     targetVisible = true;
 
                     // getUpdatedRobotLocation() will return null if no new information is available since
@@ -358,46 +338,23 @@ public class Sample_ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
             }
 
             // Provide feedback as to where the robot is located (if we know).
-            String positionSkystone = "";
-            // make sure camera can see all 3 stones. The intent is to place the robot at stone #2
-            // you can't see all 6 stones. So go for the group of 3 that is closest to the center of
-            // the field. 
             if (targetVisible) {
                 // express position (translation) of robot in inches.
                 VectorF translation = lastLocation.getTranslation();
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
                         translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
-                    // yPosition is left right position of the center of the stone. Need to convert to inches since it
-                    // Vuforia reports in mm. Y postition is the second element of the translation arry. Sicne arrays start with 0 as the first
-                    // index the second value is index #1. The second value is index #2 etc.
-                    double yPosition = translation.get(1)/25.4;
-
-                    if(yPosition > offset) {
-                        positionSkystone = "right";
-
-                    }else if((yPosition >= -offset) && (yPosition <= offset)){
-                        positionSkystone = "center";
-
-                     }else if (yPosition < -offset){
-                        positionSkystone = "Left";
-
-                    }else {
-                    positionSkystone = "None";
-                    }
-
-
 
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
                 telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
             }
-
-            telemetry.addData("Skystone Position", positionSkystone);
+            else {
+                telemetry.addData("Visible Target", "none");
+            }
             telemetry.update();
         }
 
         // Disable Tracking when we are done;
-        CameraDevice.getInstance().setFlashTorchMode(false) ; //turns flash off
         targetsSkyStone.deactivate();
     }
 }
