@@ -88,7 +88,7 @@ public class HardwarePushbot2
     /* Public OpMode members. */
     public DcMotor      leftFront           = null;
     public DcMotor      rightFront          = null;
-    public DcMotor      accumulator         = null;
+    //public DcMotor      accumulator         = null;
     public DcMotor      arm                 = null;
     public DcMotor      arm2                = null;
     public Servo        closey              = null;
@@ -121,7 +121,7 @@ public class HardwarePushbot2
         //rightRear     = hwMap.get(DcMotor.class, "Right_rear");
         arm             = hwMap.get(DcMotor.class, "Arm");
         arm2            = hwMap.get(DcMotor.class, "Arm_2");
-        accumulator     = hwMap.get(DcMotor.class, "ACCUM");
+        //accumulator     = hwMap.get(DcMotor.class, "ACCUM");
 
 
         // Set motor directions.
@@ -131,7 +131,7 @@ public class HardwarePushbot2
         //rightRear.setDirection(DcMotor.Direction.REVERSE);
         arm.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
         arm2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if needed
-        accumulator.setDirection(DcMotor.Direction.REVERSE);
+        //accumulator.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
         leftFront.setPower(0);
@@ -140,14 +140,14 @@ public class HardwarePushbot2
        // rightRear.setPower(0);
         arm.setPower(0);
         arm2.setPower(0);
-        accumulator.setPower(0);
+        //accumulator.setPower(0);
 
         // Set all motors to run with without encoders.
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         arm2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        accumulator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //accumulator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // ================ SERVO SECTION===============================
 

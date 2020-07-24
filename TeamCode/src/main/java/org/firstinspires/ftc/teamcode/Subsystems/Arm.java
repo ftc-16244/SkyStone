@@ -81,7 +81,7 @@ public class Arm {
         armLeft.setPower(-.3);
         armRight.setPower(-.3);
         while (runtime.seconds() < 3.0) {
-            telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+            //telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
 
         }
 
