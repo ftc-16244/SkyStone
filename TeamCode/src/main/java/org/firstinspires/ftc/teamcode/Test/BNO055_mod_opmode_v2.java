@@ -30,19 +30,19 @@
 package org.firstinspires.ftc.teamcode.Test;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
+
+
 import org.firstinspires.ftc.teamcode.Subsystems.HardwarePushbot2;
 
 /**
@@ -78,29 +78,25 @@ import org.firstinspires.ftc.teamcode.Subsystems.HardwarePushbot2;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Pushbot: Auto Drive By BNO055 IMU", group="Pushbot")
+@Autonomous(name="Pushbot: Auto Drive By BNO055 IMU_v2", group="Pushbot")
 //@Disabled
-public class BNO055_mod_opmode extends LinearOpMode {
+public class BNO055_mod_opmode_v2 extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
+    //HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
+    Drivetrain drivetrain = new Drivetrain(true);
     //ModernRoboticsI2cGyro   gyro    = null;                    // Additional Gyro device
     public static BNO055IMU imu;
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-                                                      (WHEEL_DIAMETER_INCHES * 3.1415);
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    static final double     DRIVE_SPEED             = 0.7;     // Nominal speed for better accuracy.
+    //static final double     DRIVE_SPEED             = 0.7;     // Nominal speed for better accuracy.
     static final double     TURN_SPEED              = 0.5;     // Nominal half speed for better accuracy.
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
     static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
-    static final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
+    static final double     P_DRIVE_COEFF           = 0.05;     // Larger is more responsive, but also less stable
 
     double                  globalAngle;
 
@@ -114,13 +110,13 @@ public class BNO055_mod_opmode extends LinearOpMode {
          * Initialize the standard drive system variables.
          * The init() method of the hardware class does most of the work here
          */
-        robot.init(hardwareMap);
+        drivetrain.init(hardwareMap);
         //gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
-        robot.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //drivetrain.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //drivetrain.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -146,8 +142,8 @@ public class BNO055_mod_opmode extends LinearOpMode {
         telemetry.addData(">", "Robot Ready.");    //
         telemetry.update();
 
-        robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        drivetrain.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        drivetrain.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
        //gyro.resetZAxisIntegrator();
 
@@ -159,7 +155,7 @@ public class BNO055_mod_opmode extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
-        gyroDrive(DRIVE_SPEED, 48.0, 0.0);    // Drive FWD 48 inches
+        gyroDrive(Drivetrain.DRIVE_SPEED, 24.0, 0.0);    // Drive FWD 48 inches
         //gyroTurn( TURN_SPEED, -45.0);         // Turn  CCW to -45 Degrees
         //gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
         //gyroDrive(DRIVE_SPEED, 12.0, -45.0);  // Drive FWD 12 inches at 45 degrees
@@ -204,25 +200,25 @@ public class BNO055_mod_opmode extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            moveCounts = (int)(distance * COUNTS_PER_INCH);
-            newLeftTarget = robot.leftFront.getCurrentPosition() + moveCounts;
-            newRightTarget = robot.rightFront.getCurrentPosition() + moveCounts;
+            moveCounts = (int)(distance * Drivetrain.COUNTS_PER_INCH);
+            newLeftTarget = drivetrain.leftFront.getCurrentPosition() + moveCounts;
+            newRightTarget = drivetrain.rightFront.getCurrentPosition() + moveCounts;
 
             // Set Target and Turn On RUN_TO_POSITION
-            robot.leftFront.setTargetPosition(newLeftTarget);
-            robot.rightFront.setTargetPosition(newRightTarget);
+            drivetrain.leftFront.setTargetPosition(newLeftTarget);
+            drivetrain.rightFront.setTargetPosition(newRightTarget);
 
-            robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            drivetrain.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            drivetrain.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // start motion.
             speed = Range.clip(Math.abs(speed), 0.0, 1.0);
-            robot.leftFront.setPower(speed);
-            robot.rightFront.setPower(speed);
+            drivetrain.leftFront.setPower(speed);
+            drivetrain.rightFront.setPower(speed);
 
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
-                   (robot.leftFront.isBusy() && robot.rightFront.isBusy())) {
+                   (drivetrain.leftFront.isBusy() && drivetrain.rightFront.isBusy())) {
 
                 // adjust relative speed based on heading error.
                 error = getError(angle);
@@ -243,25 +239,25 @@ public class BNO055_mod_opmode extends LinearOpMode {
                     rightSpeed /= max;
                 }
 
-                robot.leftFront.setPower(leftSpeed);
-                robot.rightFront.setPower(rightSpeed);
+                drivetrain.leftFront.setPower(leftSpeed);
+              drivetrain.rightFront.setPower(rightSpeed);
 
                 // Display drive status for the driver.
                 telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
                 telemetry.addData("Target",  "%7d:%7d",      newLeftTarget,  newRightTarget);
-                telemetry.addData("Actual",  "%7d:%7d",      robot.leftFront.getCurrentPosition(),
-                                                             robot.rightFront.getCurrentPosition());
+                telemetry.addData("Actual",  "%7d:%7d",      drivetrain.leftFront.getCurrentPosition(),
+                                                             drivetrain.rightFront.getCurrentPosition());
                 telemetry.addData("Speed",   "%5.2f:%5.2f",  leftSpeed, rightSpeed);
                 telemetry.update();
             }
 
             // Stop all motion;
-            robot.leftFront.setPower(0);
-            robot.rightFront.setPower(0);
+            drivetrain.leftFront.setPower(0);
+            drivetrain.rightFront.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            drivetrain.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            drivetrain.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
@@ -308,8 +304,8 @@ public class BNO055_mod_opmode extends LinearOpMode {
         }
 
         // Stop all motion;
-        robot.leftFront.setPower(0);
-        robot.rightFront.setPower(0);
+        drivetrain.leftFront.setPower(0);
+       drivetrain.rightFront.setPower(0);
     }
 
     /**
@@ -345,8 +341,8 @@ public class BNO055_mod_opmode extends LinearOpMode {
         }
 
         // Send desired speeds to motors.
-        robot.leftFront.setPower(leftSpeed);
-        robot.rightFront.setPower(rightSpeed);
+        drivetrain.leftFront.setPower(leftSpeed);
+        drivetrain.rightFront.setPower(rightSpeed);
 
         // Display it for the driver.
         telemetry.addData("Target", "%5.2f", angle);
@@ -358,7 +354,7 @@ public class BNO055_mod_opmode extends LinearOpMode {
 
     /**
      * getError determines the error between the target angle and the robot's current heading
-     * @param   targetAngle  Desired angle (relative to global reference established at last Gyro Reset).
+     * Desired angle (relative to global reference established at last Gyro Reset).
      * @return  error angle: Degrees in the range +/- 180. Centered on the robot's frame of reference
      *          +ve error means the robot should turn LEFT (CCW) to reduce error.
      */
@@ -372,6 +368,7 @@ public class BNO055_mod_opmode extends LinearOpMode {
         // pull out the first angle which is the Z axis for heading and use to calculate the error
         robotError = angles.firstAngle - lastAngles.firstAngle;
         telemetry.addData("Robot Error", robotError);
+        telemetry.addData("Target Angle (should be zero)", lastAngles.firstAngle);
         while (robotError > 180)  robotError -= 360;
         while (robotError <= -180) robotError += 360;
         return robotError;

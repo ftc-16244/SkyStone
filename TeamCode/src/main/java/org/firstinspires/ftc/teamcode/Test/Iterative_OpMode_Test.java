@@ -61,7 +61,7 @@ public class Iterative_OpMode_Test extends OpMode{
     private Arm             arm              =    new Arm();
     private Gripper         gripper          =    new Gripper();
     private Drivetrain      drivetrain       =    new Drivetrain(true);
-    private Intake          intake           =    new Intake();
+    //private Intake          intake           =    new Intake();
     private DriveState      currDriveState;
     private ArmState        currArmMode;
     private ElapsedTime     runtime         =       new ElapsedTime();
@@ -73,7 +73,7 @@ public class Iterative_OpMode_Test extends OpMode{
        arm.init(hardwareMap);
        gripper.init(hardwareMap);
        drivetrain.init(hardwareMap);
-       intake.init(hardwareMap);
+       //intake.init(hardwareMap);
 
        telemetry.addData("Hardware is Initiaized ", "Complete ");
 
