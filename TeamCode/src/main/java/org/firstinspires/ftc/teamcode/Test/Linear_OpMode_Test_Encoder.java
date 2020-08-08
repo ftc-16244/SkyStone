@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.Test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -45,7 +46,7 @@ import static org.firstinspires.ftc.teamcode.Subsystems.Drivetrain.DRIVE_SPEED;
 
 
 @TeleOp(name="Linear OpMode Test #2", group="Linear Opmode")
-//@Disabled
+@Disabled
 public class Linear_OpMode_Test_Encoder extends LinearOpMode {
 
     // Declare OpMode members.

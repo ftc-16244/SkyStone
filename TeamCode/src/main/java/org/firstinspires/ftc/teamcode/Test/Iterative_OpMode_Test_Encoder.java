@@ -101,7 +101,7 @@ public class Iterative_OpMode_Test_Encoder extends OpMode{
         //  arm.resetArmPosn();
 
 
-        arm.resetArmPosn();
+        arm.resetArmPosn(telemetry);
 
         //foundationMover.moveToStore(); // start match with foundation mover in the "up" position
         //arm.moveToCarryStone();

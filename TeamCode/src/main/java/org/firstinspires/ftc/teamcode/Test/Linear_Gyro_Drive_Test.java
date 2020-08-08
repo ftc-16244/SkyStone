@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain_Encoder;
@@ -57,19 +58,28 @@ public class Linear_Gyro_Drive_Test extends LinearOpMode {
     public void runOpMode() {
 
 
-        FoundationMover foundationMover  =    new FoundationMover();
-        Arm             arm              =    new Arm();
-        Gripper         gripper          =    new Gripper();
-        Drivetrain_Encoder drivetrain       =    new Drivetrain_Encoder(false);
+        FoundationMover     foundationMover  =    new FoundationMover();
+        Arm                 arm              =    new Arm();
+        Gripper             gripper          =    new Gripper();
+        Drivetrain  drivetrain       =    new Drivetrain(false);
+
+        // Define the IMU parameters and then Calibrate IMU
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
+
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        // Initialize HW
         foundationMover. init(hardwareMap);
         arm.init(hardwareMap);
         gripper.init(hardwareMap);
-        drivetrain.init(hardwareMap);
+        drivetrain.init(hardwareMap); // this includes the imu too
         telemetry.addData("Hardware is Initiaized ", "Complete ");
         //position robot into start position - for example the 18x18x18 inch dimensions
         gripper.moveToStartPsn();
@@ -81,32 +91,14 @@ public class Linear_Gyro_Drive_Test extends LinearOpMode {
         arm.armRight.setPower(-.3);
         runtime.reset();
 
-        // Define the IMU parameters and then Calibrate IMU
-
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-
-        parameters.mode                = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled      = false;
-
-        // Calibrate
-        drivetrain.imu.initialize(parameters);
-
-        telemetry.addData("Mode", "calibrating...");
-        telemetry.update();
 
         // wait for calibration
-        while (!isStopRequested() && !drivetrain.imu.isGyroCalibrated())
-        {
-            sleep(50);
-            idle();
-        }
-        telemetry.addData("Mode", "waiting for start");
-        telemetry.addData("imu calib status", drivetrain.imu.getCalibrationStatus().toString());
-        telemetry.update();
+
 
         // now reset the arm by powering it downward for 3 seconds at low power
+        arm.resetArmPosn(telemetry);
+
+        // need to initailize the IMU first in the drivetrain init method befre calibration
         while  (runtime.seconds() < 3.0) {
             telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
 
@@ -121,20 +113,10 @@ public class Linear_Gyro_Drive_Test extends LinearOpMode {
 
         // Opmode Starts Here
         runtime.reset();
-        encoderDrive(DRIVE_SPEED, -12, -12, 4);
-        encoderDrive(DRIVE_SPEED, -7, 7, 3); //first turn
-        encoderDrive(DRIVE_SPEED, -14, -14, 3);
-        encoderDrive(DRIVE_SPEED, 7.5, -7.5, 3);
-        encoderDrive(DRIVE_SPEED, -13, -13, 4);
-        //grab foundation - both servos
-        foundationMover.moveToGrab();
 
-        //pause to let servos get to their position
-        sleep(500);     // pause for servos to move
-        // now pull foundation straight into building zone
         encoderDrive(DRIVE_SPEED, 40, 40, 4);
-        // release foundation to be ready for teleop
-        foundationMover.moveToStore(); //lift them so they don't get destroyed
+
+        //foundationMover.moveToStore(); //lift them so they don't get destroyed
         sleep(500);
         // run until the end of the match (driver presses STOP)
 

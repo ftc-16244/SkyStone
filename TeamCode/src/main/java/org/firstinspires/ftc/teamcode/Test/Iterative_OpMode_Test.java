@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Enums.ArmState;
 import org.firstinspires.ftc.teamcode.Enums.DriveState;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
@@ -105,14 +106,7 @@ public class Iterative_OpMode_Test extends OpMode{
         // move implements to "game ready position" can unfold or move outside the 18 in cube.
         //  arm.resetArmPosn();
 
-
-
-        arm.resetArmPosn();
-
-
-        //foundationMover.moveToStore(); // start match with foundation mover in the "up" position
-        //arm.moveToCarryStone();
-
+        arm.resetArmPosn(telemetry);
 
     }
 
@@ -240,9 +234,6 @@ public class Iterative_OpMode_Test extends OpMode{
 
                 break;
         }
-
-
-
 
     }
 

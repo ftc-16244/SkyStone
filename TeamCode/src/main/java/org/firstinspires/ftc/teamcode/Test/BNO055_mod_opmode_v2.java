@@ -86,7 +86,7 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
     //HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
     Drivetrain drivetrain = new Drivetrain(true);
     //ModernRoboticsI2cGyro   gyro    = null;                    // Additional Gyro device
-    public static BNO055IMU imu;
+    //private static BNO055IMU imu;
 
 
     // These constants define the desired driving/control characteristics
@@ -100,6 +100,8 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
 
     double                  globalAngle;
 
+    static final double  speedReduction = 2;
+
     private Orientation lastAngles = new Orientation();
 
 
@@ -112,7 +114,7 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
          */
         drivetrain.init(hardwareMap);
         //gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        //imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         //drivetrain.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -127,14 +129,14 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
         parameters.loggingEnabled      = false;
 
         // Calibrate
-        imu.initialize(parameters);
+        drivetrain.imu.initialize(parameters);
 
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
         //gyro.calibrate();
 
         // make sure the gyro is calibrated before continuing
-        while (!isStopRequested() && imu.isGyroCalibrated())  {
+        while (!isStopRequested() && drivetrain.imu.isGyroCalibrated())  {
             sleep(50);
             idle();
         }
@@ -148,22 +150,15 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
        //gyro.resetZAxisIntegrator();
 
         telemetry.addData("Mode", "waiting for start");
-        telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
+        telemetry.addData("imu calib status", drivetrain.imu.getCalibrationStatus().toString());
         telemetry.update();
         waitForStart();
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
-        gyroDrive(Drivetrain.DRIVE_SPEED, 24.0, 0.0);    // Drive FWD 48 inches
-        //gyroTurn( TURN_SPEED, -45.0);         // Turn  CCW to -45 Degrees
-        //gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
-        //gyroDrive(DRIVE_SPEED, 12.0, -45.0);  // Drive FWD 12 inches at 45 degrees
-        //gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
-        //gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
-        //gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
-        //gyroHold( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for a 1 second
-        //gyroDrive(DRIVE_SPEED,-48.0, 0.0);    // Drive REV 48 inches
+        gyroDrive(Drivetrain.DRIVE_SPEED, 260.0, 0.0);    // Drive FWD 36 inches
+
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -228,9 +223,12 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
                 if (distance < 0)
                     steer *= -1.0;
 
-                leftSpeed = speed - steer;
-                rightSpeed = speed + steer;
+                // if robot goes in a circle the steer + and /ay need to be flipped
+                leftSpeed = speed + steer;
+                rightSpeed = speed - steer;
 
+                leftSpeed =  leftSpeed / speedReduction;
+                rightSpeed = rightSpeed/ speedReduction;
                 // Normalize speeds if either one exceeds +/- 1.0;
                 max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
                 if (max > 1.0)
@@ -364,7 +362,7 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
 
         // calculate error in -179 to +180 range  (
         // instantiate an angles object from the IMU
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        Orientation angles = drivetrain.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         // pull out the first angle which is the Z axis for heading and use to calculate the error
         robotError = angles.firstAngle - lastAngles.firstAngle;
         telemetry.addData("Robot Error", robotError);
