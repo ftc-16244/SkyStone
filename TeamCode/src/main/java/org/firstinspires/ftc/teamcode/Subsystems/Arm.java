@@ -13,7 +13,7 @@ public class Arm {
     // Define hardware objects
     public DcMotor armLeft = null;
     public DcMotor armRight = null;
-    public Telemetry telemetry;
+    public Telemetry telemetry = null;
 
 
     private static final int ARM_STONE_LOAD = 50; // Left side reference
@@ -73,7 +73,8 @@ public class Arm {
 
     }
 
-    public void resetArmPosn() {
+    public void resetArmPosn(Telemetry telemetry) {
+        this.telemetry = telemetry;
         runtime.reset();
 
         armLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -81,7 +82,7 @@ public class Arm {
         armLeft.setPower(-.3);
         armRight.setPower(-.3);
         while (runtime.seconds() < 3.0) {
-            //telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+            telemetry.addData("Arm Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
 
         }
 

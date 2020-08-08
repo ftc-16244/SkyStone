@@ -13,7 +13,12 @@ public class Drivetrain  {
     // Define hardware objects
     public DcMotor leftFront = null;
     public DcMotor rightFront = null;
-    public static BNO055IMU imu;
+    public BNO055IMU imu;
+
+
+
+
+
 
     public static final double COUNTS_PER_MOTOR_REV = 1120;         // REV HD HEX 40:1 motors
     public static final double DRIVE_GEAR_REDUCTION = 0.5;         // This is < 1.0 if geared UP 20 teeth drive 10 teeth driven
@@ -36,7 +41,9 @@ public class Drivetrain  {
     public void init(HardwareMap hwMap) {
 
         //hwMap = ahwMap;
-
+        // initialize the imu first
+        imu = hwMap.get(BNO055IMU.class, "imu");
+        //
         leftFront = hwMap.get(DcMotor.class, "Left_front");
         rightFront = hwMap.get(DcMotor.class, "Right_front");
 
