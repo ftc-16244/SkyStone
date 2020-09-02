@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -11,8 +12,8 @@ import org.firstinspires.ftc.teamcode.Enums.GameMode;
 
 public class Drivetrain  {
     // Define hardware objects
-    public DcMotor leftFront = null;
-    public DcMotor rightFront = null;
+    public DcMotorEx leftFront = null;
+    public DcMotorEx rightFront = null;
     public BNO055IMU imu;
 
 
@@ -44,8 +45,8 @@ public class Drivetrain  {
         // initialize the imu first
         imu = hwMap.get(BNO055IMU.class, "imu");
         //
-        leftFront = hwMap.get(DcMotor.class, "Left_front");
-        rightFront = hwMap.get(DcMotor.class, "Right_front");
+        leftFront = hwMap.get(DcMotorEx.class, "Left_front");
+        rightFront = hwMap.get(DcMotorEx.class, "Right_front");
 
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
