@@ -80,7 +80,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.HardwarePushbot2;
 
 @Autonomous(name="Pushbot: Auto Drive By BNO055 IMU_v2", group="Pushbot")
 //@Disabled
-public class BNO055_mod_opmode_v2 extends LinearOpMode {
+public class BNO055_mod_opmode_v2<PIDController, pidDrive> extends LinearOpMode {
 
     /* Declare OpMode members. */
     //HardwarePushbot2        robot   = new HardwarePushbot2();   // Use a Pushbot's hardware
@@ -102,6 +102,12 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
 
     static final double  speedReduction = 2;
 
+
+
+
+
+
+   // This creates an empty orientation when the robot is stationary. Basically a start orientation
     private Orientation lastAngles = new Orientation();
 
 
@@ -113,14 +119,8 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
          * The init() method of the hardware class does most of the work here
          */
         drivetrain.init(hardwareMap);
-        //gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
-        //imu = hardwareMap.get(BNO055IMU.class, "imu");
 
-        // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
-        //drivetrain.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //drivetrain.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
+        // the imu is initialized in Drivetrain Investigate moving the parameter definition there too.
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
         parameters.mode                = BNO055IMU.SensorMode.IMU;
@@ -157,7 +157,9 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
-        gyroDrive(Drivetrain.DRIVE_SPEED, 260.0, 0.0);    // Drive FWD 36 inches
+        gyroDrive(Drivetrain.DRIVE_SPEED, 100.0, 0.0);    // Drive FWD 36 inches
+        gyroDrive(Drivetrain.DRIVE_SPEED, -100.0, 0.0);    // Drive FWD 36 inches
+        gyroTurn(Drivetrain.DRIVE_SPEED,120);
 
 
         telemetry.addData("Path", "Complete");
@@ -238,7 +240,7 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
                 }
 
                 drivetrain.leftFront.setPower(leftSpeed);
-              drivetrain.rightFront.setPower(rightSpeed);
+                drivetrain.rightFront.setPower(rightSpeed);
 
                 // Display drive status for the driver.
                 telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
@@ -276,6 +278,10 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
         while (opModeIsActive() && !onHeading(speed, angle, P_TURN_COEFF)) {
             // Update telemetry & Allow time for other processes to run.
             telemetry.update();
+
+            // Need to have an angle check
+            //then applu power appropriatly to each wheel until angle is correct.
+            //then stop motors
         }
     }
 
@@ -356,14 +362,16 @@ public class BNO055_mod_opmode_v2 extends LinearOpMode {
      * @return  error angle: Degrees in the range +/- 180. Centered on the robot's frame of reference
      *          +ve error means the robot should turn LEFT (CCW) to reduce error.
      */
-    public double getError(double targetAngle) {
+    public double getError(double targetangle) {
 
         double robotError;
-
+        // "target angle is not used because the "lastangles" variable sets the "0" at initializaion
+        // need to figure out how to make this work
         // calculate error in -179 to +180 range  (
         // instantiate an angles object from the IMU
         Orientation angles = drivetrain.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         // pull out the first angle which is the Z axis for heading and use to calculate the error
+        // we don't need the other angles so the second and third are not calculated.
         robotError = angles.firstAngle - lastAngles.firstAngle;
         telemetry.addData("Robot Error", robotError);
         telemetry.addData("Target Angle (should be zero)", lastAngles.firstAngle);
