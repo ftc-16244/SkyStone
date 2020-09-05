@@ -86,10 +86,10 @@ public class BNO055_mod_opmode_v3 extends LinearOpMode {
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
     static final double     DRIVE_SPEED             = 0.6;     // Nominal speed for better accuracy.
-    static final double     TURN_SPEED              = 0.5;     // Nominal half speed for better accuracy.
+    static final double     TURN_SPEED              = 0.9;     // Nominal half speed for better accuracy.
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
-    static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
+    static final double     P_TURN_COEFF            = 0.5;     // Larger is more responsive, but also less stable
     static final double     P_DRIVE_COEFF           = 0.05;     // Larger is more responsive, but also less stable
 
     double                  globalAngle;
@@ -149,15 +149,16 @@ public class BNO055_mod_opmode_v3 extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
-        gyroDrive(DRIVE_SPEED, 110.0, 0.0);    // Drive FWD 110 inches
-        //gyroTurn( TURN_SPEED, -45.0);         // Turn  CCW to -45 Degrees
+        //gyroDrive(DRIVE_SPEED, 25.0, 10.0);    // Drive FWD 110 inches
+        gyroTurn( TURN_SPEED, 45.0);         // Turn  CCW to -45 Degrees
         //gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
-        //gyroDrive(DRIVE_SPEED, 12.0, -45.0);  // Drive FWD 12 inches at 45 degrees
+        //gyroDrive(DRIVE_SPEED, 60.0, -10.0);  // Drive FWD 12 inches at 45 degrees
         //gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
         //gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
         //gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
         //gyroHold( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for a 1 second
-        //gyroDrive(DRIVE_SPEED,-48.0, 0.0);    // Drive REV 48 inches
+        //gyroDrive(DRIVE_SPEED,30.0, 0.0);    // Drive REV 48 inches
+        //gyroDrive(DRIVE_SPEED,60.0, 60.0);    // Drive REV 48 inches
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -215,6 +216,8 @@ public class BNO055_mod_opmode_v3 extends LinearOpMode {
                    (drivetrain.leftFront.isBusy() && drivetrain.rightFront.isBusy())) {
 
                 // adjust relative speed based on heading error.
+                // Positive angle means drifting to the left so need to steer to the
+                // right to get back on track.
                 error = getError(angle);
                 steer = getSteer(error, P_DRIVE_COEFF);
 
@@ -271,6 +274,7 @@ public class BNO055_mod_opmode_v3 extends LinearOpMode {
         // keep looping while we are still active, and not on heading.
         while (opModeIsActive() && !onHeading(speed, angle, P_TURN_COEFF)) {
             // Update telemetry & Allow time for other processes to run.
+            onHeading(speed, angle, P_TURN_COEFF);
             telemetry.update();
         }
     }
@@ -330,7 +334,7 @@ public class BNO055_mod_opmode_v3 extends LinearOpMode {
         }
         else {
             steer = getSteer(error, PCoeff);
-            rightSpeed  = speed * steer;
+            rightSpeed  = -speed * steer;
             leftSpeed   = -rightSpeed;
         }
 
@@ -360,8 +364,10 @@ public class BNO055_mod_opmode_v3 extends LinearOpMode {
         // instantiate an angles object from the IMU
         Orientation angles = drivetrain.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         // pull out the first angle which is the Z axis for heading and use to calculate the error
+        // Positive robot rotation is left so positive error means robot needs to turn right.
         robotError = angles.firstAngle - targetAngle; //lastAngles.firstAngle;
         telemetry.addData("Robot Error", robotError);
+        telemetry.addData("Target Angle", targetAngle);
         while (robotError > 180)  robotError -= 360;
         while (robotError <= -180) robotError += 360;
         return robotError;

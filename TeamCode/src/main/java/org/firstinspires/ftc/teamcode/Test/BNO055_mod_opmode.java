@@ -159,7 +159,7 @@ public class BNO055_mod_opmode extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
-        gyroDrive(DRIVE_SPEED, 110.0, 0.0);    // Drive FWD 110 inches
+        gyroDrive(DRIVE_SPEED, 48.0, 0.0);    // Drive FWD 110 inches
         //gyroTurn( TURN_SPEED, -45.0);         // Turn  CCW to -45 Degrees
         //gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
         //gyroDrive(DRIVE_SPEED, 12.0, -45.0);  // Drive FWD 12 inches at 45 degrees
@@ -232,8 +232,8 @@ public class BNO055_mod_opmode extends LinearOpMode {
                 if (distance < 0)
                     steer *= -1.0;
 
-                leftSpeed = speed + steer;
-                rightSpeed = speed - steer;
+                leftSpeed = speed - steer;
+                rightSpeed = speed + steer;
 
                 // Normalize speeds if either one exceeds +/- 1.0;
                 max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
