@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -12,6 +14,11 @@ public class Drivetrain  {
     // Define hardware objects
     public DcMotor leftFront = null;
     public DcMotor rightFront = null;
+    public BNO055IMU imu;
+
+
+
+
 
 
     public static final double COUNTS_PER_MOTOR_REV = 1120;         // REV HD HEX 40:1 motors
@@ -24,36 +31,38 @@ public class Drivetrain  {
     private boolean inTeleOp;
     private ElapsedTime runtime = new ElapsedTime();
 
-    HardwareMap hwMap = null;        // create a hardware map object here
+    //HardwareMap hwMap = null;        // create a hardware map object here
 
     // Contructor for Drivetrain
     public Drivetrain(boolean inTeleOp) {
-    this.inTeleOp = inTeleOp;
+        //this.inTeleOp = inTeleOp;
 
     }
 
-    public void init(HardwareMap ahwMap) {
+    public void init(HardwareMap hwMap) {
 
-        hwMap = ahwMap;
-
+        //hwMap = ahwMap;
+        // initialize the imu first
+        imu = hwMap.get(BNO055IMU.class, "imu");
+        //
         leftFront = hwMap.get(DcMotor.class, "Left_front");
         rightFront = hwMap.get(DcMotor.class, "Right_front");
 
 
-        leftFront.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        rightFront.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
 
 
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        // not in teleop means autonomous which meansd we need encoders
+        // not in teleop means autonomous which means we need encoders
         if (!inTeleOp) {
             leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         } else {
-        // for InTeleop we don't need encoders
+            // for InTeleop we don't need encoders
             leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
