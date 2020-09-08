@@ -33,7 +33,7 @@ class IMUExperiment extends LinearOpMode {
 
     private Orientation lastAngles = new Orientation();
 
-    
+
     PIDCoefficients PIDdrive = new PIDCoefficients(.05,0,0);
     PIDCoefficients PIDturn = new PIDCoefficients(.15,0,0);
     //public void PIDTurn(double p, double i, double d){}
