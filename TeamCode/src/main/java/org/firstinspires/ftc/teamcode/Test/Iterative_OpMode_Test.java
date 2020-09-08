@@ -34,12 +34,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Enums.ArmState;
 import org.firstinspires.ftc.teamcode.Enums.DriveState;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
+import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 
 import static java.lang.Thread.sleep;
 import static org.firstinspires.ftc.teamcode.Enums.ArmState.CONTINUOUS;
@@ -60,20 +62,23 @@ public class Iterative_OpMode_Test extends OpMode{
     private Arm             arm              =    new Arm();
     private Gripper         gripper          =    new Gripper();
     private Drivetrain      drivetrain       =    new Drivetrain(true);
+    //private Intake          intake           =    new Intake();
     private DriveState      currDriveState;
     private ArmState        currArmMode;
     private ElapsedTime     runtime         =       new ElapsedTime();
 
     @Override
     public void init() {
-        // Call init methods in all needed system classes
+        // Call init methods for all implements needed in this opmode. Usually it will be all
        foundationMover. init(hardwareMap);
        arm.init(hardwareMap);
        gripper.init(hardwareMap);
        drivetrain.init(hardwareMap);
-       telemetry.addData("Hardware is Initiaized ", "Complete ");
-       //position robot into start position - for example the 18x18x18 inch dimensions
+       //intake.init(hardwareMap);
 
+       telemetry.addData("Hardware is Initiaized ", "Complete ");
+
+       //position robot into start position - for example the 18x18x18 inch dimensions
 
        telemetry.addData("Arm and Gripper Reset", "Complete ");
        currDriveState = DriveState.STATE_FAST;
@@ -101,11 +106,7 @@ public class Iterative_OpMode_Test extends OpMode{
         // move implements to "game ready position" can unfold or move outside the 18 in cube.
         //  arm.resetArmPosn();
 
-
-        arm.resetArmPosn();
-
-        //foundationMover.moveToStore(); // start match with foundation mover in the "up" position
-        //arm.moveToCarryStone();
+        arm.resetArmPosn(telemetry);
 
     }
 
@@ -125,8 +126,6 @@ public class Iterative_OpMode_Test extends OpMode{
         //========================================
         // GAME PAD 1
         //========================================
-        // left joystick is assigned to drive speed
-        // left joystick is assigned to drive speed
         drive = -gamepad1.left_stick_y;
         // right joystick is for turning
         turn  =  gamepad1.right_stick_x;
@@ -230,12 +229,11 @@ public class Iterative_OpMode_Test extends OpMode{
 
             case CONTINUOUS: //joystick controls arm
                 telemetry.addData("Arm Mode",currArmMode);
-                arm.moveByJoystick(-gamepad2.left_stick_y);
+                arm.armLeft.setPower(-gamepad2.left_stick_y);
+                arm.armRight.setPower(-gamepad2.left_stick_y);
+
                 break;
         }
-
-
-
 
     }
 
