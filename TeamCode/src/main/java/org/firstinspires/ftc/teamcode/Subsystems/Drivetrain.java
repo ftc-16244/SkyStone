@@ -12,8 +12,8 @@ import org.firstinspires.ftc.teamcode.Enums.GameMode;
 
 public class Drivetrain  {
     // Define hardware objects
-    public DcMotorEx leftFront = null;
-    public DcMotorEx rightFront = null;
+    public DcMotor leftFront = null;
+    public DcMotor rightFront = null;
     public BNO055IMU imu;
 
 
@@ -45,8 +45,8 @@ public class Drivetrain  {
         // initialize the imu first
         imu = hwMap.get(BNO055IMU.class, "imu");
         //
-        leftFront = hwMap.get(DcMotorEx.class, "Left_front");
-        rightFront = hwMap.get(DcMotorEx.class, "Right_front");
+        leftFront = hwMap.get(DcMotor.class, "Left_front");
+        rightFront = hwMap.get(DcMotor.class, "Right_front");
 
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);

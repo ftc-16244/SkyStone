@@ -33,6 +33,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -86,15 +87,17 @@ public class BNO055_mod_opmode_v3 extends LinearOpMode {
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
     static final double     DRIVE_SPEED             = 0.6;     // Nominal speed for better accuracy.
-    static final double     TURN_SPEED              = 0.4;    // 0.4 for berber carpet. Check on mat too
+    static final double     TURN_SPEED              = 0.5;    // 0.4 for berber carpet. Check on mat too
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
-    static final double     P_TURN_COEFF            = 0.15;   // 0.15 on berber carpet. Need to check on mat
+    static final double     P_TURN_COEFF            = 0.105;   // 0.15 on berber carpet. 0.04 on mat
     static final double     P_DRIVE_COEFF           = 0.05;   // Larger is more responsive, but also less stable
 
     double                  globalAngle;
 
     private Orientation lastAngles = new Orientation();
+
+
 
 
     @Override
@@ -149,10 +152,10 @@ public class BNO055_mod_opmode_v3 extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
-        //gyroDrive(DRIVE_SPEED, 25.0, 10.0);    // Drive FWD 110 inches
+        gyroDrive(DRIVE_SPEED, 15.0, 0.0);    // Drive FWD 110 inches
         gyroTurn( TURN_SPEED, 45.0);         // Turn  CCW to -45 Degrees
         //gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
-        //gyroDrive(DRIVE_SPEED, 60.0, -10.0);  // Drive FWD 12 inches at 45 degrees
+        //gyroDrive(DRIVE_SPEED, 15.0, -45.0);  // Drive FWD 12 inches at 45 degrees
         //gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
         //gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
         //gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
@@ -274,7 +277,7 @@ public class BNO055_mod_opmode_v3 extends LinearOpMode {
         // keep looping while we are still active, and not on heading.
         while (opModeIsActive() && !onHeading(speed, angle, P_TURN_COEFF)) {
             // Update telemetry & Allow time for other processes to run.
-            onHeading(speed, angle, P_TURN_COEFF);
+            //onHeading(speed, angle, P_TURN_COEFF);
             telemetry.update();
         }
     }
