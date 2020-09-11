@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.ArmState;
@@ -41,6 +42,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.FoundationMover;
 import org.firstinspires.ftc.teamcode.Subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Subsystems.Lift_Demo;
 
 import static org.firstinspires.ftc.teamcode.Enums.ArmState.CONTINUOUS;
 import static org.firstinspires.ftc.teamcode.Enums.ArmState.DISCRETE;
@@ -55,7 +57,7 @@ public class Lift_Only_Test extends OpMode{
 
     // Create instance of the lift subsystem. This opmode tests the lift motor and the limit switch
 
-    private Lift            lift             =    new Lift();
+    Lift lift             =    new Lift();
 
     //private ElapsedTime     runtime         =       new ElapsedTime();
 
