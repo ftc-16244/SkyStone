@@ -80,29 +80,31 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 public class BNO055_mod_opmode_v4 extends LinearOpMode {
 
     /* Declare OpMode members. */
-    Drivetrain drivetrain   = new Drivetrain(true);   // Use a Pushbot's hardware
+    private Drivetrain drivetrain   = new Drivetrain(true);   // Use subsystem Drivetrain
+    private Orientation     lastAngles  = new Orientation();
+    private ElapsedTime     PIDtimer    = new ElapsedTime(); // PID loop timer
+    private ElapsedTime     runtime     = new ElapsedTime(); // timeout timer
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
     static final double     DRIVE_SPEED             = 0.6;     // Nominal speed for better accuracy.
     static final double     TURN_SPEED              = 0.5;    // 0.4 for berber carpet. Check on mat too
 
-    static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
-    static final double     P_TURN_COEFF            = 0.025;   // 0.025 on mat
-    static final double     I_TURN_COEFF            = 0.0025;   //0.0025 on may
-    static final double     D_TURN_COEFF            = 0.00001;   //leave as 0
-    static final double     P_DRIVE_COEFF           = 0.04;   // Larger is more responsive, but also less stable
-    static final double     I_DRIVE_COEFF           = 0.0001;   // Larger is more responsive, but also less stable
-    static final double     D_DRIVE_COEFF           = 0.00;   // Larger is more responsive, but also less stable
+    static final double     HEADING_THRESHOLD       = 2;      // As tight as we can make it with an integer gyro
+    static final double     Kp_TURN                 = 0.025;   // 0.025 on mat
+    static final double     Ki_TURN                 = 0.0025;   //0.0025 on may
+    static final double     Kd_TURN                 = 0.0;   //leave as 0
+    static final double     Kp_DRIVE                = 0.04;   // Larger is more responsive, but also less stable
+    static final double     Ki_DRIVE                = 0.0;   // Larger is more responsive, but also less stable
+    static final double     Kd_DRIVE                = 0.0;   // Larger is more responsive, but also less stable
 
 
     double                  globalAngle;
     double                  lasterror;
-    double cumError = 0;
+    double                  totalError;
 
 
-    private Orientation lastAngles = new Orientation();
-    ElapsedTime PIDtimer = new ElapsedTime();
+
 
 
 
@@ -158,17 +160,19 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
-        //gyroDrive(DRIVE_SPEED, 15.0, 0.0);    // Drive FWD 110 inches
-        //gyroTurn( TURN_SPEED, 45.0);         // Turn  CCW to -45 Degrees
+        gyroDrive(DRIVE_SPEED, 20.0, 0.0, 5);    // Drive FWD 110 inches
+        gyroTurn( TURN_SPEED, 90.0);         // Turn  CCW to -45 Degrees
         //gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
-        gyroDrive(DRIVE_SPEED, 85.0, 0.0);  // Drive FWD 12 inches at 45 degrees
-        //gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
+        gyroDrive(DRIVE_SPEED, 20.0, 90, 5);  // Drive FWD 12 inches at 45 degrees
+        gyroTurn( TURN_SPEED,  180.0);         // Turn  CW  to  45 Degrees
         //gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
         //gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
         //gyroHold( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for a 1 second
-        gyroDrive(DRIVE_SPEED,-85.0, 0.0);    // Drive REV 48 inches
-        //gyroDrive(DRIVE_SPEED,60.0, 60.0);    // Drive REV 48 inches
+        gyroDrive(DRIVE_SPEED,20.0, 180, 3);    // Drive REV 48 inches
+        gyroTurn( TURN_SPEED,  270.0);         // Turn  CW  to  45 Degrees
 
+        gyroDrive(DRIVE_SPEED,20.0, 270.0, 5);    // D rive REV 48 inches
+        gyroTurn( TURN_SPEED,  0);         // Turn  CW  to  45 Degrees
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
@@ -188,7 +192,7 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
     */
     public void gyroDrive ( double speed,
                             double distance,
-                            double angle) {
+                            double angle, double timeout) {
 
         int     newLeftTarget;
         int     newRightTarget;
@@ -222,13 +226,13 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
 
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
-                   (drivetrain.leftFront.isBusy() && drivetrain.rightFront.isBusy())) {
+                   (drivetrain.leftFront.isBusy() && drivetrain.rightFront.isBusy()) && runtime.time() < timeout) {
 
                 // adjust relative speed based on heading error.
                 // Positive angle means drifting to the left so need to steer to the
                 // right to get back on track.
                 error = getError(angle);
-                steer = getSteer(error, P_DRIVE_COEFF, I_TURN_COEFF, D_TURN_COEFF);
+                steer = getSteer(error, Kp_DRIVE, Ki_DRIVE, Kd_DRIVE);
 
                 // if driving in reverse, the motor correction also needs to be reversed
                 if (distance < 0)
@@ -255,6 +259,8 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
                                                              drivetrain.rightFront.getCurrentPosition());
                 telemetry.addData("Speed",   "%5.2f:%5.2f",  leftSpeed, rightSpeed);
                 telemetry.update();
+
+                runtime.reset(); // reset the timer for the next function call
             }
 
             // Stop all motion;
@@ -281,7 +287,7 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
     public void gyroTurn (  double speed, double angle) {
 
         // keep looping while we are still active, and not on heading.
-        while (opModeIsActive() && !onHeading(speed, angle, P_TURN_COEFF, I_TURN_COEFF, D_TURN_COEFF)) {
+        while (opModeIsActive() && !onHeading(speed, angle, Kp_TURN, Ki_TURN, Kd_TURN)) {
             // Update telemetry & Allow time for other processes to run.
             //onHeading(speed, angle, P_TURN_COEFF);
             telemetry.update();
@@ -306,7 +312,7 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
         holdTimer.reset();
         while (opModeIsActive() && (holdTimer.time() < holdTime)) {
             // Update telemetry & Allow time for other processes to run.
-            onHeading(speed, angle, P_TURN_COEFF, I_TURN_COEFF, D_TURN_COEFF);
+            onHeading(speed, angle, Kp_TURN, Ki_TURN, Kd_TURN);
             telemetry.update();
         }
 
@@ -389,13 +395,15 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
      * @return
      */
     public double getSteer(double error, double PCoeff, double ICoef, double DCoef) {
-        double P,I,D;
+        double P; // combined proportional error Kp*error
+        double I; // combined integral error Ki * cumulative error
+        double D; // combined derivative error Kd*change in error
         double changeInError;
 
         changeInError = lasterror - error;
         P = PCoeff * error;
-        cumError = cumError  + error * PIDtimer.time();
-        I = ICoef * cumError;
+        totalError = totalError  + error * PIDtimer.time();
+        I = ICoef * totalError;
         D = DCoef * (changeInError)/PIDtimer.time();
         lasterror = error;
         PIDtimer.reset();
