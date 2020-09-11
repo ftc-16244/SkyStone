@@ -88,14 +88,14 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
     static final double     DRIVE_SPEED             = 0.6;     // Nominal speed for better accuracy.
-    static final double     TURN_SPEED              = 0.5;    // 0.4 for berber carpet. Check on mat too
+    static final double     TURN_SPEED              = 0.50;    // 0.4 for berber carpet. Check on mat too
 
     static final double     HEADING_THRESHOLD       = 2;      // As tight as we can make it with an integer gyro
-    static final double     Kp_TURN                 = 0.025;   // 0.025 on mat
-    static final double     Ki_TURN                 = 0.0025;   //0.0025 on may
+    static final double     Kp_TURN                 = 0.0275;   // 0.025 on mat
+    static final double     Ki_TURN                 = 0.003;   //0.0025 on may
     static final double     Kd_TURN                 = 0.0;   //leave as 0
-    static final double     Kp_DRIVE                = 0.04;   // Larger is more responsive, but also less stable
-    static final double     Ki_DRIVE                = 0.0;   // Larger is more responsive, but also less stable
+    static final double     Kp_DRIVE                = 0.05;   // Larger is more responsive, but also less stable
+    static final double     Ki_DRIVE                = 0.005;   // Larger is more responsive, but also less stable
     static final double     Kd_DRIVE                = 0.0;   // Larger is more responsive, but also less stable
 
 
@@ -160,19 +160,22 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
+        gyroDrive(DRIVE_SPEED, 80.0, 0.0, 5);    // Drive FWD 110 inches
+        gyroDrive(DRIVE_SPEED, -80.0, 0.0, 5);    // Drive FWD 110 inches
+
         gyroDrive(DRIVE_SPEED, 20.0, 0.0, 5);    // Drive FWD 110 inches
-        gyroTurn( TURN_SPEED, 90.0);         // Turn  CCW to -45 Degrees
+        gyroTurn( TURN_SPEED, 90.0, 3);         // Turn  CCW to -45 Degrees
         //gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
         gyroDrive(DRIVE_SPEED, 20.0, 90, 5);  // Drive FWD 12 inches at 45 degrees
-        gyroTurn( TURN_SPEED,  180.0);         // Turn  CW  to  45 Degrees
+        gyroTurn( TURN_SPEED,  180.0,4);         // Turn  CW  to  45 Degrees
         //gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
         //gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
         //gyroHold( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for a 1 second
         gyroDrive(DRIVE_SPEED,20.0, 180, 3);    // Drive REV 48 inches
-        gyroTurn( TURN_SPEED,  270.0);         // Turn  CW  to  45 Degrees
+        gyroTurn( TURN_SPEED,  270.0,3);         // Turn  CW  to  45 Degrees
 
         gyroDrive(DRIVE_SPEED,20.0, 270.0, 5);    // D rive REV 48 inches
-        gyroTurn( TURN_SPEED,  0);         // Turn  CW  to  45 Degrees
+        gyroTurn( TURN_SPEED,  0,3);         // Turn  CW  to  45 Degrees
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
@@ -202,7 +205,8 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
         double  steer;
         double  leftSpeed;
         double  rightSpeed;
-
+        totalError = 0;
+        lasterror = 0;
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
@@ -284,13 +288,15 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
      *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                   If a relative angle is required, add/subtract from current heading.
      */
-    public void gyroTurn (  double speed, double angle) {
-
+    public void gyroTurn (  double speed, double angle, double timeout) {
+        totalError = 0;
+        lasterror = 0;
         // keep looping while we are still active, and not on heading.
-        while (opModeIsActive() && !onHeading(speed, angle, Kp_TURN, Ki_TURN, Kd_TURN)) {
+        while (opModeIsActive() && !onHeading(speed, angle, Kp_TURN, Ki_TURN, Kd_TURN)&&runtime.time() < timeout) {
             // Update telemetry & Allow time for other processes to run.
             //onHeading(speed, angle, P_TURN_COEFF);
             telemetry.update();
+            runtime.reset();
         }
     }
 
