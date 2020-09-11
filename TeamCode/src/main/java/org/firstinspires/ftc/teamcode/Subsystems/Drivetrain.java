@@ -62,11 +62,15 @@ public class Drivetrain  {
         if (!inTeleOp) {
             leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         } else {
             // for InTeleop we don't need encoders
             leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         }
 
