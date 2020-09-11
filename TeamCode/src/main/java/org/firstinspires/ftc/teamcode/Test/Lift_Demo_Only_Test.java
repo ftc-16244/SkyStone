@@ -36,7 +36,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift_Demo;
 
 
-@TeleOp(name="Lift Only Test ", group="Teleop")
+@TeleOp(name="Lift Only Test Demo", group="Teleop")
 //@Disabled
 public class Lift_Demo_Only_Test extends OpMode{
 
