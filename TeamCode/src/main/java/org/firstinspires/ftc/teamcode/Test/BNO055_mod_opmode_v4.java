@@ -91,38 +91,26 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
     static final double     TURN_SPEED              = 0.50;    // 0.4 for berber carpet. Check on mat too
 
     static final double     HEADING_THRESHOLD       = 2;      // As tight as we can make it with an integer gyro
-    static final double     Kp_TURN                 = 0.0275;   // 0.025 on mat
-    static final double     Ki_TURN                 = 0.003;   //0.0025 on may
+    static final double     Kp_TURN                 = 0.0275;   //0.025 to 0.0275 on mat seems to work
+    static final double     Ki_TURN                 = 0.003;   //0.0025 to 0.004 on a mat works. Battery voltage matters
     static final double     Kd_TURN                 = 0.0;   //leave as 0
-    static final double     Kp_DRIVE                = 0.05;   // Larger is more responsive, but also less stable
-    static final double     Ki_DRIVE                = 0.005;   // Larger is more responsive, but also less stable
-    static final double     Kd_DRIVE                = 0.0;   // Larger is more responsive, but also less stable
+    static final double     Kp_DRIVE                = 0.05;   //0.05 Larger is more responsive, but also less stable
+    static final double     Ki_DRIVE                = 0.005;   // 0.005 Larger is more responsive, but also less stable
+    static final double     Kd_DRIVE                = 0.0;   // Leave as 0 for now
 
 
-    double                  globalAngle;
+    double                  globalAngle; // not used currently
     double                  lasterror;
     double                  totalError;
-
-
-
-
-
 
     @Override
     public void runOpMode() {
 
-        /*
-         * Initialize the standard drive system variables.
-         * The init() method of the hardware class does most of the work here
-         */
         drivetrain.init(hardwareMap);
-        //gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
-        //imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         drivetrain.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         drivetrain.rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -136,7 +124,6 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
 
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
-        //gyro.calibrate();
 
         // make sure the gyro is calibrated before continuing
         while (!isStopRequested() && drivetrain.imu.isGyroCalibrated())  {
@@ -150,11 +137,11 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
         drivetrain.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         drivetrain.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-       //gyro.resetZAxisIntegrator();
-
         telemetry.addData("Mode", "waiting for start");
         telemetry.addData("imu calib status", drivetrain.imu.getCalibrationStatus().toString());
         telemetry.update();
+
+       /////////////////////////////////////////////////////////////////////////////////////////////
         waitForStart();
 
         // Step through each leg of the path,
@@ -186,6 +173,7 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
     *  Move will stop if either of these conditions occur:
     *  1) Move gets to the desired position
     *  2) Driver stops the opmode running.
+    *  3) Timeout time is reached - prevents robot from getting stuck
     *
     * @param speed      Target speed for forward motion.  Should allow for _/- variance for adjusting heading
     * @param distance   Distance (in inches) to move from current position.  Negative distance means move backwards.
@@ -209,7 +197,7 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
         lasterror = 0;
 
         // Ensure that the opmode is still active
-        if (opModeIsActive()) {
+        if (opModeIsActive() & runtime.time() < timeout) {
 
             // Determine new target position, and pass to motor controller
             moveCounts = (int)(distance * Drivetrain.COUNTS_PER_INCH);
@@ -230,7 +218,7 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
 
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
-                   (drivetrain.leftFront.isBusy() && drivetrain.rightFront.isBusy()) && runtime.time() < timeout) {
+                   (drivetrain.leftFront.isBusy() && drivetrain.rightFront.isBusy())) {
 
                 // adjust relative speed based on heading error.
                 // Positive angle means drifting to the left so need to steer to the
@@ -264,17 +252,18 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
                 telemetry.addData("Speed",   "%5.2f:%5.2f",  leftSpeed, rightSpeed);
                 telemetry.update();
 
-                runtime.reset(); // reset the timer for the next function call
+
             }
 
             // Stop all motion;
-           drivetrain.leftFront.setPower(0);
+            drivetrain.leftFront.setPower(0);
             drivetrain.rightFront.setPower(0);
 
             // Turn off RUN_TO_POSITION
             drivetrain.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             drivetrain.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
+            runtime.reset(); // reset the timer for the next function call
     }
 
     /**
@@ -282,22 +271,24 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
      *  Move will stop if either of these conditions occur:
      *  1) Move gets to the heading (angle)
      *  2) Driver stops the opmode running.
+     *  3) Timeout time has elapsed - prevents getting stuck
      *
      * @param speed Desired speed of turn.
      * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
      *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                   If a relative angle is required, add/subtract from current heading.
+     * @param timeout max time allotted to complete each call to gyroTurn
      */
     public void gyroTurn (  double speed, double angle, double timeout) {
         totalError = 0;
         lasterror = 0;
         // keep looping while we are still active, and not on heading.
-        while (opModeIsActive() && !onHeading(speed, angle, Kp_TURN, Ki_TURN, Kd_TURN)&&runtime.time() < timeout) {
+        while (opModeIsActive() && !onHeading(speed, angle, Kp_TURN, Ki_TURN, Kd_TURN) && runtime.time() < timeout) {
             // Update telemetry & Allow time for other processes to run.
             //onHeading(speed, angle, P_TURN_COEFF);
             telemetry.update();
-            runtime.reset();
         }
+        runtime.reset(); // reset after we are done with the while loop
     }
 
     /**
@@ -376,6 +367,7 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
      * @param   targetAngle  Desired angle (relative to global reference established at last Gyro Reset).
      * @return  error angle: Degrees in the range +/- 180. Centered on the robot's frame of reference
      *          +ve error means the robot should turn LEFT (CCW) to reduce error.
+     *
      */
     public double getError(double targetAngle) {
 
@@ -398,6 +390,8 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
      * returns desired steering force.  +/- 1 range.  +ve = steer left
      * @param error   Error angle in robot relative degrees
      * @param PCoeff  Proportional Gain Coefficient
+     * @param ICoef Integration coefficient to apply to the area under the error-time curve
+     * @param DCoef Derivative coefficient to apply to the area under the error-time curve
      * @return
      */
     public double getSteer(double error, double PCoeff, double ICoef, double DCoef) {
@@ -406,7 +400,7 @@ public class BNO055_mod_opmode_v4 extends LinearOpMode {
         double D; // combined derivative error Kd*change in error
         double changeInError;
 
-        changeInError = lasterror - error;
+        changeInError = error - lasterror;
         P = PCoeff * error;
         totalError = totalError  + error * PIDtimer.time();
         I = ICoef * totalError;
