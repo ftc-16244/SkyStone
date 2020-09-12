@@ -46,14 +46,14 @@ public class Drivetrain  {
         //hwMap = ahwMap;
         // initialize the imu first
         imu = hwMap.get(BNO055IMU.class, "imu");
-        //
+        // initialize al the drive motors
         leftFront = hwMap.get(DcMotor.class, "Left_front");
         rightFront = hwMap.get(DcMotor.class, "Right_front");
-
+        // set default directions. Note different gearboxes and motors may require a switch
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
-
+        // reset the encoders
 
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

@@ -13,15 +13,15 @@ public class Lift {
     public DcMotor liftmtr = null; // REV Core HEX motor
     private DigitalChannel liftswitch;
     public Telemetry telemetry;
+    boolean liftAtStartPosn = false;
 
-
-    private static final int LIFT_STONE_LOAD = 100; // Left side reference
-    private static final int LIFT_ARM_STONE_LEVEL1 = 200;// Left side reference
-    private static final int LIFT_ARM_STONE_LEVEL2 = 350;// Left side reference
-    private static final double LIFT_SPEED = 1.0;
-    private static final double LIFT_RESET_SPEED = -.2;
-    private static final int timeoutS = 10; // time out in seconds
-    private ElapsedTime runtime = new ElapsedTime();
+    private static final int    LIFT_STONE_LOAD         = 150; // Left side reference
+    private static final int    LIFT_ARM_STONE_LEVEL1   = 300;// Left side reference
+    private static final int    LIFT_ARM_STONE_LEVEL2   = 700;// Left side reference
+    private static final double LIFT_SPEED              = 0.50;
+    private static final double LIFT_RESET_SPEED        = -.25;
+    private static final int    timeoutS                = 4; // time out in seconds keep at 4 or less or opMode will fail because it sees another loop
+    private ElapsedTime         runtime                 = new ElapsedTime();
 
     public void init(HardwareMap hwMap) {
 
@@ -44,7 +44,6 @@ public class Lift {
         liftmtr.setPower(Math.abs(LIFT_SPEED));
 
 
-
     }
 
     public void moveToStackLevel1() {
@@ -64,13 +63,28 @@ public class Lift {
     public void resetLift() {
         runtime.reset();
         liftmtr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        liftmtr.setPower(-LIFT_SPEED);
-        while ((runtime.seconds() < timeoutS) &&
-                (liftswitch.getState() == true )) {
+        liftmtr.setPower(LIFT_RESET_SPEED);
 
-            telemetry.addData("Lift Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+        while ((runtime.seconds() < timeoutS) &&
+                (liftAtStartPosn() == false)) {
+
+            //telemetry.addData("Lift Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
         }
+        liftmtr.setPower(0);
         liftmtr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftmtr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public boolean liftAtStartPosn() {
+
+        if (liftswitch.getState() == true) {
+            // when the switch is depressed the blue light come on and getState=false
+            // the switch returns a true if it is not pressed and the blue light is NOT on.
+            liftAtStartPosn = false;
+        } else {
+            liftAtStartPosn = true;
+        }
+        return liftAtStartPosn;
+
     }
 }
