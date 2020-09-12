@@ -26,7 +26,7 @@ public class Drivetrain_Exp {
     private static final double TURN_SPEED = 0.5;
     private boolean inTeleOp;
     private ElapsedTime runtime = new ElapsedTime();
-    public Telemetry telemetry;
+    Telemetry telemetry;
     public LinearOpMode linearOpMode;
 
     //HardwareMap hwMap = null;        // create a hardware map object here
