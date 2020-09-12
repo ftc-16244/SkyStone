@@ -23,6 +23,10 @@ public class Lift {
     private static final int    timeoutS                = 4; // time out in seconds keep at 4 or less or opMode will fail because it sees another loop
     private ElapsedTime         runtime                 = new ElapsedTime();
 
+    // Constructor
+
+
+
     public void init(HardwareMap hwMap) {
 
         //motor
@@ -60,7 +64,7 @@ public class Lift {
 
     }
 
-    public void resetLift() {
+    public void resetLift(Telemetry telemetry) {
         runtime.reset();
         liftmtr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftmtr.setPower(LIFT_RESET_SPEED);
@@ -68,11 +72,12 @@ public class Lift {
         while ((runtime.seconds() < timeoutS) &&
                 (liftAtStartPosn() == false)) {
 
-            //telemetry.addData("Lift Resetting", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+
         }
         liftmtr.setPower(0);
         liftmtr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftmtr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        telemetry.addData("Lift Resetting", "Elapsed Time: %2.2f S", runtime.seconds());
     }
 
     public boolean liftAtStartPosn() {

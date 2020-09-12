@@ -33,8 +33,8 @@ public class Drivetrain_Exp {
 
     // Contructor for Drivetrain
     public Drivetrain_Exp(boolean inTeleOp) {
-
-        //this.inTeleOp = inTeleOp;
+        this.telemetry = telemetry;
+        this.inTeleOp = inTeleOp;
 
 
     }
